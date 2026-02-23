@@ -16,6 +16,15 @@ export function TennisBall({
   const groupRef = useRef<THREE.Group>(null)
   const { scene } = useGLTF(`${import.meta.env.BASE_URL}models/tennis-ball.glb`)
   const gl = useThree((s) => s.gl)
+  const viewport = useThree((s) => s.viewport)
+
+  // Scale down on narrow viewports (mobile)
+  const responsiveScale = useMemo(() => {
+    const width = viewport.width
+    if (width < 5) return scale * 0.55
+    if (width < 7) return scale * 0.7
+    return scale
+  }, [viewport.width, scale])
 
   // Center the model at origin (Sketchfab export is offset)
   // and strip specular/env highlights from baked GLB materials
@@ -152,7 +161,7 @@ export function TennisBall({
     <group
       ref={groupRef}
       position={position}
-      scale={scale}
+      scale={responsiveScale}
     >
       <primitive object={clonedScene} />
       <pointLight
