@@ -1,0 +1,109 @@
+[
+  {
+    "id": "classic-pro-racket",
+    "name": "Classic Pro Racket",
+    "price": 249,
+    "category": "equipment",
+    "images": [],
+    "specs": {
+      "Weight": "300g",
+      "Head Size": "100 sq in",
+      "String Pattern": "16x19",
+      "Balance": "4 pts HL"
+    },
+    "description": "Engineered for the player who demands precision without compromise. The Classic Pro delivers a clean, connected feel on every stroke."
+  },
+  {
+    "id": "court-tee",
+    "name": "Court Session Tee",
+    "price": 68,
+    "category": "apparel",
+    "images": [],
+    "specs": {
+      "Material": "100% Organic Cotton",
+      "Fit": "Relaxed",
+      "Weight": "180 GSM"
+    },
+    "description": "Heavyweight cotton tee with minimal branding. Designed to look as good off-court as on."
+  },
+  {
+    "id": "match-shorts",
+    "name": "Match Day Shorts",
+    "price": 85,
+    "category": "apparel",
+    "images": [],
+    "specs": {
+      "Material": "Nylon Ripstop",
+      "Fit": "Athletic",
+      "Inseam": "7 in",
+      "Features": "Zip pocket, elastic waist"
+    },
+    "description": "Technical match shorts with a clean silhouette. Quick-dry ripstop fabric with laser-cut ventilation."
+  },
+  {
+    "id": "signature-bag",
+    "name": "Signature Racket Bag",
+    "price": 145,
+    "category": "accessories",
+    "images": [],
+    "specs": {
+      "Capacity": "3 rackets",
+      "Material": "1000D Cordura",
+      "Compartments": "3 + shoe pocket"
+    },
+    "description": "Built to carry everything you need and nothing you don't. Padded racket compartments, ventilated shoe pocket."
+  },
+  {
+    "id": "tour-racket",
+    "name": "Tour Series Racket",
+    "price": 329,
+    "category": "equipment",
+    "images": [],
+    "specs": {
+      "Weight": "310g",
+      "Head Size": "98 sq in",
+      "String Pattern": "18x20",
+      "Balance": "6 pts HL"
+    },
+    "description": "For the advanced player who shapes every ball. Dense string bed for maximum spin control and precision placement."
+  },
+  {
+    "id": "warm-up-hoodie",
+    "name": "Warm-Up Hoodie",
+    "price": 120,
+    "category": "apparel",
+    "images": [],
+    "specs": {
+      "Material": "French Terry",
+      "Fit": "Oversized",
+      "Weight": "350 GSM"
+    },
+    "description": "Premium French terry hoodie. Oversized fit for warm-ups and everything after."
+  },
+  {
+    "id": "grip-overgrip-3pk",
+    "name": "Pro Overgrip 3-Pack",
+    "price": 12,
+    "category": "accessories",
+    "images": [],
+    "specs": {
+      "Thickness": "0.5mm",
+      "Material": "Tacky PU",
+      "Quantity": "3 grips"
+    },
+    "description": "Ultra-tacky overgrip that holds up in any conditions. No-slip performance from first point to match point."
+  },
+  {
+    "id": "tennis-cap",
+    "name": "Court Cap",
+    "price": 42,
+    "category": "accessories",
+    "images": [],
+    "specs": {
+      "Material": "Washed Cotton Twill",
+      "Closure": "Leather strap",
+      "Brim": "Pre-curved"
+    },
+    "description": "Unstructured 6-panel cap with embroidered logo. Worn in, not broken in."
+  }
+]
