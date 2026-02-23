@@ -37,9 +37,9 @@ export function Experience() {
       </PerformanceMonitor>
 
       <Environment preset="studio" background={false} environmentIntensity={0.2} />
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[5, 8, 5]} intensity={0.3} />
-      <directionalLight position={[-3, 3, -3]} intensity={0.15} color="#b0c4ff" />
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[2, 3, 8]} intensity={0.2} />
+      <directionalLight position={[-2, 1, 6]} intensity={0.1} color="#b0c4ff" />
 
       <ScrollVelocityTracker />
       <ShopTransitionController />
