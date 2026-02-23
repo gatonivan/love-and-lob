@@ -14,7 +14,7 @@ export function TennisBall({
   scale = 1.5,
 }: TennisBallProps) {
   const groupRef = useRef<THREE.Group>(null)
-  const { scene } = useGLTF('/models/tennis-ball.glb')
+  const { scene } = useGLTF(`${import.meta.env.BASE_URL}models/tennis-ball.glb`)
   const gl = useThree((s) => s.gl)
 
   // Center the model at origin (Sketchfab export is offset)
@@ -166,4 +166,4 @@ export function TennisBall({
   )
 }
 
-useGLTF.preload('/models/tennis-ball.glb')
+useGLTF.preload(`${import.meta.env.BASE_URL}models/tennis-ball.glb`)
