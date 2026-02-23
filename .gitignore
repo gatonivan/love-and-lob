@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 .env
+public/events.json
 .env.local
 dist-ssr
 *.local

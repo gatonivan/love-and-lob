@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '0 8 * * *'   # daily at 8 AM UTC to refresh events
   workflow_dispatch:
 
 permissions:
@@ -31,9 +33,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm build
+      - name: Fetch upcoming events from Luma
+        run: node scripts/fetch-events.js
         env:
           VITE_LUMA_API_KEY: ${{ secrets.VITE_LUMA_API_KEY }}
+
+      - run: pnpm build
 
       - name: Copy index.html to 404.html for SPA routing
         run: cp dist/index.html dist/404.html

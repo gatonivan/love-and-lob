@@ -13,33 +13,11 @@ interface LumaEvent {
 }
 
 async function fetchUpcomingEvents(): Promise<LumaEvent[]> {
-  const apiKey = import.meta.env.VITE_LUMA_API_KEY
-  if (!apiKey) return []
-
-  const now = new Date()
-  const afterParam = now.toISOString()
-  const res = await fetch(
-    `https://public-api.luma.com/v1/calendar/list-events?after=${afterParam}`,
-    { headers: { 'x-luma-api-key': apiKey } },
-  )
+  const res = await fetch(`${import.meta.env.BASE_URL}events.json`)
   if (!res.ok) return []
-
-  const data = await res.json()
-
-  return (data.entries || [])
-    .map((entry: any) => {
-      const ev = entry.event
-      return {
-        id: ev.id,
-        name: ev.name,
-        start_at: ev.start_at,
-        end_at: ev.end_at,
-        cover_url: ev.cover_url,
-        url: ev.url,
-        location: ev.geo_address_json?.address || ev.geo_address_json?.full_address || '',
-      } as LumaEvent
-    })
-    .sort((a: LumaEvent, b: LumaEvent) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
+  const events: LumaEvent[] = await res.json()
+  const now = new Date()
+  return events.filter((ev) => new Date(ev.start_at) >= now)
 }
 
 function formatDate(dateStr: string): string {
@@ -70,10 +48,10 @@ export function EventsOverlay({ visible, onClose }: EventsOverlayProps) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchUpcomingEvents().then((evs) => {
-      setEvents(evs)
-      setLoading(false)
-    })
+    fetchUpcomingEvents()
+      .then((evs) => setEvents(evs))
+      .catch(() => {})
+      .finally(() => setLoading(false))
   }, [])
 
   useEffect(() => {
