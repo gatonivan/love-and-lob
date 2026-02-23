@@ -1,7 +1,7 @@
 .shop {
   min-height: 100vh;
   padding: 6rem 2rem 6rem;
-  background: #0a0a0a;
+  background: transparent;
 }
 
 .shop-header {
@@ -13,16 +13,17 @@
 }
 
 .shop-title {
+  font-family: 'Playfair Display', Georgia, serif;
   font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
 .shop-count {
   font-family: monospace;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(241, 240, 226, 0.4);
   letter-spacing: 0.05em;
 }
 

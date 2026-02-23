@@ -18,6 +18,8 @@ export function useWheelScroll() {
     const canvas = gl.domElement
 
     const handleWheel = (e: WheelEvent) => {
+      const section = useSceneStore.getState().currentSection
+      if (section === 'shop-transition' || section === 'shop') return
       e.preventDefault()
       // Normalize deltaY across browsers and trackpad vs mouse
       const delta = e.deltaY * 0.0004
