@@ -66,15 +66,16 @@ export function useShopTransition() {
   }, [isTransitioningFromShop])
 
   // Forward transition: hero -> schedule
+  // Show overlay at 60% of zoom for a fluid overlap
   useEffect(() => {
     if (!isTransitioningToSchedule) return
     tl.current?.kill()
 
+    const store = useSceneStore.getState()
     const timeline = gsap.timeline({
       onComplete: () => {
-        useSceneStore.getState().setIsTransitioningToSchedule(false)
-        useSceneStore.getState().setScheduleVisible(true)
-        useSceneStore.getState().setCurrentSection('schedule')
+        store.setIsTransitioningToSchedule(false)
+        store.setCurrentSection('schedule')
       },
     })
 
@@ -83,6 +84,11 @@ export function useShopTransition() {
       fov: SCHEDULE_CAMERA.fov,
       duration: 1.0,
       ease: 'power3.inOut',
+      onUpdate: function (this: gsap.core.Tween) {
+        if (this.progress() >= 0.6 && !useSceneStore.getState().scheduleVisible) {
+          useSceneStore.getState().setScheduleVisible(true)
+        }
+      },
     })
 
     tl.current = timeline
@@ -90,6 +96,7 @@ export function useShopTransition() {
   }, [isTransitioningToSchedule])
 
   // Reverse transition: schedule -> hero
+  // Overlay is already fading out; start zoom after brief delay
   useEffect(() => {
     if (!isTransitioningFromSchedule) return
     tl.current?.kill()
@@ -105,6 +112,7 @@ export function useShopTransition() {
       z: HERO_CAMERA.z,
       fov: HERO_CAMERA.fov,
       duration: 0.8,
+      delay: 0.15,
       ease: 'power2.inOut',
     })
 

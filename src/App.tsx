@@ -36,8 +36,10 @@ function App() {
   const scheduleVisible = useSceneStore((s) => s.scheduleVisible)
 
   const handleScheduleClose = () => {
-    useSceneStore.getState().setIsTransitioningFromSchedule(true)
-    useSceneStore.getState().setScheduleVisible(false)
+    const state = useSceneStore.getState()
+    if (state.isTransitioningFromSchedule || !state.scheduleVisible) return
+    state.setIsTransitioningFromSchedule(true)
+    state.setScheduleVisible(false)
   }
 
   return (

@@ -58,22 +58,18 @@ export function EventsOverlay({ visible, onClose }: EventsOverlayProps) {
     if (!overlayRef.current) return
 
     if (visible) {
+      overlayRef.current.style.pointerEvents = 'auto'
       gsap.to(overlayRef.current, {
         opacity: 1,
-        duration: 0.3,
+        duration: 0.5,
         ease: 'power2.out',
-        onStart: () => {
-          if (overlayRef.current) overlayRef.current.style.pointerEvents = 'auto'
-        },
       })
     } else {
+      overlayRef.current.style.pointerEvents = 'none'
       gsap.to(overlayRef.current, {
         opacity: 0,
-        duration: 0.25,
+        duration: 0.3,
         ease: 'power2.in',
-        onComplete: () => {
-          if (overlayRef.current) overlayRef.current.style.pointerEvents = 'none'
-        },
       })
     }
   }, [visible])
