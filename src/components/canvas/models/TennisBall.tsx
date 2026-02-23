@@ -27,16 +27,25 @@ export function TennisBall({
 
     clone.traverse((child) => {
       if (child instanceof THREE.Mesh && child.material) {
-        const mat = child.material as THREE.MeshStandardMaterial
+        const mat = child.material as any
+        // Kill all specular / reflective response
         mat.envMapIntensity = 0
+        mat.envMap = null
         mat.roughness = 1
         mat.metalness = 0
-        if ('clearcoat' in mat) (mat as any).clearcoat = 0
-        if ('sheen' in mat) (mat as any).sheen = 0
-        if (mat.metalnessMap) {
-          mat.metalnessMap = null
-          mat.needsUpdate = true
+        mat.metalnessMap = null
+        mat.roughnessMap = null
+        // Physical material extras
+        mat.clearcoat = 0
+        mat.sheen = 0
+        mat.specularIntensity = 0
+        mat.specularColor?.set(0x000000)
+        // Reduce normal map intensity to soften sharp fiber normals
+        // that catch directional lights as white pinpoints
+        if (mat.normalMap) {
+          mat.normalScale = new THREE.Vector2(0.3, 0.3)
         }
+        mat.needsUpdate = true
       }
     })
 
