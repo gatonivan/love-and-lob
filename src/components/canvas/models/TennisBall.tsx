@@ -31,6 +31,12 @@ export function TennisBall({
   const dragStartScreen = useRef(new THREE.Vector2())
   const overStretchFired = useRef(false)
 
+  // Scroll-driven rotation with inertia
+  const angularVelocityY = useRef(0)
+  const angularVelocityX = useRef(0)
+  const rotationY = useRef(0)
+  const rotationX = useRef(0)
+
   const setBallDeformAmount = useSceneStore((s) => s.setBallDeformAmount)
 
   // High-subdivision icosahedron with merged vertices for tangent computation
@@ -171,15 +177,42 @@ export function TennisBall({
     }
   }, [handleWindowPointerMove, handleWindowPointerUp])
 
-  // Update time uniform + idle animation each frame
+  // Update time uniform + scroll-driven rotation with inertia
   useFrame(({ clock }) => {
     uniforms.uTime.value = clock.getElapsedTime()
 
-    // Subtle idle animation when not grabbed
-    if (meshRef.current && !isGrabbing.current) {
-      const t = clock.getElapsedTime()
-      meshRef.current.rotation.y = Math.sin(t * 0.3) * 0.08
-      meshRef.current.rotation.x = Math.sin(t * 0.2) * 0.04
+    if (!meshRef.current) return
+
+    // Scroll velocity drives angular velocity (sensitivity tuned for feel)
+    const SCROLL_SENSITIVITY = 40
+    const FRICTION = 0.95
+    const IDLE_SPEED = 0.15
+
+    // Read velocity directly from store (avoids React re-renders)
+    const velocity = useSceneStore.getState().scrollVelocity
+
+    // Add scroll impulse to angular velocity
+    angularVelocityY.current += velocity * SCROLL_SENSITIVITY
+    angularVelocityX.current += velocity * SCROLL_SENSITIVITY * 0.3
+
+    // Apply friction for natural deceleration
+    angularVelocityY.current *= FRICTION
+    angularVelocityX.current *= FRICTION
+
+    // Blend in a slow idle rotation when angular velocity is very low
+    const speed = Math.abs(angularVelocityY.current)
+    const idleBlend = Math.max(0, 1 - speed * 5)
+    const idleY = IDLE_SPEED * 0.001
+    const idleX = IDLE_SPEED * 0.0005
+
+    // Accumulate rotation
+    rotationY.current += angularVelocityY.current + idleY * idleBlend
+    rotationX.current += angularVelocityX.current + idleX * idleBlend
+
+    // Apply rotation (only when not being grabbed)
+    if (!isGrabbing.current) {
+      meshRef.current.rotation.y = rotationY.current
+      meshRef.current.rotation.x = rotationX.current
     }
   })
 
