@@ -19,7 +19,8 @@ export function useWheelScroll() {
 
     const handleWheel = (e: WheelEvent) => {
       const section = useSceneStore.getState().currentSection
-      if (section === 'shop-transition' || section === 'shop') return
+      if (section === 'shop-transition' || section === 'shop'
+        || section === 'schedule-transition' || section === 'schedule') return
       e.preventDefault()
       // Normalize deltaY across browsers and trackpad vs mouse
       const delta = e.deltaY * 0.0004

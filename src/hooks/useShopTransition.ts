@@ -6,6 +6,7 @@ import { useSceneStore } from '../stores/sceneStore'
 
 const HERO_CAMERA = { x: 0, y: 0, z: 6, fov: 45 }
 const SHOP_CAMERA = { x: 0, y: 0, z: 0.3, fov: 15 }
+const SCHEDULE_CAMERA = { x: 0, y: 0, z: 2.5, fov: 30 }
 
 export function useShopTransition() {
   const { camera } = useThree()
@@ -14,6 +15,8 @@ export function useShopTransition() {
 
   const isTransitioningToShop = useSceneStore((s) => s.isTransitioningToShop)
   const isTransitioningFromShop = useSceneStore((s) => s.isTransitioningFromShop)
+  const isTransitioningToSchedule = useSceneStore((s) => s.isTransitioningToSchedule)
+  const isTransitioningFromSchedule = useSceneStore((s) => s.isTransitioningFromSchedule)
 
   // Forward transition: hero -> shop
   useEffect(() => {
@@ -61,6 +64,53 @@ export function useShopTransition() {
     tl.current = timeline
     return () => { timeline.kill() }
   }, [isTransitioningFromShop])
+
+  // Forward transition: hero -> schedule
+  useEffect(() => {
+    if (!isTransitioningToSchedule) return
+    tl.current?.kill()
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        useSceneStore.getState().setIsTransitioningToSchedule(false)
+        useSceneStore.getState().setScheduleVisible(true)
+        useSceneStore.getState().setCurrentSection('schedule')
+      },
+    })
+
+    timeline.to(cameraState.current, {
+      z: SCHEDULE_CAMERA.z,
+      fov: SCHEDULE_CAMERA.fov,
+      duration: 1.0,
+      ease: 'power3.inOut',
+    })
+
+    tl.current = timeline
+    return () => { timeline.kill() }
+  }, [isTransitioningToSchedule])
+
+  // Reverse transition: schedule -> hero
+  useEffect(() => {
+    if (!isTransitioningFromSchedule) return
+    tl.current?.kill()
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        useSceneStore.getState().setIsTransitioningFromSchedule(false)
+        useSceneStore.getState().setCurrentSection('hero')
+      },
+    })
+
+    timeline.to(cameraState.current, {
+      z: HERO_CAMERA.z,
+      fov: HERO_CAMERA.fov,
+      duration: 0.8,
+      ease: 'power2.inOut',
+    })
+
+    tl.current = timeline
+    return () => { timeline.kill() }
+  }, [isTransitioningFromSchedule])
 
   // Apply camera state every frame
   useFrame(() => {

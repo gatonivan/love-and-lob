@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
 import { Experience } from './components/canvas/Experience'
@@ -33,12 +33,17 @@ function RouteWatcher() {
 
 function App() {
   useReducedMotion()
-  const [eventsOpen, setEventsOpen] = useState(false)
+  const scheduleVisible = useSceneStore((s) => s.scheduleVisible)
+
+  const handleScheduleClose = () => {
+    useSceneStore.getState().setIsTransitioningFromSchedule(true)
+    useSceneStore.getState().setScheduleVisible(false)
+  }
 
   return (
     <BrowserRouter>
       <RouteWatcher />
-      <Navigation onEventsClick={() => setEventsOpen(true)} />
+      <Navigation />
 
       <div className="canvas-container">
         <Canvas
@@ -51,7 +56,7 @@ function App() {
       </div>
 
       <ShopOverlay />
-      <EventsOverlay visible={eventsOpen} onClose={() => setEventsOpen(false)} />
+      <EventsOverlay visible={scheduleVisible} onClose={handleScheduleClose} />
 
       <Routes>
         <Route path="/shop/:id" element={<ProductDetail />} />

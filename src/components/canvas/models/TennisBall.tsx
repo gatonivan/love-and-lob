@@ -116,6 +116,7 @@ export function TennisBall({
     const state = useSceneStore.getState()
     const section = state.currentSection
     const isShopMode = section === 'shop-transition' || section === 'shop'
+      || section === 'schedule-transition' || section === 'schedule'
     const SCROLL_SENSITIVITY = isShopMode ? 0 : 15
     const FRICTION = 0.96
     const IDLE_SPEED = isShopMode ? 0.02 : 0.08
@@ -153,6 +154,7 @@ export function TennisBall({
 
   const isTransitioning = useSceneStore(
     (s) => s.isTransitioningToShop || s.isTransitioningFromShop
+      || s.isTransitioningToSchedule || s.isTransitioningFromSchedule
   )
   const currentSection = useSceneStore((s) => s.currentSection)
   const isHeroPage = currentSection === 'hero'

@@ -2,15 +2,16 @@ import { useNavigate } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import './Navigation.css'
 
-interface NavigationProps {
-  onEventsClick: () => void
-}
-
-export function Navigation({ onEventsClick }: NavigationProps) {
+export function Navigation() {
   const navigate = useNavigate()
   const shopVisible = useSceneStore((s) => s.shopVisible)
+  const scheduleVisible = useSceneStore((s) => s.scheduleVisible)
   const isTransitioning = useSceneStore(
-    (s) => s.isTransitioningToShop || s.isTransitioningFromShop
+    (s) =>
+      s.isTransitioningToShop ||
+      s.isTransitioningFromShop ||
+      s.isTransitioningToSchedule ||
+      s.isTransitioningFromSchedule
   )
 
   const handleShopClick = (e: React.MouseEvent) => {
@@ -30,12 +31,19 @@ export function Navigation({ onEventsClick }: NavigationProps) {
       navigate('/')
       return
     }
+    if (scheduleVisible) {
+      useSceneStore.getState().setIsTransitioningFromSchedule(true)
+      useSceneStore.getState().setScheduleVisible(false)
+      return
+    }
     navigate('/')
   }
 
-  const handleEventsClick = (e: React.MouseEvent) => {
+  const handleScheduleClick = (e: React.MouseEvent) => {
     e.preventDefault()
-    onEventsClick()
+    if (scheduleVisible || isTransitioning) return
+    useSceneStore.getState().setCurrentSection('schedule-transition')
+    useSceneStore.getState().setIsTransitioningToSchedule(true)
   }
 
   return (
@@ -46,7 +54,7 @@ export function Navigation({ onEventsClick }: NavigationProps) {
       <div className="nav-links">
         <a href="/" onClick={handleHomeClick}>Home</a>
         <a href="/shop" onClick={handleShopClick}>Shop</a>
-        <a href="#events" onClick={handleEventsClick}>Schedule</a>
+        <a href="#schedule" onClick={handleScheduleClick}>Schedule</a>
       </div>
     </nav>
   )
