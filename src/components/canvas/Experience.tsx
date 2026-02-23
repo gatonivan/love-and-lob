@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { useFrame } from '@react-three/fiber'
 import {
   AdaptiveDpr,
   AdaptiveEvents,
@@ -6,14 +7,27 @@ import {
   PerformanceMonitor,
 } from '@react-three/drei'
 import { HeroScene } from './scenes/HeroScene'
-import { CourtScene } from './scenes/CourtScene'
-import { JumbotronScene } from './scenes/JumbotronScene'
-import { ScrollAnimator } from './ScrollAnimator'
+import { useWheelScroll } from '../../hooks/useWheelScroll'
+import { useShopTransition } from '../../hooks/useShopTransition'
 import { PostProcessing } from './effects/PostProcessing'
+
+/** Pumps useWheelScroll each frame so scroll velocity is tracked */
+function ScrollVelocityTracker() {
+  const { getOffset } = useWheelScroll()
+  useFrame(() => { getOffset() })
+  return null
+}
+
+function ShopTransitionController() {
+  useShopTransition()
+  return null
+}
 
 export function Experience() {
   return (
     <>
+      <color attach="background" args={['#000000']} />
+
       <PerformanceMonitor
         flipflops={3}
         onFallback={() => console.log('[perf] Fallback triggered')}
@@ -22,18 +36,15 @@ export function Experience() {
         <AdaptiveEvents />
       </PerformanceMonitor>
 
-      <Environment preset="studio" />
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[5, 8, 5]} intensity={1.5} castShadow />
-      <directionalLight position={[-3, 3, -3]} intensity={0.5} color="#b0c4ff" />
-      <pointLight position={[0, -2, 4]} intensity={0.4} color="#ffe0b0" />
-      <spotLight position={[0, 5, 5]} angle={0.4} penumbra={0.5} intensity={0.6} color="#ffffff" />
+      <Environment preset="studio" background={false} environmentIntensity={0.2} />
+      <ambientLight intensity={0.15} />
+      <directionalLight position={[5, 8, 5]} intensity={0.3} />
+      <directionalLight position={[-3, 3, -3]} intensity={0.15} color="#b0c4ff" />
 
-      <ScrollAnimator />
+      <ScrollVelocityTracker />
+      <ShopTransitionController />
       <Suspense fallback={null}>
         <HeroScene />
-        <CourtScene />
-        <JumbotronScene />
       </Suspense>
 
       <PostProcessing />

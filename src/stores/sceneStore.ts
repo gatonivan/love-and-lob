@@ -11,6 +11,9 @@ interface SceneState {
   shopVisible: boolean
   ballDeformAmount: number
   jumbotronFocused: boolean
+  isTransitioningToShop: boolean
+  isTransitioningFromShop: boolean
+  ballHovered: boolean
 
   setScrollProgress: (progress: number) => void
   setScrollVelocity: (velocity: number) => void
@@ -20,6 +23,9 @@ interface SceneState {
   setShopVisible: (visible: boolean) => void
   setBallDeformAmount: (amount: number) => void
   setJumbotronFocused: (focused: boolean) => void
+  setIsTransitioningToShop: (v: boolean) => void
+  setIsTransitioningFromShop: (v: boolean) => void
+  setBallHovered: (hovered: boolean) => void
 }
 
 export const useSceneStore = create<SceneState>((set) => ({
@@ -31,6 +37,9 @@ export const useSceneStore = create<SceneState>((set) => ({
   shopVisible: false,
   ballDeformAmount: 0,
   jumbotronFocused: false,
+  isTransitioningToShop: false,
+  isTransitioningFromShop: false,
+  ballHovered: false,
 
   setScrollProgress: (progress) => set({ scrollProgress: progress }),
   setScrollVelocity: (velocity) => set({ scrollVelocity: velocity }),
@@ -40,4 +49,7 @@ export const useSceneStore = create<SceneState>((set) => ({
   setShopVisible: (visible) => set({ shopVisible: visible }),
   setBallDeformAmount: (amount) => set({ ballDeformAmount: amount }),
   setJumbotronFocused: (focused) => set({ jumbotronFocused: focused }),
+  setIsTransitioningToShop: (v) => set({ isTransitioningToShop: v }),
+  setIsTransitioningFromShop: (v) => set({ isTransitioningFromShop: v }),
+  setBallHovered: (hovered) => set({ ballHovered: hovered }),
 }))

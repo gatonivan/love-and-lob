@@ -1,7 +1,7 @@
 .shop {
   min-height: 100vh;
   padding: 6rem 2rem 6rem;
-  background: #0a0a0a;
+  background: transparent;
 }
 
 .shop-header {
