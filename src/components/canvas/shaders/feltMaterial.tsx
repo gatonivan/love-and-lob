@@ -40,16 +40,16 @@ export function createFeltMaterial(overrides?: Partial<FeltMaterialUniforms>) {
     vertexShader,
     fragmentShader,
     uniforms,
-    // PBR felt properties — tuned for hyper-realistic tennis ball
+    // PBR felt properties — matte tennis ball, no specular highlights
     color: new THREE.Color('#c4d82e'),
-    roughness: 0.85,
+    roughness: 0.95,
     metalness: 0,
-    sheen: 1.0,
+    sheen: 0.6,
     sheenColor: new THREE.Color('#d8e84d'),
-    sheenRoughness: 0.45,
-    clearcoat: 0.08,
-    clearcoatRoughness: 0.4,
-    envMapIntensity: 0.9,
+    sheenRoughness: 0.8,
+    clearcoat: 0,
+    clearcoatRoughness: 1,
+    envMapIntensity: 0.15,
   })
 
   return { material, uniforms }
