@@ -16,13 +16,15 @@ async function fetchUpcomingEvents(): Promise<LumaEvent[]> {
   const apiKey = import.meta.env.VITE_LUMA_API_KEY
   if (!apiKey) return []
 
-  const res = await fetch('https://public-api.luma.com/v1/calendar/list-events', {
-    headers: { 'x-luma-api-key': apiKey },
-  })
+  const now = new Date()
+  const afterParam = now.toISOString()
+  const res = await fetch(
+    `https://public-api.luma.com/v1/calendar/list-events?after=${afterParam}`,
+    { headers: { 'x-luma-api-key': apiKey } },
+  )
   if (!res.ok) return []
 
   const data = await res.json()
-  const now = new Date()
 
   return (data.entries || [])
     .map((entry: any) => {
@@ -37,7 +39,6 @@ async function fetchUpcomingEvents(): Promise<LumaEvent[]> {
         location: ev.geo_address_json?.address || ev.geo_address_json?.full_address || '',
       } as LumaEvent
     })
-    .filter((ev: LumaEvent) => new Date(ev.start_at) >= now)
     .sort((a: LumaEvent, b: LumaEvent) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
 }
 
