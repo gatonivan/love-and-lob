@@ -46,7 +46,7 @@ export function Navigation({ onEventsClick }: NavigationProps) {
       <div className="nav-links">
         <a href="/" onClick={handleHomeClick}>Home</a>
         <a href="/shop" onClick={handleShopClick}>Shop</a>
-        <a href="#events" onClick={handleEventsClick}>Events</a>
+        <a href="#events" onClick={handleEventsClick}>Schedule</a>
       </div>
     </nav>
   )

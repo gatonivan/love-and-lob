@@ -87,16 +87,16 @@ export function EventsOverlay({ visible, onClose }: EventsOverlayProps) {
       <div className="events-overlay-scrim" onClick={onClose} />
       <div className="events-panel">
         <div className="events-header">
-          <h2 className="events-title">Upcoming Events</h2>
+          <h2 className="events-title">Schedule</h2>
           <button className="events-close" onClick={onClose} aria-label="Close">
             &times;
           </button>
         </div>
 
         {loading ? (
-          <div className="events-loading">Loading events...</div>
+          <div className="events-loading">Loading schedule...</div>
         ) : events.length === 0 ? (
-          <div className="events-empty">No upcoming events. Check back soon!</div>
+          <div className="events-empty">Nothing scheduled yet. Check back soon!</div>
         ) : (
           <div className="events-list">
             {events.map((ev) => (

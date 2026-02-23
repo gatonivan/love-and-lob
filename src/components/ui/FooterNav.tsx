@@ -4,7 +4,7 @@ import './FooterNav.css'
 const SECTIONS = [
   { label: 'Home', id: 'hero' },
   { label: 'Court', id: 'court' },
-  { label: 'Events', id: 'jumbotron' },
+  { label: 'Schedule', id: 'jumbotron' },
   { label: 'Shop', id: 'shop' },
 ] as const
 
