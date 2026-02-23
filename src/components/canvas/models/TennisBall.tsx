@@ -18,11 +18,28 @@ export function TennisBall({
   const gl = useThree((s) => s.gl)
 
   // Center the model at origin (Sketchfab export is offset)
+  // and strip specular/env highlights from baked GLB materials
   const clonedScene = useMemo(() => {
     const clone = scene.clone(true)
     const box = new THREE.Box3().setFromObject(clone)
     const center = box.getCenter(new THREE.Vector3())
     clone.position.sub(center)
+
+    clone.traverse((child) => {
+      if (child instanceof THREE.Mesh && child.material) {
+        const mat = child.material as THREE.MeshStandardMaterial
+        mat.envMapIntensity = 0
+        mat.roughness = 1
+        mat.metalness = 0
+        if ('clearcoat' in mat) (mat as any).clearcoat = 0
+        if ('sheen' in mat) (mat as any).sheen = 0
+        if (mat.metalnessMap) {
+          mat.metalnessMap = null
+          mat.needsUpdate = true
+        }
+      }
+    })
+
     return clone
   }, [scene])
 
