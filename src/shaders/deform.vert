@@ -9,6 +9,10 @@ varying float vDeformation;
 void main() {
   vec3 pos = position;
 
+  // Subtle idle breathing animation
+  float breathe = sin(uTime * 1.5) * 0.005;
+  pos += normal * breathe;
+
   // Distance from this vertex to the grab point (local space)
   float dist = distance(pos, uGrabPoint);
 

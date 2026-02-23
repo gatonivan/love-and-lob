@@ -16,7 +16,7 @@ function HomePage() {
       <Canvas
         dpr={[1, 1.5]}
         gl={{ antialias: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0, 0, 5], fov: 45 }}
+        camera={{ position: [0, 0, 6], fov: 45 }}
       >
         <Experience />
       </Canvas>

@@ -18,9 +18,9 @@ const DEFAULTS: FeltMaterialUniforms = {
   uGrabPoint: new THREE.Vector3(0, 0, 0),
   uDragDelta: new THREE.Vector3(0, 0, 0),
   uGrabStrength: 0,
-  uGrabRadius: 0.6,
+  uGrabRadius: 0.8,
   uTime: 0,
-  uMaxStretch: 0.5,
+  uMaxStretch: 1.5,
 }
 
 export function createFeltMaterial(overrides?: Partial<FeltMaterialUniforms>) {
@@ -40,13 +40,16 @@ export function createFeltMaterial(overrides?: Partial<FeltMaterialUniforms>) {
     vertexShader,
     fragmentShader,
     uniforms,
-    // PBR felt properties
+    // PBR felt properties — tuned for hyper-realistic tennis ball
     color: new THREE.Color('#c4d82e'),
-    roughness: 0.92,
+    roughness: 0.85,
     metalness: 0,
     sheen: 1.0,
     sheenColor: new THREE.Color('#d8e84d'),
-    sheenRoughness: 0.5,
+    sheenRoughness: 0.45,
+    clearcoat: 0.08,
+    clearcoatRoughness: 0.4,
+    envMapIntensity: 0.9,
   })
 
   return { material, uniforms }

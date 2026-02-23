@@ -4,6 +4,7 @@ type Section = 'hero' | 'court' | 'jumbotron' | 'shop-transition' | 'shop'
 
 interface SceneState {
   scrollProgress: number
+  scrollVelocity: number
   currentSection: Section
   soundEnabled: boolean
   reducedMotion: boolean
@@ -12,6 +13,7 @@ interface SceneState {
   jumbotronFocused: boolean
 
   setScrollProgress: (progress: number) => void
+  setScrollVelocity: (velocity: number) => void
   setCurrentSection: (section: Section) => void
   toggleSound: () => void
   setReducedMotion: (reduced: boolean) => void
@@ -22,6 +24,7 @@ interface SceneState {
 
 export const useSceneStore = create<SceneState>((set) => ({
   scrollProgress: 0,
+  scrollVelocity: 0,
   currentSection: 'hero',
   soundEnabled: false,
   reducedMotion: false,
@@ -30,6 +33,7 @@ export const useSceneStore = create<SceneState>((set) => ({
   jumbotronFocused: false,
 
   setScrollProgress: (progress) => set({ scrollProgress: progress }),
+  setScrollVelocity: (velocity) => set({ scrollVelocity: velocity }),
   setCurrentSection: (section) => set({ currentSection: section }),
   toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
   setReducedMotion: (reduced) => set({ reducedMotion: reduced }),
