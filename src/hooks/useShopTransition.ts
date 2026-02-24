@@ -17,6 +17,8 @@ export function useShopTransition() {
   const isTransitioningFromShop = useSceneStore((s) => s.isTransitioningFromShop)
   const isTransitioningToSchedule = useSceneStore((s) => s.isTransitioningToSchedule)
   const isTransitioningFromSchedule = useSceneStore((s) => s.isTransitioningFromSchedule)
+  const isTransitioningToWords = useSceneStore((s) => s.isTransitioningToWords)
+  const isTransitioningFromWords = useSceneStore((s) => s.isTransitioningFromWords)
 
   // Forward transition: hero -> shop
   useEffect(() => {
@@ -119,6 +121,59 @@ export function useShopTransition() {
     tl.current = timeline
     return () => { timeline.kill() }
   }, [isTransitioningFromSchedule])
+
+  // Forward transition: hero -> words
+  useEffect(() => {
+    if (!isTransitioningToWords) return
+    tl.current?.kill()
+
+    const store = useSceneStore.getState()
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        store.setIsTransitioningToWords(false)
+        store.setCurrentSection('words')
+      },
+    })
+
+    timeline.to(cameraState.current, {
+      z: SCHEDULE_CAMERA.z,
+      fov: SCHEDULE_CAMERA.fov,
+      duration: 1.0,
+      ease: 'power3.inOut',
+      onUpdate: function (this: gsap.core.Tween) {
+        if (this.progress() >= 0.6 && !useSceneStore.getState().wordsVisible) {
+          useSceneStore.getState().setWordsVisible(true)
+        }
+      },
+    })
+
+    tl.current = timeline
+    return () => { timeline.kill() }
+  }, [isTransitioningToWords])
+
+  // Reverse transition: words -> hero
+  useEffect(() => {
+    if (!isTransitioningFromWords) return
+    tl.current?.kill()
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        useSceneStore.getState().setIsTransitioningFromWords(false)
+        useSceneStore.getState().setCurrentSection('hero')
+      },
+    })
+
+    timeline.to(cameraState.current, {
+      z: HERO_CAMERA.z,
+      fov: HERO_CAMERA.fov,
+      duration: 0.8,
+      delay: 0.15,
+      ease: 'power2.inOut',
+    })
+
+    tl.current = timeline
+    return () => { timeline.kill() }
+  }, [isTransitioningFromWords])
 
   // Apply camera state every frame
   useFrame(() => {

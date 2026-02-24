@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-type Section = 'hero' | 'court' | 'jumbotron' | 'shop-transition' | 'shop' | 'schedule-transition' | 'schedule'
+type Section = 'hero' | 'court' | 'jumbotron' | 'shop-transition' | 'shop' | 'schedule-transition' | 'schedule' | 'words-transition' | 'words'
 
 interface SceneState {
   scrollProgress: number
@@ -10,12 +10,15 @@ interface SceneState {
   reducedMotion: boolean
   shopVisible: boolean
   scheduleVisible: boolean
+  wordsVisible: boolean
   ballDeformAmount: number
   jumbotronFocused: boolean
   isTransitioningToShop: boolean
   isTransitioningFromShop: boolean
   isTransitioningToSchedule: boolean
   isTransitioningFromSchedule: boolean
+  isTransitioningToWords: boolean
+  isTransitioningFromWords: boolean
   ballHovered: boolean
 
   setScrollProgress: (progress: number) => void
@@ -25,12 +28,15 @@ interface SceneState {
   setReducedMotion: (reduced: boolean) => void
   setShopVisible: (visible: boolean) => void
   setScheduleVisible: (visible: boolean) => void
+  setWordsVisible: (visible: boolean) => void
   setBallDeformAmount: (amount: number) => void
   setJumbotronFocused: (focused: boolean) => void
   setIsTransitioningToShop: (v: boolean) => void
   setIsTransitioningFromShop: (v: boolean) => void
   setIsTransitioningToSchedule: (v: boolean) => void
   setIsTransitioningFromSchedule: (v: boolean) => void
+  setIsTransitioningToWords: (v: boolean) => void
+  setIsTransitioningFromWords: (v: boolean) => void
   setBallHovered: (hovered: boolean) => void
 }
 
@@ -42,12 +48,15 @@ export const useSceneStore = create<SceneState>((set) => ({
   reducedMotion: false,
   shopVisible: false,
   scheduleVisible: false,
+  wordsVisible: false,
   ballDeformAmount: 0,
   jumbotronFocused: false,
   isTransitioningToShop: false,
   isTransitioningFromShop: false,
   isTransitioningToSchedule: false,
   isTransitioningFromSchedule: false,
+  isTransitioningToWords: false,
+  isTransitioningFromWords: false,
   ballHovered: false,
 
   setScrollProgress: (progress) => set({ scrollProgress: progress }),
@@ -57,11 +66,14 @@ export const useSceneStore = create<SceneState>((set) => ({
   setReducedMotion: (reduced) => set({ reducedMotion: reduced }),
   setShopVisible: (visible) => set({ shopVisible: visible }),
   setScheduleVisible: (visible) => set({ scheduleVisible: visible }),
+  setWordsVisible: (visible) => set({ wordsVisible: visible }),
   setBallDeformAmount: (amount) => set({ ballDeformAmount: amount }),
   setJumbotronFocused: (focused) => set({ jumbotronFocused: focused }),
   setIsTransitioningToShop: (v) => set({ isTransitioningToShop: v }),
   setIsTransitioningFromShop: (v) => set({ isTransitioningFromShop: v }),
   setIsTransitioningToSchedule: (v) => set({ isTransitioningToSchedule: v }),
   setIsTransitioningFromSchedule: (v) => set({ isTransitioningFromSchedule: v }),
+  setIsTransitioningToWords: (v) => set({ isTransitioningToWords: v }),
+  setIsTransitioningFromWords: (v) => set({ isTransitioningFromWords: v }),
   setBallHovered: (hovered) => set({ ballHovered: hovered }),
 }))

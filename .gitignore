@@ -11,6 +11,7 @@ node_modules
 dist
 .env
 public/events.json
+public/posts.json
 .env.local
 dist-ssr
 *.local

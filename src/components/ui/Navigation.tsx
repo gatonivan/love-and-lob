@@ -6,12 +6,15 @@ export function Navigation() {
   const navigate = useNavigate()
   const shopVisible = useSceneStore((s) => s.shopVisible)
   const scheduleVisible = useSceneStore((s) => s.scheduleVisible)
+  const wordsVisible = useSceneStore((s) => s.wordsVisible)
   const isTransitioning = useSceneStore(
     (s) =>
       s.isTransitioningToShop ||
       s.isTransitioningFromShop ||
       s.isTransitioningToSchedule ||
-      s.isTransitioningFromSchedule
+      s.isTransitioningFromSchedule ||
+      s.isTransitioningToWords ||
+      s.isTransitioningFromWords
   )
 
   const handleShopClick = (e: React.MouseEvent) => {
@@ -36,6 +39,11 @@ export function Navigation() {
       useSceneStore.getState().setScheduleVisible(false)
       return
     }
+    if (wordsVisible) {
+      useSceneStore.getState().setIsTransitioningFromWords(true)
+      useSceneStore.getState().setWordsVisible(false)
+      return
+    }
     navigate('/')
   }
 
@@ -44,6 +52,13 @@ export function Navigation() {
     if (scheduleVisible || isTransitioning) return
     useSceneStore.getState().setCurrentSection('schedule-transition')
     useSceneStore.getState().setIsTransitioningToSchedule(true)
+  }
+
+  const handleWordsClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (wordsVisible || isTransitioning) return
+    useSceneStore.getState().setCurrentSection('words-transition')
+    useSceneStore.getState().setIsTransitioningToWords(true)
   }
 
   return (
@@ -55,6 +70,7 @@ export function Navigation() {
         <a href="/" onClick={handleHomeClick}>Home</a>
         <a href="/shop" onClick={handleShopClick}>Shop</a>
         <a href="#schedule" onClick={handleScheduleClick}>Schedule</a>
+        <a href="#words" onClick={handleWordsClick}>Words</a>
       </div>
     </nav>
   )

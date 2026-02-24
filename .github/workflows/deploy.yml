@@ -38,6 +38,9 @@ jobs:
         env:
           VITE_LUMA_API_KEY: ${{ secrets.VITE_LUMA_API_KEY }}
 
+      - name: Fetch posts from Substack
+        run: node scripts/fetch-posts.js
+
       - run: pnpm build
 
       - name: Copy index.html to 404.html for SPA routing

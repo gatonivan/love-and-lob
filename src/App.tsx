@@ -5,6 +5,7 @@ import { Experience } from './components/canvas/Experience'
 import { Navigation } from './components/ui/Navigation'
 import { ShopOverlay } from './components/ui/ShopOverlay'
 import { EventsOverlay } from './components/ui/EventsOverlay'
+import { WordsOverlay } from './components/ui/WordsOverlay'
 import { ProductDetail } from './components/ui/ProductDetail'
 import { useReducedMotion } from './hooks/useReducedMotion'
 import { useSceneStore } from './stores/sceneStore'
@@ -34,12 +35,20 @@ function RouteWatcher() {
 function App() {
   useReducedMotion()
   const scheduleVisible = useSceneStore((s) => s.scheduleVisible)
+  const wordsVisible = useSceneStore((s) => s.wordsVisible)
 
   const handleScheduleClose = () => {
     const state = useSceneStore.getState()
     if (state.isTransitioningFromSchedule || !state.scheduleVisible) return
     state.setIsTransitioningFromSchedule(true)
     state.setScheduleVisible(false)
+  }
+
+  const handleWordsClose = () => {
+    const state = useSceneStore.getState()
+    if (state.isTransitioningFromWords || !state.wordsVisible) return
+    state.setIsTransitioningFromWords(true)
+    state.setWordsVisible(false)
   }
 
   return (
@@ -59,6 +68,7 @@ function App() {
 
       <ShopOverlay />
       <EventsOverlay visible={scheduleVisible} onClose={handleScheduleClose} />
+      <WordsOverlay visible={wordsVisible} onClose={handleWordsClose} />
 
       <Routes>
         <Route path="/shop/:id" element={<ProductDetail />} />
