@@ -26,6 +26,7 @@ async function main() {
 
   const data = await res.json()
   const events = (data.entries || [])
+    .filter((entry) => entry.event.visibility === 'public')
     .map((entry) => {
       const ev = entry.event
       return {
