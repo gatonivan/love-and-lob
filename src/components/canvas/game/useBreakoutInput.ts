@@ -21,14 +21,12 @@ export function useBreakoutInput() {
     return Math.max(-max, Math.min(max, x))
   }, [])
 
-  // Pointer (mouse/touch) handler
-  useEffect(() => {
-    const canvas = gl.domElement
-
-    const handlePointer = (e: PointerEvent) => {
+  const projectToWorld = useCallback(
+    (clientX: number, clientY: number) => {
+      const canvas = gl.domElement
       const rect = canvas.getBoundingClientRect()
-      pointerNDC.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
-      pointerNDC.current.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
+      pointerNDC.current.x = ((clientX - rect.left) / rect.width) * 2 - 1
+      pointerNDC.current.y = -((clientY - rect.top) / rect.height) * 2 + 1
 
       raycaster.current.setFromCamera(pointerNDC.current, camera)
       raycaster.current.ray.intersectPlane(plane.current, intersection.current)
@@ -36,6 +34,22 @@ export function useBreakoutInput() {
       if (intersection.current) {
         paddleX.current = clamp(intersection.current.x)
       }
+    },
+    [camera, gl, clamp]
+  )
+
+  // Disable touch scrolling on canvas so touch slides work
+  useEffect(() => {
+    const canvas = gl.domElement
+    canvas.style.touchAction = 'none'
+  }, [gl])
+
+  // Pointer (mouse) handler
+  useEffect(() => {
+    const canvas = gl.domElement
+
+    const handlePointer = (e: PointerEvent) => {
+      projectToWorld(e.clientX, e.clientY)
     }
 
     canvas.addEventListener('pointermove', handlePointer)
@@ -45,7 +59,28 @@ export function useBreakoutInput() {
       canvas.removeEventListener('pointermove', handlePointer)
       canvas.removeEventListener('pointerdown', handlePointer)
     }
-  }, [camera, gl, clamp])
+  }, [gl, projectToWorld])
+
+  // Touch handler (for reliable mobile sliding)
+  useEffect(() => {
+    const canvas = gl.domElement
+
+    const handleTouch = (e: TouchEvent) => {
+      e.preventDefault()
+      const touch = e.touches[0]
+      if (touch) {
+        projectToWorld(touch.clientX, touch.clientY)
+      }
+    }
+
+    canvas.addEventListener('touchstart', handleTouch, { passive: false })
+    canvas.addEventListener('touchmove', handleTouch, { passive: false })
+
+    return () => {
+      canvas.removeEventListener('touchstart', handleTouch)
+      canvas.removeEventListener('touchmove', handleTouch)
+    }
+  }, [gl, projectToWorld])
 
   // Keyboard handler
   useEffect(() => {
