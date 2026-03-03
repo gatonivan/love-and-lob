@@ -1,6 +1,5 @@
-import { useRef, useEffect, useState } from 'react'
-import { gsap } from 'gsap'
-import './WordsOverlay.css'
+import { useEffect, useState } from 'react'
+import './WordsPage.css'
 
 interface Post {
   title: string
@@ -17,8 +16,7 @@ async function fetchPosts(): Promise<Post[]> {
 }
 
 function formatDate(dateStr: string): string {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('en-US', {
+  return new Date(dateStr).toLocaleDateString('en-US', {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
@@ -26,13 +24,7 @@ function formatDate(dateStr: string): string {
   })
 }
 
-interface WordsOverlayProps {
-  visible: boolean
-  onClose: () => void
-}
-
-export function WordsOverlay({ visible, onClose }: WordsOverlayProps) {
-  const overlayRef = useRef<HTMLDivElement>(null)
+export function WordsPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -43,40 +35,10 @@ export function WordsOverlay({ visible, onClose }: WordsOverlayProps) {
       .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => {
-    if (!overlayRef.current) return
-
-    if (visible) {
-      overlayRef.current.style.pointerEvents = 'auto'
-      gsap.to(overlayRef.current, {
-        opacity: 1,
-        duration: 0.5,
-        ease: 'power2.out',
-      })
-    } else {
-      overlayRef.current.style.pointerEvents = 'none'
-      gsap.to(overlayRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: 'power2.in',
-      })
-    }
-  }, [visible])
-
   return (
-    <div
-      ref={overlayRef}
-      className="words-overlay"
-      style={{ opacity: 0, pointerEvents: 'none' }}
-    >
-      <div className="words-overlay-scrim" onClick={onClose} />
-      <div className="words-panel">
-        <div className="words-header">
-          <h2 className="words-title">Words</h2>
-          <button className="words-close" onClick={onClose} aria-label="Close">
-            &times;
-          </button>
-        </div>
+    <div className="words-page">
+      <div className="words-content">
+        <h1 className="words-page-title">Words</h1>
 
         {loading ? (
           <div className="words-loading">Loading posts...</div>

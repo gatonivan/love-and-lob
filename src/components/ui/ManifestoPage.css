@@ -1,0 +1,24 @@
+.manifesto-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  padding: 6rem 2rem 4rem;
+}
+
+.manifesto-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.manifesto-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.manifesto-placeholder {
+  color: rgba(241, 240, 226, 0.4);
+  font-size: 0.875rem;
+}

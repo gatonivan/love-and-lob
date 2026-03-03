@@ -1,78 +1,28 @@
-import { useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
-import { Experience } from './components/canvas/Experience'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import { Navigation } from './components/ui/Navigation'
-import { ShopOverlay } from './components/ui/ShopOverlay'
-import { EventsOverlay } from './components/ui/EventsOverlay'
-import { WordsOverlay } from './components/ui/WordsOverlay'
+import { LandingPage } from './components/ui/LandingPage'
+import { ShopPage } from './components/ui/ShopPage'
 import { ProductDetail } from './components/ui/ProductDetail'
+import { SchedulePage } from './components/ui/SchedulePage'
+import { WordsPage } from './components/ui/WordsPage'
+import { ManifestoPage } from './components/ui/ManifestoPage'
 import { useReducedMotion } from './hooks/useReducedMotion'
-import { useSceneStore } from './stores/sceneStore'
 import './App.css'
-
-/** Detects browser back/forward and triggers reverse zoom if needed */
-function RouteWatcher() {
-  const location = useLocation()
-  const shopVisible = useSceneStore((s) => s.shopVisible)
-  const isTransitioningToShop = useSceneStore((s) => s.isTransitioningToShop)
-
-  useEffect(() => {
-    if (!location.pathname.startsWith('/shop') && shopVisible) {
-      useSceneStore.getState().setIsTransitioningFromShop(true)
-      useSceneStore.getState().setShopVisible(false)
-    }
-
-    if (location.pathname === '/shop' && !shopVisible && !isTransitioningToShop) {
-      useSceneStore.getState().setShopVisible(true)
-      useSceneStore.getState().setCurrentSection('shop')
-    }
-  }, [location.pathname])
-
-  return null
-}
 
 function App() {
   useReducedMotion()
-  const scheduleVisible = useSceneStore((s) => s.scheduleVisible)
-  const wordsVisible = useSceneStore((s) => s.wordsVisible)
-
-  const handleScheduleClose = () => {
-    const state = useSceneStore.getState()
-    if (state.isTransitioningFromSchedule || !state.scheduleVisible) return
-    state.setIsTransitioningFromSchedule(true)
-    state.setScheduleVisible(false)
-  }
-
-  const handleWordsClose = () => {
-    const state = useSceneStore.getState()
-    if (state.isTransitioningFromWords || !state.wordsVisible) return
-    state.setIsTransitioningFromWords(true)
-    state.setWordsVisible(false)
-  }
 
   return (
-    <BrowserRouter>
-      <RouteWatcher />
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Navigation />
-
-      <div className="canvas-container">
-        <Canvas
-          dpr={[1, 1.5]}
-          gl={{ antialias: true, powerPreference: 'high-performance' }}
-          camera={{ position: [0, 0, 6], fov: 45 }}
-        >
-          <Experience />
-        </Canvas>
-      </div>
-
-      <ShopOverlay />
-      <EventsOverlay visible={scheduleVisible} onClose={handleScheduleClose} />
-      <WordsOverlay visible={wordsVisible} onClose={handleWordsClose} />
-
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/shop" element={<ShopPage />} />
         <Route path="/shop/:id" element={<ProductDetail />} />
-        <Route path="*" element={null} />
+        <Route path="/schedule" element={<SchedulePage />} />
+        <Route path="/words" element={<WordsPage />} />
+        <Route path="/manifesto" element={<ManifestoPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   )
