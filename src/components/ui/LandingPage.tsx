@@ -1,7 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { LandingExperience } from '../canvas/LandingExperience'
 import { GameUI } from './GameUI'
-import { SoundToggle } from './SoundToggle'
 import './LandingPage.css'
 
 export function LandingPage() {
@@ -17,7 +16,6 @@ export function LandingPage() {
         </Canvas>
       </div>
       <GameUI />
-      <SoundToggle />
     </div>
   )
 }

@@ -1,17 +1,14 @@
 .sound-toggle {
-  position: fixed;
-  bottom: 5rem;
-  right: 1.5rem;
-  z-index: 150;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.4rem;
+  padding: 0;
   background: none;
   border: none;
   color: rgba(241, 240, 226, 0.4);
   cursor: pointer;
   transition: color 0.2s;
+  pointer-events: auto;
 }
 
 .sound-toggle:hover {
@@ -20,11 +17,4 @@
 
 .sound-toggle.active {
   color: #d8e84d;
-}
-
-@media (max-width: 480px) {
-  .sound-toggle {
-    bottom: 3.5rem;
-    right: 1rem;
-  }
 }

@@ -1,4 +1,5 @@
 import { useBreakoutStore } from '../../stores/breakoutStore'
+import { SoundToggle } from './SoundToggle'
 import './GameUI.css'
 
 export function GameUI() {
@@ -20,6 +21,7 @@ export function GameUI() {
         <span className="game-hud-item">
           {'♥'.repeat(lives)}{'♡'.repeat(3 - lives)}
         </span>
+        <SoundToggle />
       </div>
 
       {/* Idle prompt */}
