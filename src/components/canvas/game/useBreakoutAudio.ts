@@ -3,6 +3,21 @@ import { useSceneStore } from '../../../stores/sceneStore'
 
 type SoundName = 'paddleHit' | 'wallBounce' | 'brickBreak' | 'levelUp' | 'gameOver'
 
+// Haptic durations (ms) per sound type
+const HAPTICS: Partial<Record<SoundName, number | number[]>> = {
+  paddleHit: 10,
+  wallBounce: 8,
+  brickBreak: 20,
+  levelUp: [10, 30, 10, 30, 20],
+  gameOver: [30, 50, 40],
+}
+
+function vibrate(pattern: number | number[]) {
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    navigator.vibrate(pattern)
+  }
+}
+
 const SOUND_CONFIG: Record<
   Exclude<SoundName, 'levelUp' | 'gameOver'>,
   { freq: number; duration: number; type: OscillatorType; gain: number }
@@ -51,6 +66,10 @@ export function useBreakoutAudio() {
 
   const play = useCallback(
     (name: SoundName) => {
+      // Always trigger haptics (independent of sound toggle)
+      const haptic = HAPTICS[name]
+      if (haptic) vibrate(haptic)
+
       if (!useSceneStore.getState().soundEnabled) return
 
       if (name === 'levelUp') {
