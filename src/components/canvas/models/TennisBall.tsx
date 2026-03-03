@@ -16,15 +16,19 @@ export function TennisBall({
   const groupRef = useRef<THREE.Group>(null)
   const { scene } = useGLTF(`${import.meta.env.BASE_URL}models/tennis-ball.glb`)
   const gl = useThree((s) => s.gl)
-  const viewport = useThree((s) => s.viewport)
+  const size = useThree((s) => s.size)
 
   // Scale down on narrow viewports (mobile)
+  // Uses canvas pixel dimensions (stable) instead of viewport world units
+  // which fluctuate during camera FOV transitions
   const responsiveScale = useMemo(() => {
-    const width = viewport.width
+    const heroFovRad = (45 * Math.PI) / 180
+    const heroViewHeight = 2 * Math.tan(heroFovRad / 2) * 6
+    const width = heroViewHeight * (size.width / size.height)
     if (width < 5) return scale * 0.55
     if (width < 7) return scale * 0.7
     return scale
-  }, [viewport.width, scale])
+  }, [size.width, size.height, scale])
 
   // Center the model at origin (Sketchfab export is offset)
   // and strip specular/env highlights from baked GLB materials

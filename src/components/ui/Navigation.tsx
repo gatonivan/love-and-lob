@@ -67,10 +67,10 @@ export function Navigation() {
         Love & Lob
       </div>
       <div className="nav-links">
-        <a href="/" onClick={handleHomeClick}>Home</a>
         <a href="/shop" onClick={handleShopClick}>Shop</a>
         <a href="#schedule" onClick={handleScheduleClick}>Schedule</a>
         <a href="#words" onClick={handleWordsClick}>Words</a>
+        <a href="#manifesto">Manifesto</a>
       </div>
     </nav>
   )

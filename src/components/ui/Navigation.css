@@ -2,34 +2,40 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
+  height: 100%;
   z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
 }
 
 .nav-logo {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 900;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   letter-spacing: -0.02em;
   color: #F1F0E2;
   text-transform: uppercase;
+  pointer-events: auto;
 }
 
 .nav-links {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 2rem;
+  gap: 2.3rem;
+  pointer-events: auto;
 }
 
 .nav-links a {
   color: #F1F0E2;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.96rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -41,16 +47,9 @@
 }
 
 @media (max-width: 480px) {
-  .nav {
-    padding: 0.75rem 1rem;
-  }
-
-  .nav-logo-img {
-    height: 36px;
-  }
-
   .nav-links {
     gap: 1.25rem;
+    bottom: 1.5rem;
   }
 
   .nav-links a {
