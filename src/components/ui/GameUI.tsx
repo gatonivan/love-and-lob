@@ -1,14 +1,18 @@
 import { useBreakoutStore } from '../../stores/breakoutStore'
+import { useSceneStore } from '../../stores/sceneStore'
 import { SoundToggle } from './SoundToggle'
 import './GameUI.css'
 
 export function GameUI() {
+  const cameraMode = useSceneStore((s) => s.cameraMode)
   const gameStatus = useBreakoutStore((s) => s.gameStatus)
   const score = useBreakoutStore((s) => s.score)
   const level = useBreakoutStore((s) => s.level)
   const lives = useBreakoutStore((s) => s.lives)
   const resetGame = useBreakoutStore((s) => s.resetGame)
   const advanceLevel = useBreakoutStore((s) => s.advanceLevel)
+
+  if (cameraMode !== 'game') return null
 
   const playing = gameStatus === 'playing'
 

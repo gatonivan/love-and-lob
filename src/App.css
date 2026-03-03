@@ -19,3 +19,28 @@ a, button, [role="button"], input[type="submit"],
 .nav-links a, .game-prompt-btn {
   cursor: url('/love-and-lob/cursors/racquet-pointer.svg') 12 2, pointer;
 }
+
+.scene-canvas {
+  position: fixed;
+  top: 6rem;
+  left: 0;
+  right: 0;
+  bottom: 6rem;
+  z-index: 0;
+}
+
+@media (max-width: 480px) {
+  .scene-canvas {
+    top: 4rem;
+    bottom: 4rem;
+  }
+}
+
+/* Opaque DOM pages need to sit above the fixed canvas */
+.shop-page,
+.product-detail,
+.words-page,
+.manifesto-page {
+  position: relative;
+  z-index: 1;
+}

@@ -1,11 +1,11 @@
 import { useRef, useCallback, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useBreakoutStore } from '../../../stores/breakoutStore'
+import { useSceneStore } from '../../../stores/sceneStore'
 import { Arena } from './Arena'
 import { Paddle } from './Paddle'
 import { Ball } from './Ball'
 import { BrickGrid } from './BrickGrid'
-import { TennisCourt } from './TennisCourt'
 import { useBreakoutInput } from './useBreakoutInput'
 import { useBreakoutAudio } from './useBreakoutAudio'
 import {
@@ -70,6 +70,8 @@ export function BreakoutGame() {
   // Launch ball on click/tap
   useEffect(() => {
     const handleClick = () => {
+      if (useSceneStore.getState().cameraMode !== 'game') return
+
       const status = useBreakoutStore.getState().gameStatus
 
       if (status === 'idle') {
@@ -99,6 +101,8 @@ export function BreakoutGame() {
   }, [launchBall])
 
   useFrame((_, delta) => {
+    if (useSceneStore.getState().cameraMode !== 'game') return
+
     const state = useBreakoutStore.getState()
 
     updateKeyboard(delta)
@@ -240,7 +244,6 @@ export function BreakoutGame() {
 
   return (
     <group>
-      <TennisCourt />
       <Arena />
       <Paddle paddleX={paddleX} />
       <Ball positionRef={ballPos} />

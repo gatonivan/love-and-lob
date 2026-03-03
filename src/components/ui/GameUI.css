@@ -1,9 +1,13 @@
 .game-hud {
-  flex-shrink: 0;
+  position: fixed;
+  bottom: 5.5rem;
+  left: 0;
+  right: 0;
+  z-index: 1;
   display: flex;
   justify-content: center;
   gap: 2rem;
-  padding: 0.75rem 0 1.5rem;
+  padding: 0.75rem 0;
   font-family: monospace;
   font-size: 0.8rem;
   color: rgba(241, 240, 226, 0.6);
@@ -91,9 +95,10 @@
 
 @media (max-width: 480px) {
   .game-hud {
+    bottom: 4.5rem;
     gap: 1rem;
     font-size: 0.7rem;
-    padding: 0.5rem 0 1rem;
+    padding: 0.5rem 0;
   }
 
   .game-prompt {

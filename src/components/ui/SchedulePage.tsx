@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router'
+import { useSceneStore } from '../../stores/sceneStore'
 import './SchedulePage.css'
 
 interface LumaEvent {
@@ -35,6 +37,8 @@ function formatTime(dateStr: string): string {
 }
 
 export function SchedulePage() {
+  const pathname = useLocation().pathname
+  const settled = useSceneStore((s) => s.cameraMode === 'birdseye' && s.cameraSettled)
   const [events, setEvents] = useState<LumaEvent[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -45,9 +49,11 @@ export function SchedulePage() {
       .finally(() => setLoading(false))
   }, [])
 
+  if (pathname !== '/schedule') return null
+
   return (
-    <div className="schedule-page">
-      <div className="schedule-content">
+    <div className={`schedule-overlay ${settled ? 'schedule-overlay--visible' : ''}`}>
+      <div className={`schedule-content ${settled ? 'schedule-content--visible' : ''}`}>
         <h1 className="schedule-title">Schedule</h1>
 
         {loading ? (
