@@ -1,33 +1,14 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import './CommunityPage.css'
 
 const sections = [
-  {
-    name: 'Radio',
-    desc: 'Playlists & DJ sets',
-    path: '/community/radio',
-  },
-  {
-    name: 'Absolute Beginner Clinic',
-    desc: '$10 every Sunday at our courts',
-    path: '/community/clinic',
-  },
-  {
-    name: 'Experiences',
-    desc: 'Watch parties, wine parties & more',
-    path: '/community/experiences',
-  },
-  {
-    name: 'Excursions',
-    desc: 'Westchester, Long Island, Woodstock',
-    path: '/community/excursions',
-  },
-  {
-    name: 'Words',
-    desc: 'Stories from the community',
-    path: '/community/words',
-  },
+  { name: 'Radio', path: '/community/radio' },
+  { name: 'Clinic', path: '/community/clinic' },
+  { name: 'Experiences', path: '/community/experiences' },
+  { name: 'Excursions', path: '/community/excursions' },
+  { name: 'Words', path: '/community/words' },
 ]
 
 export function CommunityPage() {
@@ -35,40 +16,69 @@ export function CommunityPage() {
   const settled = useSceneStore(
     (s) => s.cameraMode === 'referee' && s.cameraSettled
   )
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const [nearBottom, setNearBottom] = useState(false)
+  const active = pathname === '/community'
 
-  if (pathname !== '/community') return null
+  const onScroll = useCallback(() => {
+    const el = overlayRef.current
+    if (!el) return
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 100
+    setNearBottom(atBottom)
+    useSceneStore.getState().setOverlayScrolled(el.scrollTop > 30)
+  }, [])
+
+  // Bind scroll listener when active
+  useEffect(() => {
+    if (!active) return
+    const el = overlayRef.current
+    if (!el) return
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [active, onScroll])
+
+  // Reset all state when leaving community
+  useEffect(() => {
+    if (!active) {
+      setNearBottom(false)
+      useSceneStore.getState().setOverlayScrolled(false)
+    }
+  }, [active])
+
+  // Also reset on unmount
+  useEffect(() => {
+    return () => {
+      useSceneStore.getState().setOverlayScrolled(false)
+    }
+  }, [])
+
+  if (!active) return null
 
   return (
-    <div
-      className={`community-overlay ${settled ? 'community-overlay--visible' : ''}`}
-    >
+    <>
       <div
-        className={`community-content ${settled ? 'community-content--visible' : ''}`}
+        ref={overlayRef}
+        className={`community-overlay ${settled ? 'community-overlay--visible' : ''}`}
       >
-        <h1 className="community-title">Community</h1>
-        <p className="community-subtitle">
-          Building community on the court & culture off it.
-        </p>
-
-        {/* Photo grid — swap placeholders for real images later */}
-        <div className="community-photos">
-          {Array.from({ length: 9 }).map((_, i) => (
-            <div key={i} className="community-photo-placeholder" />
-          ))}
-        </div>
-
-        <div className="community-sections">
-          {sections.map((s) => (
-            <Link key={s.path} to={s.path} className="community-section-link">
-              <div>
-                <div className="community-section-name">{s.name}</div>
-                <div className="community-section-desc">{s.desc}</div>
-              </div>
-              <span className="community-section-arrow">&rarr;</span>
-            </Link>
-          ))}
+        <div
+          className={`community-content ${settled ? 'community-content--visible' : ''}`}
+        >
+          <div className="community-photos">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="community-photo-placeholder" />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Bottom sub-nav — outside overlay so position:fixed works */}
+      <nav className={`community-bottom-nav ${nearBottom ? 'community-bottom-nav--visible' : ''}`}>
+        {sections.map((s) => (
+          <Link key={s.path} to={s.path} className="community-bottom-link">
+            {s.name}
+          </Link>
+        ))}
+      </nav>
+    </>
   )
 }

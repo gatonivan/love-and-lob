@@ -6,7 +6,7 @@
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   overflow-y: auto;
-  padding: 9rem 2rem 4rem;
+  padding: 10rem 0 8rem;
   pointer-events: none;
   transition: background 0.6s ease, backdrop-filter 0.6s ease, -webkit-backdrop-filter 0.6s ease;
 }
@@ -19,7 +19,7 @@
 }
 
 .community-content {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   opacity: 0;
   transform: translateY(1.5rem);
@@ -31,87 +31,60 @@
   transform: translateY(0);
 }
 
-.community-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-}
-
-.community-subtitle {
-  color: rgba(241, 240, 226, 0.5);
-  font-size: 0.85rem;
-  margin-bottom: 2.5rem;
-  line-height: 1.5;
-}
-
-/* Photo grid — placeholder boxes until real photos are added */
+/* Single column photo stack — full width, no gaps */
 .community-photos {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .community-photo-placeholder {
-  aspect-ratio: 1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
   background: rgba(241, 240, 226, 0.04);
-  border: 1px solid rgba(241, 240, 226, 0.06);
-  border-radius: 4px;
+  border-bottom: 1px solid rgba(241, 240, 226, 0.06);
 }
 
-/* Sub-section links */
-.community-sections {
+/* Bottom sub-nav — fixed at bottom, hidden until scroll */
+.community-bottom-nav {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 2.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 2;
 }
 
-.community-section-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  background: rgba(241, 240, 226, 0.04);
-  border: 1px solid rgba(241, 240, 226, 0.06);
-  text-decoration: none;
+.community-bottom-nav--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.community-bottom-link {
   color: #F1F0E2;
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.community-section-link:hover {
-  background: rgba(241, 240, 226, 0.08);
-  border-color: rgba(241, 240, 226, 0.12);
-}
-
-.community-section-name {
-  font-size: 0.95rem;
+  text-decoration: none;
+  font-size: 25px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition: opacity 0.2s;
 }
 
-.community-section-desc {
-  font-size: 0.75rem;
-  color: rgba(241, 240, 226, 0.4);
-  margin-top: 0.2rem;
-}
-
-.community-section-arrow {
-  font-size: 0.85rem;
-  color: rgba(241, 240, 226, 0.3);
-  flex-shrink: 0;
+.community-bottom-link:hover {
+  opacity: 0.7;
 }
 
 @media (max-width: 480px) {
-  .community-photos {
-    grid-template-columns: repeat(2, 1fr);
+  .community-bottom-nav {
+    gap: 1.25rem;
+    bottom: 1.25rem;
   }
 
-  .community-title {
-    font-size: 1.5rem;
+  .community-bottom-link {
+    font-size: 0.7rem;
   }
 }
