@@ -10,6 +10,7 @@ export function RouteSync() {
     const mode =
       pathname === '/schedule' ? 'birdseye' :
       pathname === '/community' ? 'referee' :
+      pathname === '/manifesto' ? 'umpire' :
       'game'
     setCameraMode(mode)
   }, [pathname, setCameraMode])

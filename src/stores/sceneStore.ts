@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-type CameraMode = 'game' | 'birdseye' | 'referee'
+type CameraMode = 'game' | 'birdseye' | 'referee' | 'umpire'
 
 interface SceneState {
   soundEnabled: boolean

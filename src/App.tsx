@@ -39,6 +39,7 @@ function App() {
       <GameUI />
       <SchedulePage />
       <CommunityPage />
+      <ManifestoPage />
 
       <Navigation />
       <Routes>
@@ -55,7 +56,7 @@ function App() {
         <Route path="/community/experiences" element={<ExperiencesPage />} />
         <Route path="/community/excursions" element={<ExcursionsPage />} />
         <Route path="/community/words" element={<WordsPage />} />
-        <Route path="/manifesto" element={<ManifestoPage />} />
+        <Route path="/manifesto" element={null} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

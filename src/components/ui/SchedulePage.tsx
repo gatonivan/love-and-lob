@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import './SchedulePage.css'
@@ -41,6 +41,9 @@ export function SchedulePage() {
   const settled = useSceneStore((s) => s.cameraMode === 'birdseye' && s.cameraSettled)
   const [events, setEvents] = useState<LumaEvent[]>([])
   const [loading, setLoading] = useState(true)
+  const [titleHidden, setTitleHidden] = useState(false)
+  const [lumaVisible, setLumaVisible] = useState(false)
+  const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetchUpcomingEvents()
@@ -49,12 +52,34 @@ export function SchedulePage() {
       .finally(() => setLoading(false))
   }, [])
 
-  if (pathname !== '/schedule') return null
+  const isSchedule = pathname === '/schedule'
+
+  useEffect(() => {
+    if (!isSchedule) {
+      setTitleHidden(false)
+      setLumaVisible(false)
+      return
+    }
+    const overlay = overlayRef.current
+    if (!overlay) return
+    overlay.scrollTop = 0
+    const onScroll = () => {
+      const scrollTop = overlay.scrollTop
+      const scrollMax = overlay.scrollHeight - overlay.clientHeight
+      setTitleHidden(scrollTop > 40)
+      setLumaVisible(scrollMax > 0 && scrollTop >= scrollMax - 40)
+    }
+    overlay.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => overlay.removeEventListener('scroll', onScroll)
+  }, [isSchedule, loading])
+
+  if (!isSchedule) return null
 
   return (
-    <div className={`schedule-overlay ${settled ? 'schedule-overlay--visible' : ''}`}>
+    <div ref={overlayRef} className={`schedule-overlay ${settled ? 'schedule-overlay--visible' : ''}`}>
       <div className={`schedule-content ${settled ? 'schedule-content--visible' : ''}`}>
-        <h1 className="schedule-title">Schedule</h1>
+        <h1 className={`schedule-title ${titleHidden ? 'schedule-title--hidden' : ''}`}>Schedule</h1>
 
         {loading ? (
           <div className="schedule-loading">Loading schedule...</div>
@@ -96,7 +121,7 @@ export function SchedulePage() {
           href="https://lu.ma/loveandlob"
           target="_blank"
           rel="noopener noreferrer"
-          className="schedule-luma-link"
+          className={`schedule-luma-link ${lumaVisible ? 'schedule-luma-link--visible' : ''}`}
         >
           View all on Luma &rarr;
         </a>
