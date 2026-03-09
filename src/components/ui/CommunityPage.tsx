@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import './CommunityPage.css'
 
 const sections = [
-  { name: 'Radio', path: '/community/radio' },
-  { name: 'Clinic', path: '/community/clinic' },
-  { name: 'Experiences', path: '/community/experiences' },
-  { name: 'Excursions', path: '/community/excursions' },
-  { name: 'Words', path: '/community/words' },
+  { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond' },
+  { name: 'Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game' },
+  { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture' },
+  { name: 'Excursions', path: '/community/excursions', subtitle: 'Day trips and weekend getaways to new courts' },
+  { name: 'Words', path: '/community/words', subtitle: 'Stories and dispatches from the community' },
 ]
 
 export function CommunityPage() {
@@ -16,36 +16,14 @@ export function CommunityPage() {
   const settled = useSceneStore(
     (s) => s.cameraMode === 'referee' && s.cameraSettled
   )
-  const overlayRef = useRef<HTMLDivElement>(null)
-  const [nearBottom, setNearBottom] = useState(false)
   const active = pathname === '/community'
 
-  const onScroll = useCallback(() => {
-    const el = overlayRef.current
-    if (!el) return
-    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 100
-    setNearBottom(atBottom)
-    useSceneStore.getState().setOverlayScrolled(el.scrollTop > 30)
-  }, [])
-
-  // Bind scroll listener when active
-  useEffect(() => {
-    if (!active) return
-    const el = overlayRef.current
-    if (!el) return
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [active, onScroll])
-
-  // Reset all state when leaving community
   useEffect(() => {
     if (!active) {
-      setNearBottom(false)
       useSceneStore.getState().setOverlayScrolled(false)
     }
   }, [active])
 
-  // Also reset on unmount
   useEffect(() => {
     return () => {
       useSceneStore.getState().setOverlayScrolled(false)
@@ -55,30 +33,15 @@ export function CommunityPage() {
   if (!active) return null
 
   return (
-    <>
-      <div
-        ref={overlayRef}
-        className={`community-overlay ${settled ? 'community-overlay--visible' : ''}`}
-      >
-        <div
-          className={`community-content ${settled ? 'community-content--visible' : ''}`}
-        >
-          <div className="community-photos">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="community-photo-placeholder" />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom sub-nav — outside overlay so position:fixed works */}
-      <nav className={`community-bottom-nav ${nearBottom ? 'community-bottom-nav--visible' : ''}`}>
+    <div className={`community-overlay ${settled ? 'community-overlay--visible' : ''}`}>
+      <div className={`community-sections ${settled ? 'community-sections--visible' : ''}`}>
         {sections.map((s) => (
-          <Link key={s.path} to={s.path} className="community-bottom-link">
-            {s.name}
+          <Link key={s.path} to={s.path} className="community-section">
+            <span className="community-section-name">{s.name}</span>
+            <span className="community-section-subtitle">{s.subtitle}</span>
           </Link>
         ))}
-      </nav>
-    </>
+      </div>
+    </div>
   )
 }

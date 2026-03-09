@@ -6,7 +6,6 @@
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   overflow-y: auto;
-  padding: 10rem 0 8rem;
   pointer-events: none;
   transition: background 0.6s ease, backdrop-filter 0.6s ease, -webkit-backdrop-filter 0.6s ease;
 }
@@ -18,73 +17,73 @@
   pointer-events: auto;
 }
 
-.community-content {
-  max-width: 900px;
-  margin: 0 auto;
+.community-sections {
+  display: flex;
+  flex-direction: column;
   opacity: 0;
   transform: translateY(1.5rem);
   transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
 }
 
-.community-content--visible {
+.community-sections--visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Single column photo stack — full width, no gaps */
-.community-photos {
+.community-section {
   display: flex;
   flex-direction: column;
-}
-
-.community-photo-placeholder {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background: rgba(241, 240, 226, 0.04);
-  border-bottom: 1px solid rgba(241, 240, 226, 0.06);
-}
-
-/* Bottom sub-nav — fixed at bottom, hidden until scroll */
-.community-bottom-nav {
-  position: fixed;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 2.5rem;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 2;
-}
-
-.community-bottom-nav--visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.community-bottom-link {
-  color: #F1F0E2;
+  justify-content: flex-end;
+  min-height: 100vh;
+  padding: 3rem;
   text-decoration: none;
-  font-size: 25px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-  transition: opacity 0.2s;
+  color: #F1F0E2;
+  border-bottom: 1px solid rgba(241, 240, 226, 0.06);
+  transition: background 0.3s ease;
 }
 
-.community-bottom-link:hover {
-  opacity: 0.7;
+.community-section:hover {
+  background: rgba(241, 240, 226, 0.04);
+}
+
+.community-section-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 4rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.community-section-subtitle {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(241, 240, 226, 0);
+  line-height: 1.5;
+  max-width: 400px;
+  margin-top: 1rem;
+  transform: translateY(0.5rem);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.community-section:hover .community-section-subtitle {
+  color: rgba(241, 240, 226, 0.5);
+  transform: translateY(0);
 }
 
 @media (max-width: 480px) {
-  .community-bottom-nav {
-    gap: 1.25rem;
-    bottom: 1.25rem;
+  .community-section {
+    min-height: 100svh;
+    padding: 2rem 1.5rem;
   }
 
-  .community-bottom-link {
-    font-size: 0.7rem;
+  .community-section-name {
+    font-size: 2.5rem;
+  }
+
+  .community-section-subtitle {
+    color: rgba(241, 240, 226, 0.5);
+    transform: translateY(0);
+    font-size: 0.8rem;
   }
 }
