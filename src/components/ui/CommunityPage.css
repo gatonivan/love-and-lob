@@ -31,19 +31,48 @@
 }
 
 .community-section {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   min-height: 100vh;
-  padding: 3rem;
+  overflow: hidden;
   text-decoration: none;
   color: #F1F0E2;
   border-bottom: 1px solid rgba(241, 240, 226, 0.06);
-  transition: background 0.3s ease;
 }
 
-.community-section:hover {
-  background: rgba(241, 240, 226, 0.04);
+/* Background media — fills the section */
+.community-section-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Dark overlay — always present for text readability, darkens on hover */
+.community-section-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.45);
+  transition: background 0.4s ease;
+}
+
+.community-section:hover .community-section-overlay {
+  background: rgba(10, 10, 10, 0.7);
+}
+
+/* Text container — bottom-left */
+.community-section-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 3rem;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
 }
 
 .community-section-name {
@@ -67,13 +96,12 @@
 }
 
 .community-section:hover .community-section-subtitle {
-  color: rgba(241, 240, 226, 0.5);
+  color: rgba(241, 240, 226, 0.6);
   transform: translateY(0);
 }
 
 @media (max-width: 480px) {
-  .community-section {
-    min-height: 100svh;
+  .community-section-text {
     padding: 2rem 1.5rem;
   }
 
@@ -82,7 +110,7 @@
   }
 
   .community-section-subtitle {
-    color: rgba(241, 240, 226, 0.5);
+    color: rgba(241, 240, 226, 0.6);
     transform: translateY(0);
     font-size: 0.8rem;
   }
