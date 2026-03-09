@@ -12,7 +12,6 @@ import { RadioPage } from './components/ui/community/RadioPage'
 import { ClinicPage } from './components/ui/community/ClinicPage'
 import { ExperiencesPage } from './components/ui/community/ExperiencesPage'
 import { ExcursionsPage } from './components/ui/community/ExcursionsPage'
-import { WordsPage } from './components/ui/community/WordsPage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
 import { useReducedMotion } from './hooks/useReducedMotion'
 import './App.css'
@@ -55,8 +54,7 @@ function App() {
         <Route path="/community/clinic" element={<ClinicPage />} />
         <Route path="/community/experiences" element={<ExperiencesPage />} />
         <Route path="/community/excursions" element={<ExcursionsPage />} />
-        <Route path="/community/words" element={<WordsPage />} />
-        <Route path="/manifesto" element={null} />
+<Route path="/manifesto" element={null} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

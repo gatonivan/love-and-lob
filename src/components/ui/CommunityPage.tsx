@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
+import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import './CommunityPage.css'
 
 import radioImg from '../../assets/community/radio_cover.jpeg'
@@ -14,14 +15,14 @@ interface Section {
   subtitle: string
   media?: string
   mediaType?: 'image' | 'video'
+  objectPosition?: string
 }
 
 const sections: Section[] = [
   { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond', media: radioImg, mediaType: 'image' },
   { name: 'Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game', media: clinicImg, mediaType: 'image' },
-  { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture', media: experiencesImg, mediaType: 'image' },
+  { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture', media: experiencesImg, mediaType: 'image', objectPosition: 'center bottom' },
   { name: 'Excursions', path: '/community/excursions', subtitle: 'Day trips and weekend getaways to new courts', media: excursionsImg, mediaType: 'image' },
-  { name: 'Words', path: '/community/words', subtitle: 'Stories and dispatches from the community' },
 ]
 
 export function CommunityPage() {
@@ -30,6 +31,8 @@ export function CommunityPage() {
     (s) => s.cameraMode === 'referee' && s.cameraSettled
   )
   const active = pathname === '/community'
+  const [shouldRender, isVisible] = useDeferredUnmount(active)
+  const show = isVisible && settled
 
   useEffect(() => {
     if (!active) {
@@ -43,11 +46,11 @@ export function CommunityPage() {
     }
   }, [])
 
-  if (!active) return null
+  if (!shouldRender) return null
 
   return (
-    <div className={`community-overlay ${settled ? 'community-overlay--visible' : ''}`}>
-      <div className={`community-sections ${settled ? 'community-sections--visible' : ''}`}>
+    <div className={`community-overlay ${show ? 'community-overlay--visible' : ''}`}>
+      <div className={`community-sections ${show ? 'community-sections--visible' : ''}`}>
         {sections.map((s) => (
           <Link key={s.path} to={s.path} className="community-section">
             {s.media && s.mediaType === 'video' ? (
@@ -65,6 +68,7 @@ export function CommunityPage() {
                 src={s.media}
                 alt=""
                 loading="lazy"
+                style={s.objectPosition ? { objectPosition: s.objectPosition } : undefined}
               />
             ) : null}
             <div className="community-section-overlay" />

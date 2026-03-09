@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
+import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import './SchedulePage.css'
 
 interface LumaEvent {
@@ -53,6 +54,8 @@ export function SchedulePage() {
   }, [])
 
   const isSchedule = pathname === '/schedule'
+  const [shouldRender, isVisible] = useDeferredUnmount(isSchedule)
+  const show = isVisible && settled
 
   useEffect(() => {
     if (!isSchedule) {
@@ -74,11 +77,11 @@ export function SchedulePage() {
     return () => overlay.removeEventListener('scroll', onScroll)
   }, [isSchedule, loading])
 
-  if (!isSchedule) return null
+  if (!shouldRender) return null
 
   return (
-    <div ref={overlayRef} className={`schedule-overlay ${settled ? 'schedule-overlay--visible' : ''}`}>
-      <div className={`schedule-content ${settled ? 'schedule-content--visible' : ''}`}>
+    <div ref={overlayRef} className={`schedule-overlay ${show ? 'schedule-overlay--visible' : ''}`}>
+      <div className={`schedule-content ${show ? 'schedule-content--visible' : ''}`}>
         <h1 className={`schedule-title ${titleHidden ? 'schedule-title--hidden' : ''}`}>Schedule</h1>
 
         {loading ? (
