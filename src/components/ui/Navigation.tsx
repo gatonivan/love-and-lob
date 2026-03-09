@@ -8,9 +8,9 @@ export function Navigation() {
         Love & Lob
       </Link>
       <div className="nav-links">
+        <Link to="/community">Community</Link>
         <Link to="/shop">Shop</Link>
         <Link to="/schedule">Schedule</Link>
-        <Link to="/words">Words</Link>
         <Link to="/manifesto">Manifesto</Link>
       </div>
     </nav>

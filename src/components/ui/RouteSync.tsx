@@ -7,7 +7,11 @@ export function RouteSync() {
   const setCameraMode = useSceneStore((s) => s.setCameraMode)
 
   useEffect(() => {
-    setCameraMode(pathname === '/schedule' ? 'birdseye' : 'game')
+    const mode =
+      pathname === '/schedule' ? 'birdseye' :
+      pathname === '/community' ? 'referee' :
+      'game'
+    setCameraMode(mode)
   }, [pathname, setCameraMode])
 
   return null

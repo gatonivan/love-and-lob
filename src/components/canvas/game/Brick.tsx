@@ -21,10 +21,21 @@ export function Brick({ position, color, alive }: BrickProps) {
   useFrame((_, delta) => {
     if (!meshRef.current) return
 
-    // Detect alive→dead transition
+    // Detect alive→dead transition (break)
     if (prevAlive.current && !alive) {
       breakTimer.current = 0
     }
+
+    // Detect dead→alive transition (new level) — reset everything
+    if (!prevAlive.current && alive) {
+      breakTimer.current = -1
+      meshRef.current.visible = true
+      meshRef.current.scale.set(1, 1, 1)
+      if (edgeMatRef.current) {
+        edgeMatRef.current.opacity = 1
+      }
+    }
+
     prevAlive.current = alive
 
     if (breakTimer.current >= 0) {

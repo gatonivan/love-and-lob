@@ -1,0 +1,117 @@
+.community-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: rgba(10, 10, 10, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  overflow-y: auto;
+  padding: 9rem 2rem 4rem;
+  pointer-events: none;
+  transition: background 0.6s ease, backdrop-filter 0.6s ease, -webkit-backdrop-filter 0.6s ease;
+}
+
+.community-overlay--visible {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+
+.community-content {
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+}
+
+.community-content--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.community-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.community-subtitle {
+  color: rgba(241, 240, 226, 0.5);
+  font-size: 0.85rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+/* Photo grid — placeholder boxes until real photos are added */
+.community-photos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.community-photo-placeholder {
+  aspect-ratio: 1;
+  background: rgba(241, 240, 226, 0.04);
+  border: 1px solid rgba(241, 240, 226, 0.06);
+  border-radius: 4px;
+}
+
+/* Sub-section links */
+.community-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.community-section-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  background: rgba(241, 240, 226, 0.04);
+  border: 1px solid rgba(241, 240, 226, 0.06);
+  text-decoration: none;
+  color: #F1F0E2;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.community-section-link:hover {
+  background: rgba(241, 240, 226, 0.08);
+  border-color: rgba(241, 240, 226, 0.12);
+}
+
+.community-section-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.community-section-desc {
+  font-size: 0.75rem;
+  color: rgba(241, 240, 226, 0.4);
+  margin-top: 0.2rem;
+}
+
+.community-section-arrow {
+  font-size: 0.85rem;
+  color: rgba(241, 240, 226, 0.3);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .community-photos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .community-title {
+    font-size: 1.5rem;
+  }
+}

@@ -9,10 +9,20 @@ html,
 body,
 #root {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   background: #0a0a0a;
   color: #F1F0E2;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Allow scrolling only on pages that need it */
+.shop-page,
+.product-detail,
+.community-sub-page,
+.manifesto-page {
+  overflow-y: auto;
+  height: 100vh;
 }
 
 a, button, [role="button"], input[type="submit"],
@@ -39,7 +49,7 @@ a, button, [role="button"], input[type="submit"],
 /* Opaque DOM pages need to sit above the fixed canvas */
 .shop-page,
 .product-detail,
-.words-page,
+.community-sub-page,
 .manifesto-page {
   position: relative;
   z-index: 1;
