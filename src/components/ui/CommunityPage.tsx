@@ -16,12 +16,13 @@ interface Section {
   media?: string
   mediaType?: 'image' | 'video'
   objectPosition?: string
+  mobileObjectPosition?: string
 }
 
 const sections: Section[] = [
-  { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond', media: radioImg, mediaType: 'image' },
-  { name: 'Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game', media: clinicImg, mediaType: 'image' },
+  { name: 'Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game', media: clinicImg, mediaType: 'image', mobileObjectPosition: '65% center' },
   { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture', media: experiencesImg, mediaType: 'image', objectPosition: 'center bottom' },
+  { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond', media: radioImg, mediaType: 'image' },
   { name: 'Excursions', path: '/community/excursions', subtitle: 'Day trips and weekend getaways to new courts', media: excursionsImg, mediaType: 'image' },
 ]
 
@@ -64,11 +65,14 @@ export function CommunityPage() {
               />
             ) : s.media ? (
               <img
-                className="community-section-bg"
+                className={`community-section-bg${s.mobileObjectPosition ? ' community-section-bg--mobile-reposition' : ''}`}
                 src={s.media}
                 alt=""
                 loading="lazy"
-                style={s.objectPosition ? { objectPosition: s.objectPosition } : undefined}
+                style={{
+                  ...(s.objectPosition ? { objectPosition: s.objectPosition } : {}),
+                  ...(s.mobileObjectPosition ? { '--mobile-obj-pos': s.mobileObjectPosition } as React.CSSProperties : {}),
+                }}
               />
             ) : null}
             <div className="community-section-overlay" />
