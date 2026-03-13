@@ -152,8 +152,8 @@ export function ManifestoPage() {
         <section className="manifesto-section manifesto-section--contact">
           <h2 className="manifesto-heading">Get in Touch</h2>
           <div className="manifesto-contact-links">
-            <a href="mailto:loveandlob@gmail.com" className="manifesto-contact-item">
-              loveandlob@gmail.com
+            <a href="mailto:info@loveandlob.co" className="manifesto-contact-item">
+              info@loveandlob.co
             </a>
             <a
               href="https://www.instagram.com/loveandlob"
