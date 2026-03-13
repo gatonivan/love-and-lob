@@ -10,13 +10,30 @@ export function RadioPage() {
         </Link>
         <h1 className="community-sub-title">Radio</h1>
         <p className="community-sub-intro">
-          Love & Lob playlists and DJ sets. Curated sounds for on and off the
-          court. DJ sets launching mid-April.
+          Intimate live DJ sets coming soon.
         </p>
 
         <div className="community-sub-section">
           <h2>Playlists</h2>
-          <p>Coming soon.</p>
+          <p>Now That&rsquo;s What I Call L&amp;L Vol. 1</p>
+          <div className="community-sub-links">
+            <a
+              href="https://open.spotify.com/playlist/6XGFhxsvfjlcU2ykvVkybw?si=oNFXwd3XQXGfeikr1NH3ew&pi=B_tIrw-4Rj-As"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="community-sub-link"
+            >
+              Spotify &rarr;
+            </a>
+            <a
+              href="https://music.apple.com/us/playlist/now-thats-what-i-call-l-l-vol-1/pl.u-JPAZx5VtDLo7Ad"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="community-sub-link"
+            >
+              Apple Music &rarr;
+            </a>
+          </div>
         </div>
 
         <div className="community-sub-section">

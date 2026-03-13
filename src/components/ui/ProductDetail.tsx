@@ -4,6 +4,7 @@ import productsData from '../../assets/data/products.json'
 import './ProductDetail.css'
 
 const products = productsData as unknown as Product[]
+const BASE = import.meta.env.BASE_URL
 
 function getPlaceholderColor(id: string): string {
   let hash = 0
@@ -43,7 +44,7 @@ export function ProductDetail() {
           <div className="product-detail-gallery">
             <div className="product-detail-hero-image" style={{ background: bgColor }}>
               {product.images.length > 0 ? (
-                <img src={product.images[0]} alt={product.name} />
+                <img src={`${BASE}${product.images[0]}`} alt={product.name} />
               ) : (
                 <span className="product-detail-placeholder">{product.category}</span>
               )}

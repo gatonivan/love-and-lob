@@ -16,6 +16,8 @@ function getPlaceholderColor(id: string): string {
   return `hsl(${h}, 15%, 18%)`
 }
 
+const BASE = import.meta.env.BASE_URL
+
 export function ProductCard({ product }: ProductCardProps) {
   const bgColor = getPlaceholderColor(product.id)
 
@@ -23,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link to={`/shop/${product.id}`} className="product-card">
       <div className="product-card-image" style={{ background: bgColor }}>
         {product.images.length > 0 ? (
-          <img src={product.images[0]} alt={product.name} />
+          <img src={`${BASE}${product.images[0]}`} alt={product.name} />
         ) : (
           <span className="product-card-placeholder">{product.category}</span>
         )}

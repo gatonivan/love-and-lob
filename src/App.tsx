@@ -12,7 +12,10 @@ import { RadioPage } from './components/ui/community/RadioPage'
 import { ClinicPage } from './components/ui/community/ClinicPage'
 import { ExperiencesPage } from './components/ui/community/ExperiencesPage'
 import { ExcursionsPage } from './components/ui/community/ExcursionsPage'
+import { CommunityDayPage } from './components/ui/community/CommunityDayPage'
+import { LeaguePage } from './components/ui/community/LeaguePage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
+import { EmailSubscribe } from './components/ui/EmailSubscribe'
 import { useReducedMotion } from './hooks/useReducedMotion'
 import './App.css'
 
@@ -41,6 +44,7 @@ function App() {
       <ManifestoPage />
 
       <Navigation />
+      <EmailSubscribe />
       <Routes>
         {/* / and /schedule are handled by the persistent canvas + overlays */}
         <Route path="/" element={null} />
@@ -54,6 +58,8 @@ function App() {
         <Route path="/community/clinic" element={<ClinicPage />} />
         <Route path="/community/experiences" element={<ExperiencesPage />} />
         <Route path="/community/excursions" element={<ExcursionsPage />} />
+        <Route path="/community/community-day" element={<CommunityDayPage />} />
+        <Route path="/community/league" element={<LeaguePage />} />
 <Route path="/manifesto" element={null} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useBreakoutStore } from '../../stores/breakoutStore'
 import { useSceneStore } from '../../stores/sceneStore'
 import { SoundToggle } from './SoundToggle'
@@ -5,14 +6,27 @@ import './GameUI.css'
 
 export function GameUI() {
   const cameraMode = useSceneStore((s) => s.cameraMode)
+  const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const gameStatus = useBreakoutStore((s) => s.gameStatus)
   const score = useBreakoutStore((s) => s.score)
   const level = useBreakoutStore((s) => s.level)
   const lives = useBreakoutStore((s) => s.lives)
   const resetGame = useBreakoutStore((s) => s.resetGame)
   const advanceLevel = useBreakoutStore((s) => s.advanceLevel)
+  const prevMode = useRef(cameraMode)
 
-  if (cameraMode !== 'game') return null
+  // Reset game to idle when returning from another section
+  useEffect(() => {
+    if (prevMode.current !== 'game' && cameraMode === 'game') {
+      const { gameStatus } = useBreakoutStore.getState()
+      if (gameStatus === 'won' || gameStatus === 'lost') {
+        useBreakoutStore.getState().resetGame()
+      }
+    }
+    prevMode.current = cameraMode
+  }, [cameraMode])
+
+  if (cameraMode !== 'game' || !cameraSettled) return null
 
   const playing = gameStatus === 'playing'
 

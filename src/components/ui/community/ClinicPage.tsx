@@ -10,19 +10,19 @@ export function ClinicPage() {
         </Link>
         <h1 className="community-sub-title">Absolute Beginner Clinic</h1>
         <p className="community-sub-intro">
-          Brand new to tennis? Our Absolute Beginner Clinic is designed for
-          complete newcomers who want to learn the fundamentals in a welcoming,
-          low-pressure environment.
+          Want to pick up tennis, but unsure where to start? Our Absolute
+          Beginner Clinic is designed for complete newcomers who want to learn
+          the fundamentals in a welcoming, low-pressure environment.
         </p>
 
         <div className="community-sub-section">
           <div className="community-sub-placeholder" />
           <h2>Details</h2>
           <p>
-            Every Sunday at our courts. $10 per session. No experience
-            necessary&mdash;just bring a racket and good energy. We&rsquo;ll
-            cover how to hold a racket, basic swing mechanics, and fundamental
-            movement patterns.
+            Every Sunday, 9am. $10 per session. Yes, $10. No experience
+            necessary&mdash;just bring a racket (you can rent one for $5 too)
+            &amp; good energy. We&rsquo;ll cover how to hold a racket, basic
+            swing mechanics, and fundamental movement patterns.
           </p>
         </div>
       </div>

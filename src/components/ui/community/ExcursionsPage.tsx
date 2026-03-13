@@ -17,19 +17,25 @@ export function ExcursionsPage() {
         <div className="community-sub-section">
           <div className="community-sub-placeholder" />
           <h2>Westchester</h2>
-          <p>Coming soon.</p>
+          <p>
+            Hosted our first L&amp;L Invitational at the beautiful waterfront
+            Tennis Club of Hastings in Hastings-on-Hudson, NY. 2 hours of
+            instructional drill &amp; play on the American green clay. Special
+            thanks to sponsors Casta&ntilde;o Group, Vacations, Inc., Leisure
+            Hydration, &amp; Uncle Nearest. Food provided by Layla&rsquo;s
+            Falafel.
+          </p>
         </div>
 
         <div className="community-sub-section">
           <div className="community-sub-placeholder" />
           <h2>Long Island</h2>
-          <p>Coming soon.</p>
-        </div>
-
-        <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
-          <h2>Woodstock</h2>
-          <p>Coming soon.</p>
+          <p>
+            Co-hosted the Ryde or Die Cup alongside Bageled NYC. Based off the
+            infamous Davis Cup, we had two teams competing against each other in
+            differing team formats across Tennis &amp; Pickleball at the
+            prestigious Vanderbilt-Strathmore Country Club in Manhasset, NY.
+          </p>
         </div>
       </div>
     </div>

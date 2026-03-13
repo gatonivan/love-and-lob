@@ -50,6 +50,11 @@
   object-position: center;
 }
 
+/* Fallback background for sections without a cover image */
+.community-section--no-media {
+  background: rgba(241, 240, 226, 0.03);
+}
+
 /* Dark overlay — always present for text readability, darkens on hover */
 .community-section-overlay {
   position: absolute;
@@ -60,6 +65,14 @@
 
 .community-section:hover .community-section-overlay {
   background: rgba(10, 10, 10, 0.7);
+}
+
+.community-section--no-media .community-section-overlay {
+  background: rgba(10, 10, 10, 0);
+}
+
+.community-section--no-media:hover .community-section-overlay {
+  background: rgba(241, 240, 226, 0.03);
 }
 
 /* Text container — bottom-left */

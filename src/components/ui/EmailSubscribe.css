@@ -1,0 +1,119 @@
+.email-subscribe {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  z-index: 90;
+  background: rgba(20, 20, 18, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(241, 240, 226, 0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+  max-width: 300px;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.email-subscribe--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.email-subscribe-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: rgba(241, 240, 226, 0.4);
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.email-subscribe-close:hover {
+  color: rgba(241, 240, 226, 0.8);
+}
+
+.email-subscribe-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: #F1F0E2;
+  margin: 0 0 0.35rem;
+}
+
+.email-subscribe-copy {
+  font-size: 0.75rem;
+  color: rgba(241, 240, 226, 0.5);
+  margin: 0 0 1rem;
+  line-height: 1.4;
+}
+
+.email-subscribe-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.email-subscribe-input {
+  flex: 1;
+  background: rgba(241, 240, 226, 0.06);
+  border: 1px solid rgba(241, 240, 226, 0.12);
+  border-radius: 5px;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.75rem;
+  color: #F1F0E2;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.email-subscribe-input::placeholder {
+  color: rgba(241, 240, 226, 0.3);
+}
+
+.email-subscribe-input:focus {
+  border-color: rgba(241, 240, 226, 0.3);
+}
+
+.email-subscribe-btn {
+  background: #F1F0E2;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.email-subscribe-btn:hover {
+  opacity: 0.85;
+}
+
+.email-subscribe-thanks {
+  font-size: 0.8rem;
+  color: #d8e84d;
+  margin: 0;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .email-subscribe {
+    right: 1rem;
+    left: 1rem;
+    bottom: 4.5rem;
+    max-width: none;
+  }
+}

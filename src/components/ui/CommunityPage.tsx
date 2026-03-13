@@ -21,9 +21,11 @@ interface Section {
 
 const sections: Section[] = [
   { name: 'Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game', media: clinicImg, mediaType: 'image', mobileObjectPosition: '65% center' },
+  { name: 'Community Day', path: '/community/community-day', subtitle: 'Free tennis programming for the neighborhood' },
+  { name: 'League', path: '/community/league', subtitle: '3v3 Team Singles — Love & Lob divisions' },
   { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture', media: experiencesImg, mediaType: 'image', objectPosition: 'center bottom' },
   { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond', media: radioImg, mediaType: 'image' },
-  { name: 'Excursions', path: '/community/excursions', subtitle: 'Day trips and weekend getaways to new courts', media: excursionsImg, mediaType: 'image' },
+  { name: 'Excursions', path: '/community/excursions', subtitle: 'Day trips and weekend getaways to new courts', media: excursionsImg, mediaType: 'image', objectPosition: 'center 65%' },
 ]
 
 export function CommunityPage() {
@@ -53,7 +55,7 @@ export function CommunityPage() {
     <div className={`community-overlay ${show ? 'community-overlay--visible' : ''}`}>
       <div className={`community-sections ${show ? 'community-sections--visible' : ''}`}>
         {sections.map((s) => (
-          <Link key={s.path} to={s.path} className="community-section">
+          <Link key={s.path} to={s.path} className={`community-section${!s.media ? ' community-section--no-media' : ''}`}>
             {s.media && s.mediaType === 'video' ? (
               <video
                 className="community-section-bg"
