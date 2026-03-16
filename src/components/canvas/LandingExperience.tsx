@@ -18,7 +18,8 @@ const LOOK_AT = new Vector3(0, 0, 0)
 const GAME_DIR = new Vector3(0, -8, 6).normalize()
 const BIRDSEYE_DIR = new Vector3(0, 0, 1) // straight down
 const REFEREE_DIR = new Vector3(0, -1, 0.05).normalize() // court-level — behind baseline, nearly ground level, looking toward net
-const UMPIRE_POS = new Vector3(0, -4, 1.5) // behind baseline, close up, slightly elevated
+const UMPIRE_DIR = new Vector3(0, -4, 1.5).normalize() // behind baseline, umpire-chair angle
+const SHOP_DIR = new Vector3(0, -3, 0.8).normalize() // low and close — courtside front row
 const FOV = 45
 const HALF_TAN = Math.tan((FOV * Math.PI / 180) / 2)
 
@@ -47,15 +48,13 @@ function CameraController() {
     const aspect = size.width / size.height
     const dist = computeDistance(aspect)
 
-    if (cameraMode === 'umpire') {
-      targetPos.current.copy(UMPIRE_POS)
-    } else {
-      const dir =
-        cameraMode === 'birdseye' ? BIRDSEYE_DIR :
-        cameraMode === 'referee' ? REFEREE_DIR :
-        GAME_DIR
-      targetPos.current.copy(dir).multiplyScalar(dist).add(LOOK_AT)
-    }
+    const dir =
+      cameraMode === 'birdseye' ? BIRDSEYE_DIR :
+      cameraMode === 'referee' ? REFEREE_DIR :
+      cameraMode === 'umpire' ? UMPIRE_DIR :
+      cameraMode === 'shop' ? SHOP_DIR :
+      GAME_DIR
+    targetPos.current.copy(dir).multiplyScalar(dist).add(LOOK_AT)
 
     if (!initialized.current || reducedMotion) {
       camera.position.copy(targetPos.current)
@@ -67,7 +66,7 @@ function CameraController() {
       return
     }
 
-    damp3(camera.position, targetPos.current, 0.25, delta)
+    damp3(camera.position, targetPos.current, 0.18, delta)
     camera.lookAt(LOOK_AT)
 
     // Check if camera has arrived at target

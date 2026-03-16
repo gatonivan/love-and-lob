@@ -1,7 +1,9 @@
 .product-detail {
   min-height: 100vh;
   padding: 8rem 2rem 6rem;
-  background: #0a0a0a;
+  background: rgba(10, 10, 10, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .product-detail-inner {

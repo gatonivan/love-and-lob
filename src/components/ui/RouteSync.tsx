@@ -11,6 +11,7 @@ export function RouteSync() {
       pathname === '/schedule' ? 'birdseye' :
       pathname === '/community' ? 'referee' :
       pathname === '/manifesto' ? 'umpire' :
+      pathname.startsWith('/shop') ? 'shop' :
       'game'
     setCameraMode(mode)
   }, [pathname, setCameraMode])

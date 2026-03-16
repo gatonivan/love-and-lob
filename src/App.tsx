@@ -41,6 +41,7 @@ function App() {
       <GameUI />
       <SchedulePage />
       <CommunityPage />
+      <ShopPage />
       <ManifestoPage />
 
       <Navigation />
@@ -49,8 +50,8 @@ function App() {
         {/* / and /schedule are handled by the persistent canvas + overlays */}
         <Route path="/" element={null} />
         <Route path="/schedule" element={null} />
-        {/* Other routes render opaque DOM pages that cover the canvas */}
-        <Route path="/shop" element={<ShopPage />} />
+        {/* /shop is handled by the persistent ShopPage overlay */}
+        <Route path="/shop" element={null} />
         <Route path="/shop/:id" element={<ProductDetail />} />
         {/* /community is handled by the persistent CommunityPage overlay */}
         <Route path="/community" element={null} />
