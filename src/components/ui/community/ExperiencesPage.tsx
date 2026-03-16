@@ -1,4 +1,6 @@
 import { Link } from 'react-router'
+import watchPartiesImg from '../../../assets/community/experience_second_page_1.jpeg'
+import winePartiesImg from '../../../assets/community/experiences_second_page_2.jpeg'
 import './community-sub.css'
 
 export function ExperiencesPage() {
@@ -15,7 +17,7 @@ export function ExperiencesPage() {
         </p>
 
         <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
+          <img className="community-sub-img" src={watchPartiesImg} alt="Watch Parties" />
           <h2>Watch Parties</h2>
           <p>
             Hosting live watch events for major tennis events such as Roland
@@ -25,7 +27,7 @@ export function ExperiencesPage() {
         </div>
 
         <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
+          <img className="community-sub-img" src={winePartiesImg} alt="Wine Parties" />
           <h2>Wine Parties</h2>
           <p>
             Intimate watch parties for smaller WTA/ATP tournaments that are
