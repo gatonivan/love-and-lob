@@ -62,12 +62,10 @@ export function CommunityPage() {
               <video
                 className="community-section-bg"
                 src={s.media}
+                autoPlay
                 loop
                 muted
                 playsInline
-                preload="metadata"
-                onMouseEnter={(e) => e.currentTarget.play()}
-                onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0 }}
               />
             ) : s.media ? (
               <img
