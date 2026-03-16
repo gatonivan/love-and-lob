@@ -1,4 +1,6 @@
 import { Link } from 'react-router'
+import westchesterImg from '../../../assets/community/westchester.jpeg'
+import longIslandVideo from '../../../assets/community/long_island.mp4'
 import './community-sub.css'
 
 export function ExcursionsPage() {
@@ -15,7 +17,7 @@ export function ExcursionsPage() {
         </p>
 
         <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
+          <img className="community-sub-img" src={westchesterImg} alt="Westchester excursion" />
           <h2>Westchester</h2>
           <p>
             Hosted our first L&amp;L Invitational at the beautiful waterfront
@@ -28,7 +30,14 @@ export function ExcursionsPage() {
         </div>
 
         <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
+          <video
+            className="community-sub-img"
+            src={longIslandVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
           <h2>Long Island</h2>
           <p>
             Co-hosted the Ryde or Die Cup alongside Bageled NYC. Based off the
