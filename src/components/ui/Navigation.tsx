@@ -4,12 +4,15 @@ import './Navigation.css'
 
 export function Navigation() {
   const pathname = useLocation().pathname
-  const hideLinks = pathname === '/community'
-  const hideLogo = useSceneStore((s) => s.overlayScrolled)
+  const overlayScrolled = useSceneStore((s) => s.overlayScrolled)
+  const isCommunity = pathname === '/community'
+  const isManifesto = pathname === '/manifesto'
+  const hideLinks = isCommunity || (isManifesto && !overlayScrolled)
+  const hideLogo = isCommunity && overlayScrolled
 
   return (
     <nav className="nav">
-      <Link to="/" className={`nav-logo ${hideLinks && hideLogo ? 'nav-logo--hidden' : ''}`}>
+      <Link to="/" className={`nav-logo ${hideLogo ? 'nav-logo--hidden' : ''}`}>
         Love & Lob
       </Link>
       <div className={`nav-links ${hideLinks ? 'nav-links--hidden' : ''}`}>

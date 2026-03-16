@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import communityDaySecondImg from '../../../assets/community/community_day_second.jpeg'
 import './community-sub.css'
 
 export function CommunityDayPage() {
@@ -16,7 +17,7 @@ export function CommunityDayPage() {
         </p>
 
         <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
+          <img className="community-sub-img" src={communityDaySecondImg} alt="Community Day" />
           <p>
             We provided free Vietnamese coffee by Phin First Phin, &amp;
             pastries by Mottley Kitchen while people of all ages &amp; skill

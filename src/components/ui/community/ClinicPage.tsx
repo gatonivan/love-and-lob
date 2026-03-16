@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import clinicSecondImg from '../../../assets/community/clinic_second.jpeg'
 import './community-sub.css'
 
 export function ClinicPage() {
@@ -16,7 +17,7 @@ export function ClinicPage() {
         </p>
 
         <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
+          <img className="community-sub-img" src={clinicSecondImg} alt="Absolute Beginner Clinic" />
           <h2>Details</h2>
           <p>
             Every Sunday, 9am. $10 per session. Yes, $10. No experience

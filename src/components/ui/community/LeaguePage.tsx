@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import leagueSecondImg from '../../../assets/community/league_second_page.jpeg'
 import './community-sub.css'
 
 export function LeaguePage() {
@@ -18,7 +19,7 @@ export function LeaguePage() {
         </p>
 
         <div className="community-sub-section">
-          <div className="community-sub-placeholder" />
+          <img className="community-sub-img" src={leagueSecondImg} alt="3v3 Team Singles League" />
           <h2>2025 Champions</h2>
           <p>
             The <strong>Lob Division</strong> had &ldquo;40 &ndash; No

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
@@ -38,6 +38,7 @@ export function ManifestoPage() {
   const isManifesto = pathname === '/manifesto'
   const [shouldRender, isVisible] = useDeferredUnmount(isManifesto)
   const show = isVisible && settled
+  const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     fetchPosts()
@@ -46,10 +47,25 @@ export function ManifestoPage() {
       .finally(() => setLoading(false))
   }, [])
 
+  useEffect(() => {
+    if (!isManifesto) {
+      useSceneStore.getState().setOverlayScrolled(false)
+      return
+    }
+    const overlay = overlayRef.current
+    if (!overlay) return
+    const onScroll = () => {
+      useSceneStore.getState().setOverlayScrolled(overlay.scrollTop > 40)
+    }
+    overlay.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => overlay.removeEventListener('scroll', onScroll)
+  }, [isManifesto])
+
   if (!shouldRender) return null
 
   return (
-    <div className={`manifesto-overlay ${show ? 'manifesto-overlay--visible' : ''}`}>
+    <div ref={overlayRef} className={`manifesto-overlay ${show ? 'manifesto-overlay--visible' : ''}`}>
       <div className={`manifesto-content ${show ? 'manifesto-content--visible' : ''}`}>
 
         {/* ABOUT US */}
