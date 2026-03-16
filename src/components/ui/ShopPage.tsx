@@ -1,6 +1,8 @@
+import { useRef } from 'react'
 import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
+import { useBottomScroll } from '../../hooks/useBottomScroll'
 import { ShopGrid } from './ShopGrid'
 import './ShopPage.css'
 
@@ -12,11 +14,14 @@ export function ShopPage() {
   const active = pathname === '/shop'
   const [shouldRender, isVisible] = useDeferredUnmount(active)
   const show = isVisible && settled
+  const overlayRef = useRef<HTMLDivElement>(null)
+
+  useBottomScroll(active, overlayRef)
 
   if (!shouldRender) return null
 
   return (
-    <div className={`shop-overlay ${show ? 'shop-overlay--visible' : ''}`}>
+    <div ref={overlayRef} className={`shop-overlay ${show ? 'shop-overlay--visible' : ''}`}>
       <div className={`shop-overlay-content ${show ? 'shop-overlay-content--visible' : ''}`}>
         <ShopGrid />
       </div>

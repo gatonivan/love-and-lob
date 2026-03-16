@@ -1,7 +1,9 @@
 import { Link } from 'react-router'
+import { useBottomScroll } from '../../../hooks/useBottomScroll'
 import './community-sub.css'
 
 export function RadioPage() {
+  useBottomScroll(true)
   return (
     <div className="community-sub-page">
       <div className="community-sub-content">

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
+import { useBottomScroll } from '../../hooks/useBottomScroll'
 import './SchedulePage.css'
 
 interface LumaEvent {
@@ -77,6 +78,8 @@ export function SchedulePage() {
   const isSchedule = pathname === '/schedule'
   const [shouldRender, isVisible] = useDeferredUnmount(isSchedule)
   const show = isVisible && settled
+
+  useBottomScroll(isSchedule, overlayRef)
 
   if (!shouldRender) return null
 

@@ -1,9 +1,11 @@
 import { Link } from 'react-router'
+import { useBottomScroll } from '../../../hooks/useBottomScroll'
 import watchPartiesImg from '../../../assets/community/experience_second_page_1.jpeg'
 import winePartiesImg from '../../../assets/community/experiences_second_page_2.jpeg'
 import './community-sub.css'
 
 export function ExperiencesPage() {
+  useBottomScroll(true)
   return (
     <div className="community-sub-page">
       <div className="community-sub-content">

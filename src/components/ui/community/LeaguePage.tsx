@@ -1,8 +1,10 @@
 import { Link } from 'react-router'
+import { useBottomScroll } from '../../../hooks/useBottomScroll'
 import leagueSecondImg from '../../../assets/community/league_second_page.jpeg'
 import './community-sub.css'
 
 export function LeaguePage() {
+  useBottomScroll(true)
   return (
     <div className="community-sub-page">
       <div className="community-sub-content">

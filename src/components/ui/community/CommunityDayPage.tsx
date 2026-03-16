@@ -1,8 +1,10 @@
 import { Link } from 'react-router'
+import { useBottomScroll } from '../../../hooks/useBottomScroll'
 import communityDaySecondImg from '../../../assets/community/community_day_second.jpeg'
 import './community-sub.css'
 
 export function CommunityDayPage() {
+  useBottomScroll(true)
   return (
     <div className="community-sub-page">
       <div className="community-sub-content">

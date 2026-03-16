@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
+import { useBottomScroll } from '../../hooks/useBottomScroll'
 import aboutImg from '../../assets/manifesto/first_image.png'
 import whatWeDoImg from '../../assets/manifesto/third_image.jpeg'
 import closingImg from '../../assets/manifesto/sixth_image.png'
@@ -47,20 +48,7 @@ export function ManifestoPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => {
-    if (!isManifesto) {
-      useSceneStore.getState().setOverlayScrolled(false)
-      return
-    }
-    const overlay = overlayRef.current
-    if (!overlay) return
-    const onScroll = () => {
-      useSceneStore.getState().setOverlayScrolled(overlay.scrollTop > 40)
-    }
-    overlay.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => overlay.removeEventListener('scroll', onScroll)
-  }, [isManifesto])
+  useBottomScroll(isManifesto, overlayRef)
 
   if (!shouldRender) return null
 

@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useRef } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
+import { useBottomScroll } from '../../hooks/useBottomScroll'
 import './CommunityPage.css'
 
 import radioImg from '../../assets/community/radio_cover.jpeg'
@@ -38,23 +39,14 @@ export function CommunityPage() {
   const active = pathname === '/community'
   const [shouldRender, isVisible] = useDeferredUnmount(active)
   const show = isVisible && settled
+  const overlayRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (!active) {
-      useSceneStore.getState().setOverlayScrolled(false)
-    }
-  }, [active])
-
-  useEffect(() => {
-    return () => {
-      useSceneStore.getState().setOverlayScrolled(false)
-    }
-  }, [])
+  useBottomScroll(active, overlayRef)
 
   if (!shouldRender) return null
 
   return (
-    <div className={`community-overlay ${show ? 'community-overlay--visible' : ''}`}>
+    <div ref={overlayRef} className={`community-overlay ${show ? 'community-overlay--visible' : ''}`}>
       <div className={`community-sections ${show ? 'community-sections--visible' : ''}`}>
         {sections.map((s) => (
           <Link key={s.path} to={s.path} className={`community-section${!s.media ? ' community-section--no-media' : ''}`}>

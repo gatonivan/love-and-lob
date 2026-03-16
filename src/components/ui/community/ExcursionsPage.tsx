@@ -1,9 +1,11 @@
 import { Link } from 'react-router'
+import { useBottomScroll } from '../../../hooks/useBottomScroll'
 import westchesterImg from '../../../assets/community/westchester.jpeg'
 import longIslandVideo from '../../../assets/community/long_island.mp4'
 import './community-sub.css'
 
 export function ExcursionsPage() {
+  useBottomScroll(true)
   return (
     <div className="community-sub-page">
       <div className="community-sub-content">

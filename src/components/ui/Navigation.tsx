@@ -5,9 +5,9 @@ import './Navigation.css'
 export function Navigation() {
   const pathname = useLocation().pathname
   const overlayScrolled = useSceneStore((s) => s.overlayScrolled)
+  const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
-  const isManifesto = pathname === '/manifesto'
-  const hideLinks = isCommunity || (isManifesto && !overlayScrolled)
+  const hideLinks = !isHome && !overlayScrolled
   const hideLogo = isCommunity && overlayScrolled
 
   return (
