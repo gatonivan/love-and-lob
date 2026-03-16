@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router'
 import { useBreakoutStore } from '../../stores/breakoutStore'
 import { useSceneStore } from '../../stores/sceneStore'
 import { SoundToggle } from './SoundToggle'
 import './GameUI.css'
 
 export function GameUI() {
+  const pathname = useLocation().pathname
   const cameraMode = useSceneStore((s) => s.cameraMode)
   const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const gameStatus = useBreakoutStore((s) => s.gameStatus)
@@ -26,7 +28,7 @@ export function GameUI() {
     prevMode.current = cameraMode
   }, [cameraMode])
 
-  if (cameraMode !== 'game' || !cameraSettled) return null
+  if (pathname !== '/' || cameraMode !== 'game' || !cameraSettled) return null
 
   const playing = gameStatus === 'playing'
 
