@@ -24,14 +24,25 @@ export function useBottomScroll(
     const el = elementRef?.current
 
     function check() {
-      let atBottom: boolean
+      let scrollMax: number
+      let scrollPos: number
+
       if (el) {
-        const scrollMax = el.scrollHeight - el.clientHeight
-        atBottom = scrollMax <= 0 || el.scrollTop >= scrollMax - 40
+        scrollMax = el.scrollHeight - el.clientHeight
+        scrollPos = el.scrollTop
       } else {
-        const scrollMax = document.documentElement.scrollHeight - window.innerHeight
-        atBottom = scrollMax <= 0 || window.scrollY >= scrollMax - 40
+        scrollMax = document.documentElement.scrollHeight - window.innerHeight
+        scrollPos = window.scrollY
       }
+
+      // Content isn't scrollable — show links
+      // Content is scrollable — only show at bottom
+      const atBottom = scrollMax <= 10
+        ? scrollMax <= 10 && scrollPos <= 10
+          ? false  // not enough content rendered yet, keep hidden
+          : true
+        : scrollPos >= scrollMax - 40
+
       useSceneStore.getState().setOverlayScrolled(atBottom)
     }
 
@@ -42,11 +53,14 @@ export function useBottomScroll(
 
     const target = el || window
     target.addEventListener('scroll', onScroll, { passive: true })
-    check() // initial check — if content isn't scrollable, show links immediately
+
+    // Delayed initial check — wait for content to render
+    const initTimer = setTimeout(check, 800)
 
     return () => {
       target.removeEventListener('scroll', onScroll)
       cancelAnimationFrame(rafId.current)
+      clearTimeout(initTimer)
     }
   }, [active, elementRef])
 }

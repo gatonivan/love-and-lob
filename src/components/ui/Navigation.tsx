@@ -7,7 +7,11 @@ export function Navigation() {
   const overlayScrolled = useSceneStore((s) => s.overlayScrolled)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
-  const hideLinks = !isHome && !overlayScrolled
+
+  // Community: links always hidden, logo hides when scrolled
+  // Other non-home pages: links hidden until user scrolls to bottom
+  // Home: everything visible
+  const hideLinks = isCommunity || (!isHome && !overlayScrolled)
   const hideLogo = isCommunity && overlayScrolled
 
   return (

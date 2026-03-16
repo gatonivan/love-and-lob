@@ -1,8 +1,7 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
-import { useBottomScroll } from '../../hooks/useBottomScroll'
 import './CommunityPage.css'
 
 import radioImg from '../../assets/community/radio_cover.jpeg'
@@ -41,7 +40,24 @@ export function CommunityPage() {
   const show = isVisible && settled
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  useBottomScroll(active, overlayRef)
+  // Community uses its own scroll tracking — logo hides on scroll, links always hidden
+  useEffect(() => {
+    if (!active) {
+      useSceneStore.getState().setOverlayScrolled(false)
+      return
+    }
+    const overlay = overlayRef.current
+    if (!overlay) return
+    const onScroll = () => {
+      useSceneStore.getState().setOverlayScrolled(overlay.scrollTop > 40)
+    }
+    overlay.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => {
+      overlay.removeEventListener('scroll', onScroll)
+      useSceneStore.getState().setOverlayScrolled(false)
+    }
+  }, [active])
 
   if (!shouldRender) return null
 
