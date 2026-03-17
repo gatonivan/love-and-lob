@@ -139,9 +139,9 @@
 /* ── Featured Article Cards ── */
 
 .manifesto-featured {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
 }
 
 .manifesto-featured-card {
@@ -263,5 +263,10 @@
 
   .manifesto-section {
     margin-bottom: 2.5rem;
+  }
+
+  .manifesto-featured {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }

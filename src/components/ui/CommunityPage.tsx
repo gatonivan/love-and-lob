@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
@@ -39,6 +39,18 @@ export function CommunityPage() {
   const [shouldRender, isVisible] = useDeferredUnmount(active)
   const show = isVisible && settled
   const overlayRef = useRef<HTMLDivElement>(null)
+  const leagueVideoRef = useRef<HTMLVideoElement>(null)
+
+  // Constrain league cover video to 6s–16s range
+  const handleLeagueVideoRef = useCallback((el: HTMLVideoElement | null) => {
+    leagueVideoRef.current = el
+    if (!el) return
+    el.currentTime = 6
+    const onTimeUpdate = () => {
+      if (el.currentTime >= 16) el.currentTime = 6
+    }
+    el.addEventListener('timeupdate', onTimeUpdate)
+  }, [])
 
   // Community: logo hides on scroll, links always hidden
   useEffect(() => {
@@ -68,6 +80,7 @@ export function CommunityPage() {
           <Link key={s.path} to={s.path} className={`community-section${!s.media ? ' community-section--no-media' : ''}`}>
             {s.media && s.mediaType === 'video' ? (
               <video
+                ref={s.path === '/community/league' ? handleLeagueVideoRef : undefined}
                 className="community-section-bg"
                 src={s.media}
                 autoPlay

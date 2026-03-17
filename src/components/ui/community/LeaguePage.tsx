@@ -14,6 +14,14 @@ export function LeaguePage() {
     const video = videoRef.current
     if (!video) return
 
+    video.currentTime = 12
+
+    const onEnded = () => {
+      video.currentTime = 12
+      video.play()
+    }
+    video.addEventListener('ended', onEnded)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -24,7 +32,10 @@ export function LeaguePage() {
       { threshold: 0.4 }
     )
     observer.observe(video)
-    return () => observer.disconnect()
+    return () => {
+      video.removeEventListener('ended', onEnded)
+      observer.disconnect()
+    }
   }, [])
 
   return (
