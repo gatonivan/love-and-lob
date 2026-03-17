@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 import { useBottomScroll } from '../../../hooks/useBottomScroll'
-import westchesterImg from '../../../assets/community/westchester.jpeg'
+import westchesterVideo from '../../../assets/community/westchester_video.mp4'
 import longIslandVideo from '../../../assets/community/long_island.mp4'
 import './community-sub.css'
 
@@ -19,7 +19,14 @@ export function ExcursionsPage() {
         </p>
 
         <div className="community-sub-section">
-          <img className="community-sub-img" src={westchesterImg} alt="Westchester excursion" />
+          <video
+            className="community-sub-img"
+            src={westchesterVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
           <h2>Westchester</h2>
           <p>
             Hosted our first L&amp;L Invitational at the beautiful waterfront
