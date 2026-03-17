@@ -5,14 +5,16 @@ import './Navigation.css'
 export function Navigation() {
   const pathname = useLocation().pathname
   const overlayScrolled = useSceneStore((s) => s.overlayScrolled)
+  const logoHidden = useSceneStore((s) => s.logoHidden)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
 
-  // Community: links always hidden, logo hides when scrolled
-  // Other non-home pages: links hidden until user scrolls to bottom
-  // Home: everything visible
+  // Logo: visible on home, hides on scroll for all other pages
+  const hideLogo = !isHome && logoHidden
+
+  // Links: visible on home, always hidden on community,
+  // hidden on other pages until user scrolls to bottom
   const hideLinks = isCommunity || (!isHome && !overlayScrolled)
-  const hideLogo = isCommunity && overlayScrolled
 
   return (
     <nav className="nav">

@@ -41,22 +41,22 @@ export function CommunityPage() {
   const show = isVisible && settled
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  // Community uses its own scroll tracking — logo hides on scroll, links always hidden
+  // Community: logo hides on scroll, links always hidden
   useEffect(() => {
     if (!active) {
-      useSceneStore.getState().setOverlayScrolled(false)
+      useSceneStore.getState().setLogoHidden(false)
       return
     }
     const overlay = overlayRef.current
     if (!overlay) return
     const onScroll = () => {
-      useSceneStore.getState().setOverlayScrolled(overlay.scrollTop > 40)
+      useSceneStore.getState().setLogoHidden(overlay.scrollTop > 40)
     }
     overlay.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => {
       overlay.removeEventListener('scroll', onScroll)
-      useSceneStore.getState().setOverlayScrolled(false)
+      useSceneStore.getState().setLogoHidden(false)
     }
   }, [active])
 

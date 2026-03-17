@@ -2,12 +2,10 @@ import { useEffect, useRef } from 'react'
 import { useSceneStore } from '../stores/sceneStore'
 
 /**
- * Tracks scroll position on an element (or window) and sets
- * overlayScrolled=true when the user reaches the bottom.
- * Resets to false when the page becomes inactive.
- *
- * For overlay pages: pass the overlay ref.
- * For route pages: call with no ref to track window scroll.
+ * Tracks scroll on an element (or window):
+ * - Sets logoHidden=true when user scrolls past 40px
+ * - Sets overlayScrolled=true when user reaches the bottom
+ * Resets both when the page becomes inactive.
  */
 export function useBottomScroll(
   active: boolean,
@@ -18,6 +16,7 @@ export function useBottomScroll(
   useEffect(() => {
     if (!active) {
       useSceneStore.getState().setOverlayScrolled(false)
+      useSceneStore.getState().setLogoHidden(false)
       return
     }
 
@@ -35,14 +34,11 @@ export function useBottomScroll(
         scrollPos = window.scrollY
       }
 
-      // Content isn't scrollable — show links
-      // Content is scrollable — only show at bottom
-      const atBottom = scrollMax <= 10
-        ? scrollMax <= 10 && scrollPos <= 10
-          ? false  // not enough content rendered yet, keep hidden
-          : true
-        : scrollPos >= scrollMax - 40
+      // Hide logo when user has scrolled at all
+      useSceneStore.getState().setLogoHidden(scrollPos > 40)
 
+      // Show nav links at bottom
+      const atBottom = scrollMax > 10 && scrollPos >= scrollMax - 40
       useSceneStore.getState().setOverlayScrolled(atBottom)
     }
 

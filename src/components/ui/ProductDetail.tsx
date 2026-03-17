@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router'
+import { useBottomScroll } from '../../hooks/useBottomScroll'
 import type { Product } from '../../types'
 import productsData from '../../assets/data/products.json'
 import './ProductDetail.css'
@@ -16,6 +17,7 @@ function getPlaceholderColor(id: string): string {
 }
 
 export function ProductDetail() {
+  useBottomScroll(true)
   const { id } = useParams<{ id: string }>()
   const product = products.find((p) => p.id === id)
 
