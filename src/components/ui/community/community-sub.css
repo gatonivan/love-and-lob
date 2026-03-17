@@ -185,17 +185,43 @@
   margin-bottom: 1rem;
 }
 
+/* Tablets — scale down the desktop 4rem padding */
+@media (max-width: 768px) {
+  .community-sub-content {
+    padding: 0 2rem;
+  }
+
+  .community-sub-hero {
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+  }
+
+  .community-sub-hero-overlay {
+    padding: 2rem;
+  }
+
+  .community-sub-img--full {
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+  }
+}
+
 @media (max-width: 480px) {
   .community-sub-page {
-    padding: 7rem 0 4rem;
+    padding: 5rem 0 3rem;
   }
 
   .community-sub-content {
-    padding: 0 1.5rem;
+    padding: 0 1.25rem;
+  }
+
+  .community-sub-back {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
   }
 
   .community-sub-title {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
   .community-sub-intro {
@@ -203,28 +229,36 @@
   }
 
   .community-sub-hero {
-    width: calc(100% + 3rem);
-    margin-left: -1.5rem;
+    width: calc(100% + 2.5rem);
+    margin-left: -1.25rem;
+    margin-bottom: 1.5rem;
   }
 
   .community-sub-hero-overlay {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
 
   .community-sub-hero-text {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
   }
 
   .community-sub-img--full {
-    width: calc(100% + 3rem);
-    margin-left: -1.5rem;
+    width: calc(100% + 2.5rem);
+    margin-left: -1.25rem;
+  }
+
+  .community-sub-section {
+    margin-bottom: 1.5rem;
   }
 
   .community-sub-section h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
   }
 
   .community-sub-section p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 }
