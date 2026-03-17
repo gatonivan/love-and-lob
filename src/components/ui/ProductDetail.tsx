@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router'
 import { useBottomScroll } from '../../hooks/useBottomScroll'
 import type { Product } from '../../types'
@@ -19,6 +20,7 @@ function getPlaceholderColor(id: string): string {
 export function ProductDetail() {
   useBottomScroll(true)
   const { id } = useParams<{ id: string }>()
+  const [selectedPrice, setSelectedPrice] = useState<number | null>(null)
   const product = products.find((p) => p.id === id)
 
   if (!product) {
@@ -57,7 +59,21 @@ export function ProductDetail() {
           <div className="product-detail-info">
             <div className="product-detail-category">{product.category}</div>
             <h1 className="product-detail-name">{product.name}</h1>
-            <div className="product-detail-price">${product.price}</div>
+            {product.priceOptions ? (
+              <div className="product-detail-price-select">
+                <select
+                  className="product-detail-dropdown"
+                  value={selectedPrice ?? product.priceOptions[0]}
+                  onChange={(e) => setSelectedPrice(Number(e.target.value))}
+                >
+                  {product.priceOptions.map((amt) => (
+                    <option key={amt} value={amt}>${amt}</option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <div className="product-detail-price">${product.price}</div>
+            )}
             <p className="product-detail-description">{product.description}</p>
 
             {/* Specs in monospace — the MSCHF touch */}

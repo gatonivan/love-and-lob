@@ -33,7 +33,11 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
       <div className="product-card-info">
         <h3 className="product-card-name">{product.name}</h3>
-        <span className="product-card-price">${product.price}</span>
+        <span className="product-card-price">
+          {product.priceOptions
+            ? `From $${product.priceOptions[0]}`
+            : `$${product.price}`}
+        </span>
       </div>
       <div className="product-card-specs">
         {Object.entries(product.specs).slice(0, 2).map(([key, val]) => (

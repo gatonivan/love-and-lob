@@ -14,37 +14,13 @@
     "description": "Combines our name translated into the world's romance languages. This multilingual approach emphasizes tennis's global impact & how the sport (& the brand) connects people across cultures."
   },
   {
-    "id": "gift-card-50",
-    "name": "Gift Card — $50",
+    "id": "gift-card",
+    "name": "Gift Card",
     "price": 50,
+    "priceOptions": [50, 100, 150],
     "category": "accessories",
     "images": [],
     "specs": {
-      "Value": "$50",
-      "Delivery": "Digital"
-    },
-    "description": "A Love & Lob gift card. Good for apparel, clinics, and everything in between."
-  },
-  {
-    "id": "gift-card-100",
-    "name": "Gift Card — $100",
-    "price": 100,
-    "category": "accessories",
-    "images": [],
-    "specs": {
-      "Value": "$100",
-      "Delivery": "Digital"
-    },
-    "description": "A Love & Lob gift card. Good for apparel, clinics, and everything in between."
-  },
-  {
-    "id": "gift-card-150",
-    "name": "Gift Card — $150",
-    "price": 150,
-    "category": "accessories",
-    "images": [],
-    "specs": {
-      "Value": "$150",
       "Delivery": "Digital"
     },
     "description": "A Love & Lob gift card. Good for apparel, clinics, and everything in between."

@@ -88,6 +88,42 @@
   margin-bottom: 1.5rem;
 }
 
+.product-detail-price-select {
+  margin-bottom: 1.5rem;
+}
+
+.product-detail-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(241, 240, 226, 0.06);
+  border: 1px solid rgba(241, 240, 226, 0.15);
+  border-radius: 4px;
+  color: #F1F0E2;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0.6rem 2.5rem 0.6rem 1rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F1F0E2' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  transition: border-color 0.2s;
+}
+
+.product-detail-dropdown:hover {
+  border-color: rgba(241, 240, 226, 0.3);
+}
+
+.product-detail-dropdown:focus {
+  outline: none;
+  border-color: rgba(241, 240, 226, 0.4);
+}
+
+.product-detail-dropdown option {
+  background: #1a1a1a;
+  color: #F1F0E2;
+}
+
 .product-detail-description {
   font-size: 0.95rem;
   line-height: 1.7;
