@@ -15,7 +15,7 @@ Love & Lob is a scroll-driven, 3D-first brand website built with React 19, Three
 | Styling | Plain CSS (co-located with components) |
 | Build | Vite 7, vite-plugin-glsl |
 | Package Manager | pnpm |
-| Deployment | Vercel (SPA routing) |
+| Deployment | GitHub Pages (auto-deploys from main) |
 | Linting | ESLint (flat config) with TypeScript ESLint, React Hooks, React Refresh |
 
 ## Project Structure
@@ -127,10 +127,50 @@ scripts/
 - **Mobile scaling**: Models scale responsively based on viewport dimensions.
 - **Audio**: Web Audio API synthesized sounds — no audio file downloads.
 
+## Page Architecture
+
+### Persistent Overlays
+All main pages (Schedule, Community, Shop, Manifesto) are **persistent overlays** rendered alongside the canvas. They self-gate via `useDeferredUnmount` + camera mode. Pattern:
+1. Route changes → `RouteSync` sets camera mode
+2. Camera transitions to new position (damping 0.18)
+3. Once `cameraSettled = true`, overlay content fades in
+4. On exit: overlay fades out fast (300ms), camera continues moving (1.2s)
+
+New pages MUST follow this pattern — never render a page as a route element that covers the canvas.
+
+### Camera Modes
+| Mode | Direction | Route |
+|------|-----------|-------|
+| game | `(0, -8, 6)` | `/` |
+| birdseye | `(0, 0, 1)` | `/schedule` |
+| referee | `(0, -1, 0.05)` | `/community` |
+| umpire | `(0, -4, 1.5)` | `/manifesto` |
+| shop | `(0, -3, 0.8)` | `/shop` |
+
+### Navigation Behavior
+- **Home**: logo visible, nav links visible
+- **Community**: logo always hidden, nav links always hidden
+- **All other pages**: logo hides on scroll (>40px), nav links hidden until user scrolls to bottom
+- Non-scrollable pages: logo visible, links hidden
+- Shared hook: `useBottomScroll(active, elementRef?)` handles both logo and link state
+
+### Page Standards
+- **Top padding**: 8rem on all secondary pages (sub-pages, product detail, shop, etc.)
+- **Mobile breakpoints**: must include 480px breakpoint for all new CSS
+- **Videos**: convert .mov to .mp4 with ffmpeg (`-c:v libx264 -preset slow -crf 30 -an -movflags +faststart -vf "scale=720:-2"`)
+- **Community sub-pages**: use `community-sub.css` shared styles + crossfade-with-blur entry animation
+
+### Contact Info
+- Email: info@loveandlob.co
+- Instagram: @loveandlobnyc
+- Substack: nycblazer
+
 ## Known Patterns & Gotchas
 
 - The canvas is full-screen; UI is layered on top with `pointer-events: none` (toggled to `auto` when overlays are active).
-- Overlay transitions (shop, schedule, words) involve both camera zoom (3D) and DOM fade (UI), orchestrated through the Zustand store.
+- Overlay transitions involve both camera movement (3D) and DOM fade (UI), orchestrated through the Zustand store.
+- Exit transitions (300ms) are faster than entry transitions (600ms) so the overlay clears before the camera finishes arriving.
 - GLB models are in `public/models/` and loaded with `useGLTF` — paths are relative to the Vite base path.
 - Build-time scripts (`fetch-events.js`, `fetch-posts.js`) require `VITE_LUMA_API_KEY` in `.env` for event fetching.
 - Vite base path is set to `/love-and-lob/` for GitHub Pages compatibility.
+- Product images in `public/shop/` are referenced via JSON with `BASE_URL` prefix.
