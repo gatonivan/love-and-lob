@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useParams, Link } from 'react-router'
+import { useState, useCallback } from 'react'
+import { useParams, useNavigate } from 'react-router'
 import { useBottomScroll } from '../../hooks/useBottomScroll'
 import type { Product } from '../../types'
 import productsData from '../../assets/data/products.json'
@@ -20,14 +20,24 @@ function getPlaceholderColor(id: string): string {
 export function ProductDetail() {
   useBottomScroll(true)
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null)
+  const [exiting, setExiting] = useState(false)
   const product = products.find((p) => p.id === id)
+
+  const handleBack = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    setExiting(true)
+    setTimeout(() => {
+      navigate('/shop')
+    }, 300)
+  }, [navigate])
 
   if (!product) {
     return (
       <div className="product-detail">
         <div className="product-detail-inner">
-          <Link to="/shop" className="product-detail-back">Back to Shop</Link>
+          <a href="/shop" className="product-detail-back" onClick={handleBack}>&larr; Back to Shop</a>
           <h1>Product not found</h1>
         </div>
       </div>
@@ -37,11 +47,11 @@ export function ProductDetail() {
   const bgColor = getPlaceholderColor(product.id)
 
   return (
-    <div className="product-detail">
+    <div className={`product-detail${exiting ? ' product-detail--exiting' : ''}`}>
       <div className="product-detail-inner">
-        <Link to="/shop" className="product-detail-back">
-          Back to Shop
-        </Link>
+        <a href="/shop" className="product-detail-back" onClick={handleBack}>
+          &larr; Back to Shop
+        </a>
 
         <div className="product-detail-layout">
           {/* Image gallery */}

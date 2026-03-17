@@ -16,11 +16,12 @@ export function LeaguePage() {
 
     video.currentTime = 12
 
-    const onEnded = () => {
-      video.currentTime = 12
-      video.play()
+    const onTimeUpdate = () => {
+      if (video.currentTime < 12 || video.ended) {
+        video.currentTime = 12
+      }
     }
-    video.addEventListener('ended', onEnded)
+    video.addEventListener('timeupdate', onTimeUpdate)
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -33,7 +34,7 @@ export function LeaguePage() {
     )
     observer.observe(video)
     return () => {
-      video.removeEventListener('ended', onEnded)
+      video.removeEventListener('timeupdate', onTimeUpdate)
       observer.disconnect()
     }
   }, [])
@@ -66,6 +67,7 @@ export function LeaguePage() {
           ref={videoRef}
           className="community-sub-img"
           src={championsVideo}
+          loop
           muted
           playsInline
           preload="metadata"
