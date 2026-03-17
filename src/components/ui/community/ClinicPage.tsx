@@ -11,15 +11,19 @@ export function ClinicPage() {
       <Link to="/community" className="community-sub-back">
         &larr; Community
       </Link>
-      <h1 className="community-sub-title">Absolute Beginner Clinic</h1>
-      <p className="community-sub-intro">
-        Want to pick up tennis, but unsure where to start? Our Absolute
-        Beginner Clinic is designed for complete newcomers who want to learn
-        the fundamentals in a welcoming, low-pressure environment.
-      </p>
+      <div className="community-sub-hero">
+        <img className="community-sub-hero-img" src={clinicSecondImg} alt="Absolute Beginner Clinic" />
+        <div className="community-sub-hero-overlay">
+          <h1 className="community-sub-title">Absolute Beginner Clinic</h1>
+          <p className="community-sub-hero-text">
+            Want to pick up tennis, but unsure where to start? Our Absolute
+            Beginner Clinic is designed for complete newcomers who want to learn
+            the fundamentals in a welcoming, low-pressure environment.
+          </p>
+        </div>
+      </div>
 
       <div className="community-sub-section">
-        <img className="community-sub-img" src={clinicSecondImg} alt="Absolute Beginner Clinic" />
         <h2>Details</h2>
         <p>
           Every Sunday, 9am. $10 per session. Yes, $10. No experience

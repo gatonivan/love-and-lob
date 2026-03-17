@@ -3,7 +3,7 @@
   background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 8rem 2rem 4rem;
+  padding: 8rem 0 4rem;
   animation: community-sub-bg-in 0.6s ease forwards;
   transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
 }
@@ -28,8 +28,9 @@
 }
 
 .community-sub-content {
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
+  padding: 0 4rem;
   opacity: 1;
   transform: translateY(0);
   animation: community-sub-content-in 0.5s ease 0.25s both;
@@ -50,13 +51,13 @@
 
 .community-sub-back {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: rgba(241, 240, 226, 0.5);
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   transition: color 0.2s;
 }
 
@@ -66,11 +67,11 @@
 
 .community-sub-title {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 900;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .community-sub-intro {
@@ -86,17 +87,17 @@
 
 .community-sub-section h2 {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .community-sub-section p {
-  color: rgba(241, 240, 226, 0.6);
-  font-size: 0.85rem;
-  line-height: 1.6;
+  color: rgba(241, 240, 226, 0.7);
+  font-size: 1.15rem;
+  line-height: 1.7;
 }
 
 .community-sub-links {
@@ -120,6 +121,55 @@
   opacity: 0.7;
 }
 
+.community-sub-hero {
+  position: relative;
+  width: calc(100% + 8rem);
+  margin-left: -4rem;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+
+.community-sub-hero-img {
+  width: 100%;
+  max-height: 75vh;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  filter: brightness(0.45);
+}
+
+.community-sub-hero-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4rem;
+}
+
+.community-sub-hero-overlay .community-sub-title {
+  color: #F1F0E2;
+  margin-bottom: 1rem;
+}
+
+.community-sub-hero-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: rgba(241, 240, 226, 0.85);
+  max-width: 600px;
+}
+
+.community-sub-img--full {
+  width: calc(100% + 8rem);
+  margin-left: -4rem;
+  max-height: 70vh;
+  object-fit: cover;
+  object-position: center 30%;
+  margin-bottom: 2.5rem;
+}
+
 .community-sub-img {
   width: 100%;
   border-radius: 6px;
@@ -137,14 +187,44 @@
 
 @media (max-width: 480px) {
   .community-sub-page {
-    padding: 7rem 1.5rem 4rem;
+    padding: 7rem 0 4rem;
+  }
+
+  .community-sub-content {
+    padding: 0 1.5rem;
   }
 
   .community-sub-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .community-sub-intro {
     font-size: 0.8rem;
+  }
+
+  .community-sub-hero {
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+  }
+
+  .community-sub-hero-overlay {
+    padding: 1.5rem;
+  }
+
+  .community-sub-hero-text {
+    font-size: 1.1rem;
+  }
+
+  .community-sub-img--full {
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+  }
+
+  .community-sub-section h2 {
+    font-size: 1.4rem;
+  }
+
+  .community-sub-section p {
+    font-size: 1rem;
   }
 }

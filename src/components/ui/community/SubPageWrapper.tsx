@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { useSceneStore } from '../../../stores/sceneStore'
 
@@ -9,6 +9,19 @@ interface SubPageWrapperProps {
 export function SubPageWrapper({ children }: SubPageWrapperProps) {
   const exiting = useSceneStore((s) => s.pageExiting)
   const navigate = useNavigate()
+
+  // Always hide the logo on community sub-pages
+  useEffect(() => {
+    useSceneStore.getState().setLogoHidden(true)
+    // Override any delayed checks from useBottomScroll
+    const id = setInterval(() => {
+      useSceneStore.getState().setLogoHidden(true)
+    }, 100)
+    return () => {
+      clearInterval(id)
+      useSceneStore.getState().setLogoHidden(false)
+    }
+  }, [])
 
   // Intercept all link clicks within sub-pages to add exit animation
   const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
