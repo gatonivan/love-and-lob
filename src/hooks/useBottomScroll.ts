@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSceneStore } from '../stores/sceneStore'
 
 /**
@@ -12,11 +12,38 @@ export function useBottomScroll(
   elementRef?: React.RefObject<HTMLDivElement | null>
 ) {
   const rafId = useRef(0)
+  const [mounted, setMounted] = useState(false)
 
+  // Re-trigger when the ref element appears
   useEffect(() => {
     if (!active) {
-      useSceneStore.getState().setOverlayScrolled(false)
-      useSceneStore.getState().setLogoHidden(false)
+      setMounted(false)
+      return
+    }
+    // Poll briefly for the element to appear in the DOM
+    const interval = setInterval(() => {
+      if (!elementRef || elementRef.current) {
+        setMounted(true)
+        clearInterval(interval)
+      }
+    }, 50)
+    // Fallback — stop polling after 2s
+    const fallback = setTimeout(() => {
+      setMounted(true)
+      clearInterval(interval)
+    }, 2000)
+    return () => {
+      clearInterval(interval)
+      clearTimeout(fallback)
+    }
+  }, [active, elementRef])
+
+  useEffect(() => {
+    if (!active || !mounted) {
+      if (!active) {
+        useSceneStore.getState().setOverlayScrolled(false)
+        useSceneStore.getState().setLogoHidden(false)
+      }
       return
     }
 
@@ -58,5 +85,5 @@ export function useBottomScroll(
       cancelAnimationFrame(rafId.current)
       clearTimeout(initTimer)
     }
-  }, [active, elementRef])
+  }, [active, mounted, elementRef])
 }
