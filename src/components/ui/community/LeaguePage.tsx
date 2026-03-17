@@ -1,10 +1,31 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { useBottomScroll } from '../../../hooks/useBottomScroll'
 import leagueSecondImg from '../../../assets/community/league_second_page.jpeg'
+import championsVideo from '../../../assets/community/champions_3v3.mp4'
 import './community-sub.css'
 
 export function LeaguePage() {
   useBottomScroll(true)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play()
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.4 }
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="community-sub-page">
       <div className="community-sub-content">
@@ -30,6 +51,15 @@ export function LeaguePage() {
             seed in the <strong>Love Division</strong>, claim the 2025
             championship. Stay tuned for the 2026 season!
           </p>
+          <video
+            ref={videoRef}
+            className="community-sub-img"
+            src={championsVideo}
+            muted
+            playsInline
+            preload="metadata"
+            style={{ marginTop: '1.5rem' }}
+          />
         </div>
       </div>
     </div>
