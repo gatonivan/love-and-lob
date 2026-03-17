@@ -9,8 +9,8 @@ export function Navigation() {
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
 
-  // Logo: visible on home, hides on scroll for all other pages
-  const hideLogo = !isHome && logoHidden
+  // Logo: visible on home, always hidden on community, hides on scroll elsewhere
+  const hideLogo = isCommunity || (!isHome && logoHidden)
 
   // Links: visible on home, always hidden on community,
   // hidden on other pages until user scrolls to bottom
