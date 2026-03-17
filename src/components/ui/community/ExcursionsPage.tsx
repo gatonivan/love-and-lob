@@ -56,7 +56,7 @@ export function ExcursionsPage() {
         </p>
         <p style={{ marginTop: '1rem' }}>
           Thanks to our sponsors Acme Smoked Fish, Bagelfest, Giri Nathan,
-          Greenberg Babels, Leisure Hydration, Michael Kosta, Nick Pachelli,
+          Greenberg Bagels, Leisure Hydration, Michael Kosta, Nick Pachelli,
           Weedsport, &amp; Weltpocket.
         </p>
       </div>
