@@ -9,6 +9,7 @@ interface SceneState {
   cameraSettled: boolean
   overlayScrolled: boolean
   logoHidden: boolean
+  pageExiting: boolean
 
   toggleSound: () => void
   setReducedMotion: (reduced: boolean) => void
@@ -16,6 +17,7 @@ interface SceneState {
   setCameraSettled: (settled: boolean) => void
   setOverlayScrolled: (scrolled: boolean) => void
   setLogoHidden: (hidden: boolean) => void
+  setPageExiting: (exiting: boolean) => void
 }
 
 export const useSceneStore = create<SceneState>((set) => ({
@@ -25,6 +27,7 @@ export const useSceneStore = create<SceneState>((set) => ({
   cameraSettled: true,
   overlayScrolled: false,
   logoHidden: false,
+  pageExiting: false,
 
   toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
   setReducedMotion: (reduced) => set({ reducedMotion: reduced }),
@@ -32,4 +35,5 @@ export const useSceneStore = create<SceneState>((set) => ({
   setCameraSettled: (settled) => set({ cameraSettled: settled }),
   setOverlayScrolled: (scrolled) => set({ overlayScrolled: scrolled }),
   setLogoHidden: (hidden) => set({ logoHidden: hidden }),
+  setPageExiting: (exiting) => set({ pageExiting: exiting }),
 }))
