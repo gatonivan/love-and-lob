@@ -126,3 +126,21 @@
   color: rgba(241, 240, 226, 0.8);
   font-weight: 600;
 }
+
+@media (max-width: 480px) {
+  .product-detail {
+    padding: 7rem 1.5rem 5rem;
+  }
+
+  .product-detail-name {
+    font-size: 1.5rem;
+  }
+
+  .product-detail-price {
+    font-size: 1.1rem;
+  }
+
+  .product-detail-description {
+    font-size: 0.85rem;
+  }
+}

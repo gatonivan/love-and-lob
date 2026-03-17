@@ -123,7 +123,15 @@
 }
 
 @media (max-width: 480px) {
+  .community-sub-page {
+    padding: 7rem 1.5rem 4rem;
+  }
+
   .community-sub-title {
     font-size: 1.5rem;
+  }
+
+  .community-sub-intro {
+    font-size: 0.8rem;
   }
 }

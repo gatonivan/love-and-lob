@@ -281,3 +281,21 @@
     font-size: 1.6rem;
   }
 }
+
+@media (max-width: 480px) {
+  .schedule-season-name {
+    font-size: 1rem;
+  }
+
+  .schedule-season-body {
+    font-size: 0.8rem;
+  }
+
+  .schedule-level-name {
+    font-size: 0.85rem;
+  }
+
+  .schedule-level-desc {
+    font-size: 0.75rem;
+  }
+}
