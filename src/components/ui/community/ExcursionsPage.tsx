@@ -55,6 +55,11 @@ export function ExcursionsPage() {
             prestigious Vanderbilt-Strathmore Country Club in Manhasset, NY.
           </p>
         </div>
+
+        <div className="community-sub-section">
+          <h2>Woodstock</h2>
+          <p>Details coming soon.</p>
+        </div>
       </div>
     </div>
   )

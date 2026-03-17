@@ -28,7 +28,6 @@ const sections: Section[] = [
   { name: 'Community Day', path: '/community/community-day', subtitle: 'Free tennis programming for the neighborhood', media: communityDayImg, mediaType: 'image' },
   { name: 'Excursions', path: '/community/excursions', subtitle: 'Day trips and weekend getaways to new courts', media: excursionsImg, mediaType: 'image', objectPosition: 'center 65%' },
   { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond', media: radioImg, mediaType: 'image' },
-  { name: 'Woodstock', path: '/community/woodstock', subtitle: 'Details coming soon' },
 ]
 
 export function CommunityPage() {

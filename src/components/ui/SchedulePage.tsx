@@ -112,8 +112,8 @@ export function SchedulePage() {
               <h2 className="schedule-season-name">Winter Season</h2>
               <p className="schedule-season-dates">November &ndash; April</p>
               <p className="schedule-season-body">
-                Indoor programming through the cold months. Clinics and private
-                lessons to keep your game sharp year-round.
+                Indoor programming through the cold months. Clinics to keep
+                your game sharp year-round.
               </p>
               <a
                 href="https://lu.ma/loveandlob"
