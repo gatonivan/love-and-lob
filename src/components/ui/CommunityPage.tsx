@@ -23,11 +23,12 @@ interface Section {
 
 const sections: Section[] = [
   { name: 'Absolute Beginner Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game', media: clinicImg, mediaType: 'image', mobileObjectPosition: '65% center' },
-  { name: 'Community Day', path: '/community/community-day', subtitle: 'Free tennis programming for the neighborhood', media: communityDayImg, mediaType: 'image' },
-  { name: 'League', path: '/community/league', subtitle: '3v3 Team Singles — Love & Lob divisions', media: leagueVideo, mediaType: 'video' },
   { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture', media: experiencesImg, mediaType: 'image', objectPosition: 'center bottom' },
-  { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond', media: radioImg, mediaType: 'image' },
+  { name: 'League', path: '/community/league', subtitle: '3v3 Team Singles — Love & Lob divisions', media: leagueVideo, mediaType: 'video' },
+  { name: 'Community Day', path: '/community/community-day', subtitle: 'Free tennis programming for the neighborhood', media: communityDayImg, mediaType: 'image' },
   { name: 'Excursions', path: '/community/excursions', subtitle: 'Day trips and weekend getaways to new courts', media: excursionsImg, mediaType: 'image', objectPosition: 'center 65%' },
+  { name: 'Radio', path: '/community/radio', subtitle: 'Curated playlists and DJ sets for the court and beyond', media: radioImg, mediaType: 'image' },
+  { name: 'Woodstock', path: '/community/woodstock', subtitle: 'Details coming soon' },
 ]
 
 export function CommunityPage() {

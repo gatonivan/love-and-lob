@@ -29,6 +29,7 @@ export function ProductCard({ product }: ProductCardProps) {
         ) : (
           <span className="product-card-placeholder">{product.category}</span>
         )}
+        {product.soldOut && <span className="product-card-sold-out">Sold Out</span>}
       </div>
       <div className="product-card-info">
         <h3 className="product-card-name">{product.name}</h3>

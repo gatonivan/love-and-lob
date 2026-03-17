@@ -6,4 +6,5 @@ export interface Product {
   images: string[]
   specs: Record<string, string>
   description: string
+  soldOut?: boolean
 }

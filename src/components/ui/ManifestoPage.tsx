@@ -160,7 +160,7 @@ export function ManifestoPage() {
               info@loveandlob.co
             </a>
             <a
-              href="https://www.instagram.com/loveandlob"
+              href="https://www.instagram.com/loveandlobnyc"
               target="_blank"
               rel="noopener noreferrer"
               className="manifesto-contact-item"

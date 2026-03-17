@@ -41,23 +41,39 @@ function formatTime(dateStr: string): string {
 const SKILL_LEVELS = [
   {
     name: 'Absolute Beginner',
+    subtitle: 'Starting Level',
     description:
-      'Never picked up a racket. We start from zero — grip, stance, and your first swing. No experience needed.',
+      'Complete newcomers who need to learn how to hold a racket properly, basic swing mechanics, & fundamental movement patterns. They\'re just beginning to make consistent contact with the ball.',
   },
   {
     name: 'Beginner',
     description:
-      'You\'ve hit a few balls but haven\'t played a real match. Building consistency on forehand, backhand, and serve fundamentals.',
+      'Players who can make basic contact with the ball and understand court positioning, but their shots lack consistency and power. They can sustain short rallies on a smaller court with cooperative partners.',
   },
   {
-    name: 'Intermediate',
+    name: 'Advanced Beginner',
     description:
-      'You can rally and keep score. Working on shot placement, net play, and developing a game plan.',
+      'Players who have developed more reliable ball contact and can keep rallies going on a full court, though their shot placement & power are still developing. They understand basic strategy, but execution remains inconsistent. (USTA 2.0–3.0)',
+  },
+  {
+    name: 'Low-Intermediate',
+    description:
+      'Players with solid fundamental technique who can execute all basic strokes (forehand, backhand, serve, volley) but with varying degrees of success. Their consistency fluctuates during matches, & they\'re still refining their shot selection. (USTA 3.0–3.5)',
+  },
+  {
+    name: 'High-Intermediate',
+    description:
+      'Consistent players with good technique across all strokes who can execute most shots reliably under pressure. They understand court positioning, basic tactics, & can compete effectively in recreational leagues. (USTA 3.5–4.0)',
   },
   {
     name: 'Advanced',
     description:
-      'Competitive player with consistent strokes. Refining strategy, point construction, and match-level intensity.',
+      'Highly consistent players who excel in match situations, capable of executing advanced shots and strategies. You compete at USTA 4.0+ levels.',
+  },
+  {
+    name: 'I\'m Nice',
+    description:
+      'Former high-level competitive players (high school/college) with exceptional technique, court sense, and match experience. You play at USTA 4.5+ levels with advanced shot-making ability.',
   },
 ]
 
@@ -94,7 +110,7 @@ export function SchedulePage() {
           <div className="schedule-seasons">
             <div className="schedule-season">
               <h2 className="schedule-season-name">Winter Season</h2>
-              <p className="schedule-season-dates">November &ndash; March</p>
+              <p className="schedule-season-dates">November &ndash; April</p>
               <p className="schedule-season-body">
                 Indoor programming through the cold months. Clinics and private
                 lessons to keep your game sharp year-round.
@@ -113,10 +129,9 @@ export function SchedulePage() {
 
             <div className="schedule-season">
               <h2 className="schedule-season-name">Summer Season</h2>
-              <p className="schedule-season-dates">April &ndash; October</p>
+              <p className="schedule-season-dates">May &ndash; October</p>
               <p className="schedule-season-body">
-                Outdoor clinics every Sunday at 9am. All levels welcome.
-                $10 per session. Our home courts on the Upper West Side.
+                Details coming soon.
               </p>
               <a
                 href="https://lu.ma/loveandlob"
@@ -190,7 +205,12 @@ export function SchedulePage() {
             <div className="schedule-levels-list">
               {SKILL_LEVELS.map((level) => (
                 <div key={level.name} className="schedule-level">
-                  <h3 className="schedule-level-name">{level.name}</h3>
+                  <h3 className="schedule-level-name">
+                    {level.name}
+                    {'subtitle' in level && level.subtitle && (
+                      <span className="schedule-level-subtitle"> ({level.subtitle})</span>
+                    )}
+                  </h3>
                   <p className="schedule-level-desc">{level.description}</p>
                 </div>
               ))}

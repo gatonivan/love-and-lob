@@ -239,6 +239,15 @@
   margin-bottom: 0.4rem;
 }
 
+.schedule-level-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: rgba(241, 240, 226, 0.4);
+}
+
 .schedule-level-desc {
   font-size: 0.8rem;
   color: rgba(241, 240, 226, 0.6);

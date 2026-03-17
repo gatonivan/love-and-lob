@@ -14,11 +14,27 @@
 }
 
 .product-card-image {
+  position: relative;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.product-card-sold-out {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #0a0a0a;
+  background: #F1F0E2;
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
 }
 
 .product-card-image img {

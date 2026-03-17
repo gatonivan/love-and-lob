@@ -14,6 +14,7 @@ import { ExperiencesPage } from './components/ui/community/ExperiencesPage'
 import { ExcursionsPage } from './components/ui/community/ExcursionsPage'
 import { CommunityDayPage } from './components/ui/community/CommunityDayPage'
 import { LeaguePage } from './components/ui/community/LeaguePage'
+import { WoodstockPage } from './components/ui/community/WoodstockPage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
 import { EmailSubscribe } from './components/ui/EmailSubscribe'
 import { useReducedMotion } from './hooks/useReducedMotion'
@@ -61,6 +62,7 @@ function App() {
         <Route path="/community/excursions" element={<ExcursionsPage />} />
         <Route path="/community/community-day" element={<CommunityDayPage />} />
         <Route path="/community/league" element={<LeaguePage />} />
+        <Route path="/community/woodstock" element={<WoodstockPage />} />
 <Route path="/manifesto" element={null} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
