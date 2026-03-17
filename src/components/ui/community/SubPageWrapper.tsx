@@ -23,21 +23,30 @@ export function SubPageWrapper({ children }: SubPageWrapperProps) {
     }
   }, [])
 
-  // Intercept all link clicks within sub-pages to add exit animation
+  // Intercept internal link clicks within sub-pages to add exit animation
   const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
     const link = target.closest('a[href]') as HTMLAnchorElement | null
     if (!link) return
 
     const href = link.getAttribute('href')
-    // Only intercept internal links (not external ones like Spotify)
-    if (!href || href.startsWith('http') || href.startsWith('mailto')) return
+    if (!href) return
+
+    // Let external links pass through normally
+    if (href.startsWith('http') || href.startsWith('mailto')) return
+
+    // Use the `to` attribute from React Router Link if available,
+    // otherwise strip the base path from the rendered href
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, '')
+    const routePath = href.startsWith(basePath)
+      ? href.slice(basePath.length) || '/'
+      : href
 
     e.preventDefault()
     useSceneStore.getState().setPageExiting(true)
     setTimeout(() => {
       useSceneStore.getState().setPageExiting(false)
-      navigate(href)
+      navigate(routePath)
     }, 300)
   }, [navigate])
 
