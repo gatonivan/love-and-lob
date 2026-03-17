@@ -31,10 +31,10 @@ export function ExcursionsPage() {
         <p>
           Hosted our first L&amp;L Invitational at the beautiful waterfront
           Tennis Club of Hastings in Hastings-on-Hudson, NY. 2 hours of
-          instructional drill &amp; play on the American green clay. Special
-          thanks to sponsors Casta&ntilde;o Group, Vacations, Inc., Leisure
-          Hydration, &amp; Uncle Nearest. Food provided by Layla&rsquo;s
-          Falafel.
+          instructional drill &amp; play on the American green clay. Powered
+          by Harlem Center for Aesthetic Dentistry. Special thanks to sponsors
+          Casta&ntilde;o Group, Vacations, Inc., Leisure Hydration, &amp;
+          Uncle Nearest. Food provided by Layla&rsquo;s Falafel.
         </p>
       </div>
 
@@ -49,10 +49,15 @@ export function ExcursionsPage() {
         />
         <h2>Long Island</h2>
         <p>
-          Co-hosted the Ryde or Die Cup alongside Bageled NYC. Based off the
-          infamous Davis Cup, we had two teams competing against each other in
+          Co-hosted the Ryde or Die Cup alongside Bageled NYC. Based on the
+          infamous Davis Cup, we had Team Love vs Team Lox go head-to-head in
           differing team formats across Tennis &amp; Pickleball at the
           prestigious Vanderbilt-Strathmore Country Club in Manhasset, NY.
+        </p>
+        <p style={{ marginTop: '1rem' }}>
+          Thanks to our sponsors Acme Smoked Fish, Bagelfest, Giri Nathan,
+          Greenberg Babels, Leisure Hydration, Michael Kosta, Nick Pachelli,
+          Weedsport, &amp; Weltpocket.
         </p>
       </div>
 
