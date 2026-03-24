@@ -62,12 +62,12 @@
 .community-section-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.45);
   transition: background 0.4s ease;
 }
 
 .community-section:hover .community-section-overlay {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .community-section--no-media .community-section-overlay {
