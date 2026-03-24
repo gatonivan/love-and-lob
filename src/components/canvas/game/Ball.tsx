@@ -33,10 +33,12 @@ export function Ball({ positionRef }: BallProps) {
         const mat = child.material as THREE.MeshStandardMaterial
         mat.envMapIntensity = 0
         mat.envMap = null
-        mat.roughness = 1
+        mat.roughness = 0.8
         mat.metalness = 0
         mat.metalnessMap = null
         mat.roughnessMap = null
+        mat.emissive = new THREE.Color('#d8e84d')
+        mat.emissiveIntensity = 0.15
         if (mat.normalMap) {
           mat.normalScale = new THREE.Vector2(0.3, 0.3)
         }

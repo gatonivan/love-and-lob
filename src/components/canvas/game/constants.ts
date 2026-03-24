@@ -31,10 +31,11 @@ export const GRID_START_Y = ARENA_HALF_H - 1.5 // top of grid offset from arena 
 
 // Colors
 export const COLOR_ACCENT = '#d8e84d'
-export const COLOR_TEXT = '#F1F0E2'
-export const COLOR_BG = '#0a0a0a'
-export const COLOR_WALL = '#1a1a1a'
-export const COLOR_PADDLE = '#F1F0E2'
+export const COLOR_TEXT = '#004225'
+export const COLOR_BG = '#F1F0E2'
+export const COLOR_WALL = '#F1F0E2'
+export const COLOR_PADDLE = '#004225'
+export const COLOR_COURT = '#004225'
 
 // Brick row colors — gradient from dark green to accent lime (top to bottom)
 export const BRICK_ROW_COLORS = [

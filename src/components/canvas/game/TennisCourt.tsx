@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import {
   ARENA_WIDTH,
   ARENA_HEIGHT,
+  COLOR_COURT,
 } from './constants'
 
 // Court colors
@@ -92,6 +93,12 @@ function CourtLine({ points }: { points: [number, number][] }) {
 export function TennisCourt() {
   return (
     <group>
+      {/* === Court surface === */}
+      <mesh position={[0, 0, -0.12]}>
+        <boxGeometry args={[ARENA_WIDTH + 1, ARENA_HEIGHT + 1, 0.02]} />
+        <meshStandardMaterial color={COLOR_COURT} roughness={0.9} />
+      </mesh>
+
       {/* === Court lines === */}
 
       {/* Outer boundary (doubles sidelines + baselines) */}
