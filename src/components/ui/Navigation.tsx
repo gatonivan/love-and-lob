@@ -1,7 +1,8 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
-import dropdownIcon from '../../assets/white_transparent_dropdown.png'
+import dropdownIconWhite from '../../assets/white_transparent_dropdown.png'
+import dropdownIconGreen from '../../assets/green_transparent_dropdown.png'
 import './Navigation.css'
 
 export function Navigation() {
@@ -13,6 +14,7 @@ export function Navigation() {
   const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
+  const isCommunityArea = pathname === '/community' || pathname.startsWith('/community/')
   const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/')
   const showIconMenu = !isHome && cameraSettled
 
@@ -82,7 +84,7 @@ export function Navigation() {
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="Menu"
           >
-            <img src={dropdownIcon} alt="" className="nav-icon-img" />
+            <img src={isCommunityArea ? dropdownIconWhite : dropdownIconGreen} alt="" className="nav-icon-img" />
           </button>
           <div className={`nav-dropdown ${menuOpen ? 'nav-dropdown--open' : ''}`}>
             <a href="/" onClick={(e) => handleMenuNav(e, '/')}>Home</a>
