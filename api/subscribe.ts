@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'content-type': 'application/json',
       'api-key': apiKey,
     },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, listIds: [18] }),
   })
 
   if (response.status === 201) {
