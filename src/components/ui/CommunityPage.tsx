@@ -45,11 +45,26 @@ export function CommunityPage() {
   const handleLeagueVideoRef = useCallback((el: HTMLVideoElement | null) => {
     leagueVideoRef.current = el
     if (!el) return
-    el.currentTime = 6
+
     const onTimeUpdate = () => {
-      if (el.currentTime >= 16) el.currentTime = 6
+      if (el.currentTime >= 16 || el.currentTime < 6) {
+        el.currentTime = 6
+      }
     }
+
+    const onCanPlay = () => {
+      el.currentTime = 6
+      el.play().catch(() => {})
+      el.removeEventListener('canplay', onCanPlay)
+    }
+
     el.addEventListener('timeupdate', onTimeUpdate)
+    if (el.readyState >= 3) {
+      el.currentTime = 6
+      el.play().catch(() => {})
+    } else {
+      el.addEventListener('canplay', onCanPlay)
+    }
   }, [])
 
   // Community: logo hides on scroll, links always hidden
