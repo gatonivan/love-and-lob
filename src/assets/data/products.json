@@ -20,6 +20,7 @@
     "priceOptions": [50, 100, 150],
     "category": "accessories",
     "images": [],
+    "comingSoon": true,
     "specs": {
       "Delivery": "Digital"
     },

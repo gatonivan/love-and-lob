@@ -8,4 +8,5 @@ export interface Product {
   specs: Record<string, string>
   description: string
   soldOut?: boolean
+  comingSoon?: boolean
 }
