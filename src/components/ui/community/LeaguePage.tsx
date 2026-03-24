@@ -52,17 +52,17 @@ export function LeaguePage() {
         matches, followed by a single-elimination playoff format for the
         postseason.
       </p>
+      <p className="community-sub-intro" style={{ marginTop: '1rem' }}>
+        The <strong>Lob Division</strong> had 40 &ndash; No Love (6th seed)
+        fight their way to the top to claim the Lob Championship, while
+        the <em>Vollets</em>, who served as the 2nd seed in the <strong>Love
+        Division</strong>, claimed the 2025 Love Division Championship.
+        Stay tuned for the 2026 season!
+      </p>
 
       <div className="community-sub-section">
         <img className="community-sub-img" src={leagueSecondImg} alt="3v3 Team Singles League" />
         <h2>2025 Champions</h2>
-        <p>
-          The <strong>Lob Division</strong> had 40 &ndash; No Love (6th seed)
-          fight their way to the top to claim the Lob Championship, while
-          the <em>Vollets</em>, who served as the 2nd seed in the <strong>Love
-          Division</strong>, claimed the 2025 Love Division Championship.
-          Stay tuned for the 2026 season!
-        </p>
         <video
           ref={videoRef}
           className="community-sub-img"
