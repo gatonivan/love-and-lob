@@ -63,6 +63,13 @@ export function LeaguePage() {
       <div className="community-sub-section">
         <img className="community-sub-img" src={leagueSecondImg} alt="3v3 Team Singles League" />
         <h2>2025 Champions</h2>
+        <p>
+          The <strong>Lob Division</strong> had &ldquo;40 &ndash; No
+          Love&rdquo; (lowest seed) fight their way to the top to claim the
+          championship, while the <em>Vollets</em>, who served as the second
+          seed in the <strong>Love Division</strong>, claim the 2025
+          championship. Stay tuned for the 2026 season!
+        </p>
         <video
           ref={videoRef}
           className="community-sub-img"
