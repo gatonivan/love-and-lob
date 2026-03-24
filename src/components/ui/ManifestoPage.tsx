@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
@@ -123,30 +123,76 @@ export function ManifestoPage() {
         {/* CONTACT */}
         <section className="manifesto-section manifesto-section--contact">
           <h2 className="manifesto-heading">Get in Touch</h2>
-          <div className="manifesto-contact-links">
-            <a href="mailto:info@loveandlob.co" className="manifesto-contact-item">
-              info@loveandlob.co
-            </a>
-            <a
-              href="https://www.instagram.com/loveandlobnyc"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="manifesto-contact-item"
-            >
-              Instagram
-            </a>
-            <a
-              href="https://substack.com/@nycblazer"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="manifesto-contact-item"
-            >
-              Substack
-            </a>
+          <div className="manifesto-contact-row">
+            <div className="manifesto-contact-links">
+              <a href="mailto:info@loveandlob.co" className="manifesto-contact-item">
+                info@loveandlob.co
+              </a>
+              <a
+                href="https://www.instagram.com/loveandlobnyc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="manifesto-contact-item"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://substack.com/@nycblazer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="manifesto-contact-item"
+              >
+                Substack
+              </a>
+            </div>
+            <ManifestoSubscribe />
           </div>
         </section>
 
       </div>
+    </div>
+  )
+}
+
+function ManifestoSubscribe() {
+  const [email, setEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email.trim()) return
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+    } catch {
+      // Don't block UX on failure
+    }
+    setSubmitted(true)
+  }
+
+  return (
+    <div className="manifesto-subscribe">
+      <h3 className="manifesto-subscribe-heading">Stay in the Loop</h3>
+      {submitted ? (
+        <p className="manifesto-subscribe-thanks">Thanks for subscribing.</p>
+      ) : (
+        <form className="manifesto-subscribe-form" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            className="manifesto-subscribe-input"
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit" className="manifesto-subscribe-btn">
+            Subscribe
+          </button>
+        </form>
+      )}
     </div>
   )
 }

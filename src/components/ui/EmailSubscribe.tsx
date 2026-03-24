@@ -14,7 +14,8 @@ function wasDismissedRecently(): boolean {
 export function EmailSubscribe() {
   const pathname = useLocation().pathname
   const isHome = pathname === '/'
-  const shouldShow = !isHome && !wasDismissedRecently()
+  const isManifesto = pathname === '/manifesto'
+  const shouldShow = !isHome && !isManifesto && !wasDismissedRecently()
   const [visible, setVisible] = useState(false)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)

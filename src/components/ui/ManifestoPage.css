@@ -238,6 +238,83 @@
   color: #F1F0E2;
 }
 
+/* ── Contact Row ── */
+
+.manifesto-contact-row {
+  display: flex;
+  gap: 3rem;
+  justify-content: space-between;
+}
+
+/* ── Subscribe ── */
+
+.manifesto-subscribe {
+  flex: 1;
+  max-width: 260px;
+}
+
+.manifesto-subscribe-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(241, 240, 226, 0.5);
+  margin-bottom: 0.75rem;
+}
+
+.manifesto-subscribe-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.manifesto-subscribe-input {
+  flex: 1;
+  background: rgba(241, 240, 226, 0.06);
+  border: 1px solid rgba(241, 240, 226, 0.15);
+  border-radius: 4px;
+  color: #F1F0E2;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.manifesto-subscribe-input::placeholder {
+  color: rgba(241, 240, 226, 0.3);
+}
+
+.manifesto-subscribe-input:focus {
+  border-color: rgba(241, 240, 226, 0.4);
+}
+
+.manifesto-subscribe-btn {
+  background: rgba(241, 240, 226, 0.1);
+  border: 1px solid rgba(241, 240, 226, 0.15);
+  border-radius: 4px;
+  color: #F1F0E2;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.manifesto-subscribe-btn:hover {
+  background: rgba(241, 240, 226, 0.18);
+}
+
+.manifesto-subscribe-thanks {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(241, 240, 226, 0.7);
+}
+
 /* ── Mobile ── */
 
 @media (max-width: 480px) {
@@ -263,6 +340,15 @@
 
   .manifesto-section {
     margin-bottom: 2.5rem;
+  }
+
+  .manifesto-contact-row {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .manifesto-subscribe {
+    max-width: 100%;
   }
 
   .manifesto-featured {
