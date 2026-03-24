@@ -34,17 +34,17 @@ export const COLOR_ACCENT = '#d8e84d'
 export const COLOR_TEXT = '#004225'
 export const COLOR_BG = '#F1F0E2'
 export const COLOR_WALL = '#F1F0E2'
-export const COLOR_PADDLE = '#004225'
+export const COLOR_PADDLE = '#1a7243'
 export const COLOR_COURT = '#004225'
 
-// Brick row colors — gradient from dark green to accent lime (top to bottom)
+// Brick row colors — dark greens with lime accent on top row
 export const BRICK_ROW_COLORS = [
-  '#004225', // row 0 (top) — dark green
-  '#0d5a34',
-  '#1a7243',
-  '#2d8a52',
-  '#6ab040',
-  '#d8e84d', // row 5 (bottom) — accent lime
+  '#d8e84d', // row 0 (top) — accent lime
+  '#3d7a30',
+  '#1a6a35',
+  '#0d5a2d',
+  '#084a25',
+  '#004225', // row 5 (bottom) — darkest green
 ]
 
 // Scoring

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import dropdownIconWhite from '../../assets/white_transparent_dropdown.png'
 import dropdownIconGreen from '../../assets/green_transparent_dropdown.png'
+import logoImg from '../../assets/love_and_lob_logo.png'
 import './Navigation.css'
 
 export function Navigation() {
@@ -18,7 +19,7 @@ export function Navigation() {
   const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/')
   const showIconMenu = !isHome && cameraSettled
 
-  // Logo: visible on home only, hidden everywhere else (icon menu replaces it)
+  // Logo: visible on home only
   const hideLogo = !isHome
 
   // Links: visible on home, always hidden on community,
@@ -73,7 +74,7 @@ export function Navigation() {
   return (
     <nav className="nav">
       <Link to="/" className={`nav-logo ${hideLogo ? 'nav-logo--hidden' : ''}`} onClick={handleLogoClick}>
-        Love & Lob
+        <img src={logoImg} alt="Love & Lob" className="nav-logo-img" />
       </Link>
 
       {/* Icon menu for all pages except home */}

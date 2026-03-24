@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router'
-import { useBottomScroll } from '../../hooks/useBottomScroll'
+import { useLocation, useNavigate } from 'react-router'
+import { useSceneStore } from '../../stores/sceneStore'
+import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import type { Product } from '../../types'
 import productsData from '../../assets/data/products.json'
 import './ProductDetail.css'
@@ -18,86 +19,82 @@ function getPlaceholderColor(id: string): string {
 }
 
 export function ProductDetail() {
-  useBottomScroll(true)
-  const { id } = useParams<{ id: string }>()
+  const pathname = useLocation().pathname
   const navigate = useNavigate()
+  const settled = useSceneStore((s) => s.cameraMode === 'shop' && s.cameraSettled)
+
+  // Match /shop/:id routes
+  const match = pathname.match(/^\/shop\/(.+)$/)
+  const active = !!match
+  const [shouldRender, isVisible] = useDeferredUnmount(active)
+  const show = isVisible && settled
+
+  const productId = match?.[1] ?? ''
+  const product = products.find((p) => p.id === productId)
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null)
-  const [exiting, setExiting] = useState(false)
-  const product = products.find((p) => p.id === id)
 
   const handleBack = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
-    setExiting(true)
-    setTimeout(() => {
-      navigate('/shop')
-    }, 300)
+    navigate('/shop')
   }, [navigate])
 
-  if (!product) {
-    return (
-      <div className="product-detail">
-        <div className="product-detail-inner">
-          <a href="/shop" className="product-detail-back" onClick={handleBack}>&larr; Back to Shop</a>
-          <h1>Product not found</h1>
-        </div>
-      </div>
-    )
-  }
-
-  const bgColor = getPlaceholderColor(product.id)
+  if (!shouldRender) return null
 
   return (
-    <div className={`product-detail${exiting ? ' product-detail--exiting' : ''}`}>
-      <div className="product-detail-inner">
+    <div className={`product-detail-overlay ${show ? 'product-detail-overlay--visible' : ''}`}>
+      <div className={`product-detail-inner ${show ? 'product-detail-inner--visible' : ''}`}>
         <a href="/shop" className="product-detail-back" onClick={handleBack}>
           &larr; Back to Shop
         </a>
 
-        <div className="product-detail-layout">
-          {/* Image gallery */}
-          <div className="product-detail-gallery">
-            <div className="product-detail-hero-image" style={{ background: bgColor }}>
-              {product.images.length > 0 ? (
-                <img src={`${BASE}${product.images[0]}`} alt={product.name} />
-              ) : (
-                <span className="product-detail-placeholder">{product.category}</span>
-              )}
-            </div>
-          </div>
-
-          {/* Product info */}
-          <div className="product-detail-info">
-            <div className="product-detail-category">{product.category}</div>
-            <h1 className="product-detail-name">{product.name}</h1>
-            {product.priceOptions ? (
-              <div className="product-detail-price-select">
-                <select
-                  className="product-detail-dropdown"
-                  value={selectedPrice ?? product.priceOptions[0]}
-                  onChange={(e) => setSelectedPrice(Number(e.target.value))}
-                >
-                  {product.priceOptions.map((amt) => (
-                    <option key={amt} value={amt}>${amt}</option>
-                  ))}
-                </select>
+        {product ? (
+          <div className="product-detail-layout">
+            {/* Image gallery */}
+            <div className="product-detail-gallery">
+              <div className="product-detail-hero-image" style={{ background: getPlaceholderColor(product.id) }}>
+                {product.images.length > 0 ? (
+                  <img src={`${BASE}${product.images[0]}`} alt={product.name} />
+                ) : (
+                  <span className="product-detail-placeholder">{product.category}</span>
+                )}
               </div>
-            ) : (
-              <div className="product-detail-price">${product.price}</div>
-            )}
-            <p className="product-detail-description">{product.description}</p>
+            </div>
 
-            {/* Specs in monospace — the MSCHF touch */}
-            <div className="product-detail-specs">
-              <h3 className="product-detail-specs-title">Specifications</h3>
-              {Object.entries(product.specs).map(([key, val]) => (
-                <div key={key} className="product-detail-spec-row">
-                  <span className="product-detail-spec-key">{key}</span>
-                  <span className="product-detail-spec-val">{val}</span>
+            {/* Product info */}
+            <div className="product-detail-info">
+              <div className="product-detail-category">{product.category}</div>
+              <h1 className="product-detail-name">{product.name}</h1>
+              {product.priceOptions ? (
+                <div className="product-detail-price-select">
+                  <select
+                    className="product-detail-dropdown"
+                    value={selectedPrice ?? product.priceOptions[0]}
+                    onChange={(e) => setSelectedPrice(Number(e.target.value))}
+                  >
+                    {product.priceOptions.map((amt) => (
+                      <option key={amt} value={amt}>${amt}</option>
+                    ))}
+                  </select>
                 </div>
-              ))}
+              ) : (
+                <div className="product-detail-price">${product.price}</div>
+              )}
+              <p className="product-detail-description">{product.description}</p>
+
+              <div className="product-detail-specs">
+                <h3 className="product-detail-specs-title">Specifications</h3>
+                {Object.entries(product.specs).map(([key, val]) => (
+                  <div key={key} className="product-detail-spec-row">
+                    <span className="product-detail-spec-key">{key}</span>
+                    <span className="product-detail-spec-val">{val}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <h1>Product not found</h1>
+        )}
       </div>
     </div>
   )

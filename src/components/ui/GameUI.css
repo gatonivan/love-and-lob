@@ -1,6 +1,6 @@
 .game-hud {
   position: fixed;
-  bottom: 5.5rem;
+  bottom: 6.5rem;
   left: 0;
   right: 0;
   z-index: 1;
@@ -95,7 +95,7 @@
 
 @media (max-width: 480px) {
   .game-hud {
-    bottom: 4.5rem;
+    bottom: 5.5rem;
     gap: 1rem;
     font-size: 0.7rem;
     padding: 0.5rem 0;

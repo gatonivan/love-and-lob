@@ -30,3 +30,9 @@
   transform: translateY(0);
   transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
 }
+
+@media (max-width: 480px) {
+  .shop-overlay {
+    padding: 5rem 1.5rem 5rem;
+  }
+}

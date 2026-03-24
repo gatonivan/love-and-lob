@@ -44,6 +44,7 @@ function App() {
       <SchedulePage />
       <CommunityPage />
       <ShopPage />
+      <ProductDetail />
       <ManifestoPage />
 
       <Navigation />
@@ -54,7 +55,7 @@ function App() {
         <Route path="/schedule" element={null} />
         {/* /shop is handled by the persistent ShopPage overlay */}
         <Route path="/shop" element={null} />
-        <Route path="/shop/:id" element={<ProductDetail />} />
+        <Route path="/shop/:id" element={null} />
         {/* /community is handled by the persistent CommunityPage overlay */}
         <Route path="/community" element={null} />
         <Route path="/community/radio" element={<RadioPage />} />

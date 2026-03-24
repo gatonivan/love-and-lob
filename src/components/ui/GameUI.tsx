@@ -47,7 +47,7 @@ export function GameUI() {
       {/* Idle prompt */}
       {gameStatus === 'idle' && (
         <div className="game-prompt">
-          <span className="game-prompt-text">Click to Start</span>
+          <span className="game-prompt-text">Tap / Click to Start</span>
         </div>
       )}
 
