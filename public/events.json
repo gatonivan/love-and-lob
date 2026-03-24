@@ -1,0 +1,29 @@
+[
+  {
+    "id": "evt-gQPXDe1NSGiU3ew",
+    "name": "L&L Early Morning Sessions",
+    "start_at": "2026-03-27T10:30:00.000Z",
+    "end_at": "2026-03-27T12:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/3v/2335775c-b401-4796-8cab-fec08298d3e1.jpg",
+    "url": "https://luma.com/mbz4br9c",
+    "location": "SPORTIME Randall’s Island / JMTA New York City"
+  },
+  {
+    "id": "evt-tLrUvHDp96PzPHC",
+    "name": "L&L Monthly Classic Vol. 10",
+    "start_at": "2026-03-29T00:00:00.000Z",
+    "end_at": "2026-03-29T02:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/mi/1f7ad831-77d6-4320-ab9d-e0676c034a12.jpg",
+    "url": "https://luma.com/dqkvtzct",
+    "location": "Prospect Park Tennis Center"
+  },
+  {
+    "id": "evt-9VsjGWmwyztO2CR",
+    "name": "Pre-Season Bootcamp",
+    "start_at": "2026-04-09T11:00:00.000Z",
+    "end_at": "2026-04-11T13:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/6n/f0338d80-e867-4792-8088-f5ee1d795ab4.jpg",
+    "url": "https://luma.com/o4yztz7m",
+    "location": ""
+  }
+]
