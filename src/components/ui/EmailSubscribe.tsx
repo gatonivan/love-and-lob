@@ -30,10 +30,18 @@ export function EmailSubscribe() {
     localStorage.setItem(DISMISS_KEY, String(Date.now()))
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email.trim()) return
-    // TODO: wire to actual email service (Substack, Mailchimp, etc.)
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+    } catch {
+      // Still show thanks — don't block UX on API failure
+    }
     setSubmitted(true)
     localStorage.setItem(DISMISS_KEY, String(Date.now()))
     setTimeout(() => setVisible(false), 2000)
