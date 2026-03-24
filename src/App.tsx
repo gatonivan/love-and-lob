@@ -17,6 +17,7 @@ import { LeaguePage } from './components/ui/community/LeaguePage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
 import { EmailSubscribe } from './components/ui/EmailSubscribe'
 import { useReducedMotion } from './hooks/useReducedMotion'
+import { Analytics } from '@vercel/analytics/react'
 import './App.css'
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <Analytics />
       <RouteSync />
 
       {/* Persistent 3D canvas */}
