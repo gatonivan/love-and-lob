@@ -35,7 +35,7 @@
 }
 
 .game-prompt-text {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'FreightBig Pro', Georgia, serif;
   font-size: 1.25rem;
   font-weight: 900;
   color: #F1F0E2;
@@ -45,7 +45,7 @@
 }
 
 .game-prompt-title {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'FreightBig Pro', Georgia, serif;
   font-size: 1.5rem;
   font-weight: 900;
   color: #F1F0E2;
@@ -71,7 +71,7 @@
   background: none;
   border: 1px solid rgba(241, 240, 226, 0.3);
   color: #F1F0E2;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Tamil MN', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.1em;

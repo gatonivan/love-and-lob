@@ -40,7 +40,7 @@
 }
 
 .schedule-title {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'FreightBig Pro', Georgia, serif;
   font-size: 3rem;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -67,7 +67,7 @@
 }
 
 .schedule-season-name {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'FreightBig Pro', Georgia, serif;
   font-size: 1.15rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -116,7 +116,7 @@
 }
 
 .schedule-section-heading {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Tamil MN', sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -232,7 +232,7 @@
 }
 
 .schedule-level-name {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'FreightBig Pro', Georgia, serif;
   font-size: 0.95rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -241,7 +241,7 @@
 }
 
 .schedule-level-subtitle {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Tamil MN', sans-serif;
   font-size: 0.65rem;
   font-weight: 500;
   text-transform: none;
