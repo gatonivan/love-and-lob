@@ -36,14 +36,14 @@ export const COLOR_BG = '#0a0a0a'
 export const COLOR_WALL = '#1a1a1a'
 export const COLOR_PADDLE = '#F1F0E2'
 
-// Brick row colors — gradient from accent to white to gray (top to bottom)
+// Brick row colors — gradient from dark green to accent lime (top to bottom)
 export const BRICK_ROW_COLORS = [
-  '#d8e84d', // row 0 (top) — accent green
-  '#c8d84d',
-  '#b8c85d',
-  '#a8b86d',
-  '#c0c0a0',
-  '#d8d8c8', // row 5 (bottom) — near white
+  '#004225', // row 0 (top) — dark green
+  '#0d5a34',
+  '#1a7243',
+  '#2d8a52',
+  '#6ab040',
+  '#d8e84d', // row 5 (bottom) — accent lime
 ]
 
 // Scoring
