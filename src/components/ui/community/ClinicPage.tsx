@@ -27,9 +27,10 @@ export function ClinicPage() {
         <h2>Details</h2>
         <p>
           Every Sunday, 9am. $10 per session. Yes, $10. No experience
-          necessary&mdash;just bring a racket (you can rent one for $5 too)
-          &amp; good energy. We&rsquo;ll cover how to hold a racket, basic
-          swing mechanics, and fundamental movement patterns.
+          necessary &mdash; just bring a racket (or rent one for $5) &amp;
+          good energy. This 1-hour class is designed for complete newcomers
+          who want to learn the fundamentals in a welcoming, low-pressure
+          environment.
         </p>
       </div>
     </SubPageWrapper>
