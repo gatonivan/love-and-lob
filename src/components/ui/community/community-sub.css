@@ -136,7 +136,7 @@
   object-fit: cover;
   object-position: center 30%;
   display: block;
-  filter: brightness(0.45);
+  filter: brightness(0.65);
 }
 
 .community-sub-hero-overlay {
