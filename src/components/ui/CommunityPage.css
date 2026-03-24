@@ -62,16 +62,16 @@
 .community-section-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(241, 240, 226, 0.45);
+  background: rgba(0, 0, 0, 0.35);
   transition: background 0.4s ease;
 }
 
 .community-section:hover .community-section-overlay {
-  background: rgba(241, 240, 226, 0.7);
+  background: rgba(0, 0, 0, 0.55);
 }
 
 .community-section--no-media .community-section-overlay {
-  background: rgba(241, 240, 226, 0);
+  background: rgba(0, 0, 0, 0);
 }
 
 .community-section--no-media:hover .community-section-overlay {
@@ -98,6 +98,7 @@
   font-size: 4rem;
   letter-spacing: -0.02em;
   text-transform: uppercase;
+  color: #F1F0E2;
 }
 
 .community-section-subtitle {
