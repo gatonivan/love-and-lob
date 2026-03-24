@@ -26,8 +26,8 @@ body,
 #root {
   width: 100%;
   height: 100%;
-  background: #0a0a0a;
-  color: #F1F0E2;
+  background: #F1F0E2;
+  color: #004225;
   font-family: 'Tamil MN', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   overflow: hidden;
 }

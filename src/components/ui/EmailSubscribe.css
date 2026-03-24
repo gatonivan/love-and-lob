@@ -3,10 +3,10 @@
   bottom: 6rem;
   right: 2rem;
   z-index: 90;
-  background: rgba(20, 20, 18, 0.92);
+  background: rgba(235, 234, 222, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(241, 240, 226, 0.1);
+  border: 1px solid rgba(0, 66, 37, 0.1);
   border-radius: 10px;
   padding: 1.5rem;
   max-width: 300px;
@@ -27,7 +27,7 @@
   right: 0.75rem;
   background: none;
   border: none;
-  color: rgba(241, 240, 226, 0.4);
+  color: rgba(0, 66, 37, 0.4);
   font-size: 1.25rem;
   cursor: pointer;
   line-height: 1;
@@ -36,7 +36,7 @@
 }
 
 .email-subscribe-close:hover {
-  color: rgba(241, 240, 226, 0.8);
+  color: rgba(0, 66, 37, 0.8);
 }
 
 .email-subscribe-heading {
@@ -45,13 +45,13 @@
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  color: #F1F0E2;
+  color: #004225;
   margin: 0 0 0.35rem;
 }
 
 .email-subscribe-copy {
   font-size: 0.75rem;
-  color: rgba(241, 240, 226, 0.5);
+  color: rgba(0, 66, 37, 0.5);
   margin: 0 0 1rem;
   line-height: 1.4;
 }
@@ -63,28 +63,28 @@
 
 .email-subscribe-input {
   flex: 1;
-  background: rgba(241, 240, 226, 0.06);
-  border: 1px solid rgba(241, 240, 226, 0.12);
+  background: rgba(0, 66, 37, 0.06);
+  border: 1px solid rgba(0, 66, 37, 0.12);
   border-radius: 5px;
   padding: 0.5rem 0.65rem;
   font-size: 0.75rem;
-  color: #F1F0E2;
+  color: #004225;
   font-family: 'Tamil MN', sans-serif;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .email-subscribe-input::placeholder {
-  color: rgba(241, 240, 226, 0.3);
+  color: rgba(0, 66, 37, 0.3);
 }
 
 .email-subscribe-input:focus {
-  border-color: rgba(241, 240, 226, 0.3);
+  border-color: rgba(0, 66, 37, 0.3);
 }
 
 .email-subscribe-btn {
-  background: #F1F0E2;
-  color: #0a0a0a;
+  background: #004225;
+  color: #F1F0E2;
   border: none;
   border-radius: 5px;
   padding: 0.5rem 0.85rem;

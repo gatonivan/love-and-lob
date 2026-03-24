@@ -85,7 +85,7 @@ export function LandingExperience() {
 
   return (
     <>
-      <color attach="background" args={['#0a0a0a']} />
+      <color attach="background" args={['#F1F0E2']} />
 
       <PerformanceMonitor flipflops={3}>
         <AdaptiveDpr pixelated />

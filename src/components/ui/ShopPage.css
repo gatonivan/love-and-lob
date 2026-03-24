@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 1;
-  background: rgba(10, 10, 10, 0);
+  background: rgba(241, 240, 226, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   overflow-y: auto;
@@ -12,7 +12,7 @@
 }
 
 .shop-overlay--visible {
-  background: rgba(10, 10, 10, 0.82);
+  background: rgba(241, 240, 226, 0.82);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   pointer-events: auto;

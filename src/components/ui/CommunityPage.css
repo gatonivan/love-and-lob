@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 1;
-  background: rgba(10, 10, 10, 0);
+  background: rgba(241, 240, 226, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   overflow-y: auto;
@@ -11,7 +11,7 @@
 }
 
 .community-overlay--visible {
-  background: rgba(10, 10, 10, 0.85);
+  background: rgba(241, 240, 226, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   pointer-events: auto;
@@ -39,8 +39,8 @@
   min-height: 100dvh;
   overflow: hidden;
   text-decoration: none;
-  color: #F1F0E2;
-  border-bottom: 1px solid rgba(241, 240, 226, 0.06);
+  color: #004225;
+  border-bottom: 1px solid rgba(0, 66, 37, 0.06);
 }
 
 /* Background media — fills the section */
@@ -55,27 +55,27 @@
 
 /* Fallback background for sections without a cover image */
 .community-section--no-media {
-  background: rgba(241, 240, 226, 0.03);
+  background: rgba(0, 66, 37, 0.03);
 }
 
 /* Dark overlay — always present for text readability, darkens on hover */
 .community-section-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(10, 10, 10, 0.45);
+  background: rgba(241, 240, 226, 0.45);
   transition: background 0.4s ease;
 }
 
 .community-section:hover .community-section-overlay {
-  background: rgba(10, 10, 10, 0.7);
+  background: rgba(241, 240, 226, 0.7);
 }
 
 .community-section--no-media .community-section-overlay {
-  background: rgba(10, 10, 10, 0);
+  background: rgba(241, 240, 226, 0);
 }
 
 .community-section--no-media:hover .community-section-overlay {
-  background: rgba(241, 240, 226, 0.03);
+  background: rgba(0, 66, 37, 0.03);
 }
 
 /* Text container — bottom-left */
@@ -104,7 +104,7 @@
   font-family: 'Tamil MN', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 0.95rem;
   font-weight: 400;
-  color: rgba(241, 240, 226, 0);
+  color: rgba(0, 66, 37, 0);
   line-height: 1.5;
   max-width: 400px;
   margin-top: 1rem;
@@ -113,7 +113,7 @@
 }
 
 .community-section:hover .community-section-subtitle {
-  color: rgba(241, 240, 226, 0.6);
+  color: rgba(0, 66, 37, 0.6);
   transform: translateY(0);
 }
 
@@ -133,7 +133,7 @@
   }
 
   .community-section-subtitle {
-    color: rgba(241, 240, 226, 0.6);
+    color: rgba(0, 66, 37, 0.6);
     transform: translateY(0);
     font-size: 0.8rem;
   }

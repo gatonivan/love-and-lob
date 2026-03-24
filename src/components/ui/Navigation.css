@@ -17,7 +17,7 @@
   font-weight: 900;
   font-size: 3.5rem;
   letter-spacing: -0.02em;
-  color: #F1F0E2;
+  color: #004225;
   text-decoration: none;
   text-transform: uppercase;
   pointer-events: auto;
@@ -49,7 +49,7 @@
 }
 
 .nav-links a {
-  color: #F1F0E2;
+  color: #004225;
   text-decoration: none;
   font-size: 30px;
   font-weight: 500;
@@ -109,10 +109,10 @@
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
-  background: rgba(18, 18, 18, 0.95);
+  background: rgba(235, 234, 222, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(241, 240, 226, 0.1);
+  border: 1px solid rgba(0, 66, 37, 0.1);
   border-radius: 8px;
   padding: 0.5rem 0;
   min-width: 180px;
@@ -131,7 +131,7 @@
 .nav-dropdown a {
   display: block;
   padding: 0.65rem 1.25rem;
-  color: rgba(241, 240, 226, 0.75);
+  color: rgba(0, 66, 37, 0.75);
   text-decoration: none;
   font-family: 'Tamil MN', sans-serif;
   font-size: 0.85rem;
@@ -142,8 +142,8 @@
 }
 
 .nav-dropdown a:hover {
-  color: #F1F0E2;
-  background: rgba(241, 240, 226, 0.06);
+  color: #004225;
+  background: rgba(0, 66, 37, 0.06);
 }
 
 @media (max-width: 480px) {

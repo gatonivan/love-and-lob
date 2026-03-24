@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: #F1F0E2;
+  color: #004225;
   border-radius: 4px;
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -31,8 +31,8 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #0a0a0a;
-  background: #F1F0E2;
+  color: #F1F0E2;
+  background: #004225;
   padding: 0.3rem 0.6rem;
   border-radius: 3px;
 }
@@ -46,7 +46,7 @@
 .product-card-placeholder {
   font-family: monospace;
   font-size: 0.7rem;
-  color: rgba(241, 240, 226, 0.25);
+  color: rgba(0, 66, 37, 0.25);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -67,7 +67,7 @@
 .product-card-price {
   font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(241, 240, 226, 0.6);
+  color: rgba(0, 66, 37, 0.6);
 }
 
 .product-card-specs {
@@ -85,6 +85,6 @@
 .product-card-spec {
   font-family: monospace;
   font-size: 0.65rem;
-  color: rgba(241, 240, 226, 0.5);
+  color: rgba(0, 66, 37, 0.5);
   letter-spacing: 0.02em;
 }
