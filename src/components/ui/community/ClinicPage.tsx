@@ -15,11 +15,6 @@ export function ClinicPage() {
         <img className="community-sub-hero-img" src={clinicSecondImg} alt="Absolute Beginner Clinic" />
         <div className="community-sub-hero-overlay">
           <h1 className="community-sub-title">Absolute Beginner Clinic</h1>
-          <p className="community-sub-hero-text">
-            Want to pick up tennis, but unsure where to start? Our Absolute
-            Beginner Clinic is designed for complete newcomers who want to learn
-            the fundamentals in a welcoming, low-pressure environment.
-          </p>
         </div>
       </div>
 
