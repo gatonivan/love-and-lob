@@ -8,18 +8,16 @@ export function Navigation() {
   const pathname = useLocation().pathname
   const navigate = useNavigate()
   const overlayScrolled = useSceneStore((s) => s.overlayScrolled)
-  const logoHidden = useSceneStore((s) => s.logoHidden)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
-  const isCommunityArea = pathname === '/community' || pathname.startsWith('/community/')
   const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/')
-  const showIconMenu = isCommunityArea && cameraSettled
+  const showIconMenu = !isHome && cameraSettled
 
-  // Logo: visible on home, hides on scroll elsewhere, hidden on community area
-  const hideLogo = isCommunityArea || (!isHome && logoHidden)
+  // Logo: visible on home only, hidden everywhere else (icon menu replaces it)
+  const hideLogo = !isHome
 
   // Links: visible on home, always hidden on community,
   // hidden on other pages until user scrolls to bottom
@@ -76,7 +74,7 @@ export function Navigation() {
         Love & Lob
       </Link>
 
-      {/* Icon menu for community area */}
+      {/* Icon menu for all pages except home */}
       {showIconMenu && (
         <div className="nav-icon-menu" ref={menuRef}>
           <button
