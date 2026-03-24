@@ -1,5 +1,6 @@
 .product-detail {
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 8rem 2rem 6rem;
   background: rgba(10, 10, 10, 0.82);
   backdrop-filter: blur(6px);

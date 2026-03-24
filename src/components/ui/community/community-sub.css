@@ -1,5 +1,6 @@
 .community-sub-page {
   min-height: 100vh;
+  min-height: 100dvh;
   background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

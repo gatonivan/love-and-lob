@@ -29,7 +29,7 @@ function App() {
       {/* Persistent 3D canvas */}
       <div className="scene-canvas">
         <Canvas
-          dpr={[1, 1.5]}
+          dpr={[1, 2]}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
           camera={{ position: [0, -8, 6], fov: 45 }}
         >

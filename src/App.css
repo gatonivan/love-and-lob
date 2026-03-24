@@ -23,6 +23,7 @@ body,
 .manifesto-page {
   overflow-y: auto;
   height: 100vh;
+  height: 100dvh;
 }
 
 a, button, [role="button"], input[type="submit"],
