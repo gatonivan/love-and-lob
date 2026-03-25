@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { useBottomScroll } from '../../../hooks/useBottomScroll'
+import { useIsDesktop } from '../../../hooks/useIsDesktop'
 import { SubPageWrapper } from './SubPageWrapper'
 import leagueSecondImg from '../../../assets/community/league_second_page.jpeg'
+import leagueDesktopImg from '../../../assets/desktop/3v3_team_singles_2.jpeg'
 import championsVideo from '../../../assets/community/champions_3v3.mp4'
 import './community-sub.css'
 
 export function LeaguePage() {
   useBottomScroll(true)
+  const isDesktop = useIsDesktop()
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -61,7 +64,7 @@ export function LeaguePage() {
       </p>
 
       <div className="community-sub-section">
-        <img className="community-sub-img" src={leagueSecondImg} alt="3v3 Team Singles League" />
+        <img className="community-sub-img" src={isDesktop ? leagueDesktopImg : leagueSecondImg} alt="3v3 Team Singles League" />
         <h2>2025 Champions</h2>
         <p>
           The <strong>Lob Division</strong> had &ldquo;40 &ndash; No
