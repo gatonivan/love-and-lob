@@ -85,7 +85,7 @@ export function Navigation() {
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="Menu"
           >
-            <img src={isCommunityArea ? dropdownIconWhite : dropdownIconGreen} alt="" className="nav-icon-img" />
+            <img src={isCommunity ? dropdownIconWhite : dropdownIconGreen} alt="" className="nav-icon-img" />
           </button>
           <div className={`nav-dropdown ${menuOpen ? 'nav-dropdown--open' : ''}`}>
             <a href="/" onClick={(e) => handleMenuNav(e, '/')}>Home</a>
