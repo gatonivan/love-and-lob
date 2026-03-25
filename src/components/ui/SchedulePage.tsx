@@ -16,6 +16,11 @@ interface LumaEvent {
 }
 
 async function fetchUpcomingEvents(): Promise<LumaEvent[]> {
+  // Try live API first, fall back to static JSON
+  try {
+    const res = await fetch('/api/events')
+    if (res.ok) return await res.json()
+  } catch { /* fall through */ }
   const res = await fetch(`${import.meta.env.BASE_URL}events.json`)
   if (!res.ok) return []
   const events: LumaEvent[] = await res.json()
