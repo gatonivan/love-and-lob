@@ -9,7 +9,7 @@ export function RouteSync() {
   useEffect(() => {
     const mode =
       pathname === '/schedule' ? 'birdseye' :
-      pathname === '/community' ? 'referee' :
+      pathname.startsWith('/community') ? 'referee' :
       pathname === '/manifesto' ? 'umpire' :
       pathname.startsWith('/shop') ? 'shop' :
       'game'

@@ -15,7 +15,6 @@ export function Navigation() {
   const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
-  const isCommunityArea = pathname === '/community' || pathname.startsWith('/community/')
   const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/')
   const showIconMenu = !isHome && cameraSettled
 
