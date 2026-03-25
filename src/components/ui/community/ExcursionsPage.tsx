@@ -1,16 +1,12 @@
 import { Link } from 'react-router'
 import { useBottomScroll } from '../../../hooks/useBottomScroll'
-import { useIsDesktop } from '../../../hooks/useIsDesktop'
 import { SubPageWrapper } from './SubPageWrapper'
 import westchesterVideo from '../../../assets/community/westchester_video.mp4'
 import longIslandVideo from '../../../assets/community/long_island.mp4'
-import westchesterDesktop from '../../../assets/desktop/excursion_westchester.jpeg'
-import longIslandDesktop from '../../../assets/desktop/excursion_long_island.jpeg'
 import './community-sub.css'
 
 export function ExcursionsPage() {
   useBottomScroll(true)
-  const isDesktop = useIsDesktop()
   return (
     <SubPageWrapper>
       <Link to="/community" className="community-sub-back">
@@ -23,18 +19,14 @@ export function ExcursionsPage() {
       </p>
 
       <div className="community-sub-section">
-        {isDesktop ? (
-          <img className="community-sub-img" src={westchesterDesktop} alt="Westchester Excursion" />
-        ) : (
-          <video
-            className="community-sub-img"
-            src={westchesterVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
-        )}
+        <video
+          className="community-sub-img"
+          src={westchesterVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
         <h2>Westchester</h2>
         <p>
           Hosted our first L&amp;L Invitational at the beautiful waterfront
@@ -47,18 +39,14 @@ export function ExcursionsPage() {
       </div>
 
       <div className="community-sub-section">
-        {isDesktop ? (
-          <img className="community-sub-img" src={longIslandDesktop} alt="Long Island Excursion" />
-        ) : (
-          <video
-            className="community-sub-img"
-            src={longIslandVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
-        )}
+        <video
+          className="community-sub-img"
+          src={longIslandVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
         <h2>Long Island</h2>
         <p>
           Co-hosted the Ryde or Die Cup alongside Bageled NYC. Based on the
