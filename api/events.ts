@@ -38,9 +38,9 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
       })
       .sort((a: any, b: any) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
 
-    // Cache for 10 minutes
+    // Cache for 10 minutes, limit to 5 events
     res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=300')
-    return res.status(200).json(events)
+    return res.status(200).json(events.slice(0, 5))
   } catch (err) {
     return res.status(500).json({ error: 'Failed to fetch events', detail: String(err) })
   }
