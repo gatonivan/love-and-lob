@@ -1,0 +1,16 @@
+import { useState, useEffect } from 'react'
+
+export function useIsDesktop(breakpoint = 768): boolean {
+  const [isDesktop, setIsDesktop] = useState(
+    () => window.innerWidth >= breakpoint
+  )
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${breakpoint}px)`)
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [breakpoint])
+
+  return isDesktop
+}

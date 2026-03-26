@@ -1,13 +1,17 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { useBottomScroll } from '../../../hooks/useBottomScroll'
+import { useIsDesktop } from '../../../hooks/useIsDesktop'
 import { SubPageWrapper } from './SubPageWrapper'
 import leagueSecondImg from '../../../assets/community/league_second_page.jpeg'
+import leagueDesktopVideo from '../../../assets/desktop/singles_league_desktop.mp4'
 import championsVideo from '../../../assets/community/champions_3v3.mp4'
+import championsDesktopImg from '../../../assets/desktop/3v3_team_singles_2.jpeg'
 import './community-sub.css'
 
 export function LeaguePage() {
   useBottomScroll(true)
+  const isDesktop = useIsDesktop()
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -61,7 +65,11 @@ export function LeaguePage() {
       </p>
 
       <div className="community-sub-section">
-        <img className="community-sub-img" src={leagueSecondImg} alt="3v3 Team Singles League" />
+        {isDesktop ? (
+          <video className="community-sub-img" src={leagueDesktopVideo} autoPlay loop muted playsInline />
+        ) : (
+          <img className="community-sub-img" src={leagueSecondImg} alt="3v3 Team Singles League" />
+        )}
         <h2>2025 Champions</h2>
         <p>
           The <strong>Lob Division</strong> had &ldquo;40 &ndash; No
@@ -70,16 +78,20 @@ export function LeaguePage() {
           seed in the <strong>Love Division</strong>, claim the 2025
           championship. Stay tuned for the 2026 season!
         </p>
-        <video
-          ref={videoRef}
-          className="community-sub-img"
-          src={championsVideo}
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          style={{ marginTop: '1.5rem' }}
-        />
+        {isDesktop ? (
+          <img className="community-sub-img" src={championsDesktopImg} alt="2025 Champions" style={{ marginTop: '1.5rem' }} />
+        ) : (
+          <video
+            ref={videoRef}
+            className="community-sub-img"
+            src={championsVideo}
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            style={{ marginTop: '1.5rem' }}
+          />
+        )}
       </div>
     </SubPageWrapper>
   )

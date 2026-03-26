@@ -1,12 +1,15 @@
 import { Link } from 'react-router'
 import { useBottomScroll } from '../../../hooks/useBottomScroll'
+import { useIsDesktop } from '../../../hooks/useIsDesktop'
 import { SubPageWrapper } from './SubPageWrapper'
 import watchPartiesImg from '../../../assets/community/experience_second_page_1.jpeg'
+import watchPartiesDesktop from '../../../assets/desktop/watch_party_desktop.jpeg'
 import winePartiesImg from '../../../assets/community/experiences_second_page_2.jpeg'
 import './community-sub.css'
 
 export function ExperiencesPage() {
   useBottomScroll(true)
+  const isDesktop = useIsDesktop()
   return (
     <SubPageWrapper>
       <Link to="/community" className="community-sub-back">
@@ -19,7 +22,7 @@ export function ExperiencesPage() {
       </p>
 
       <div className="community-sub-section">
-        <img className="community-sub-img" src={watchPartiesImg} alt="Watch Parties" />
+        <img className="community-sub-img" src={isDesktop ? watchPartiesDesktop : watchPartiesImg} alt="Watch Parties" />
         <h2>Watch Parties</h2>
         <p>
           Hosting live watch events for major tennis events such as Roland
