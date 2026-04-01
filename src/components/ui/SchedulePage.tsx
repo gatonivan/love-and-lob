@@ -117,8 +117,7 @@ export function SchedulePage() {
               <h2 className="schedule-season-name">Winter Season</h2>
               <p className="schedule-season-dates">November &ndash; April</p>
               <p className="schedule-season-body">
-                Indoor programming through the cold months. Clinics to keep
-                your game sharp year-round.
+                Indoor programming, such as our infamous Monthly Classic &amp; Uptown Special, to keep your game sharp through the cold months.
               </p>
               <a
                 href="https://lu.ma/loveandlob"
@@ -223,6 +222,7 @@ export function SchedulePage() {
           </section>
 
         </div>
+
       </div>
     </div>
   )

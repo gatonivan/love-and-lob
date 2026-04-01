@@ -120,33 +120,9 @@ export function ManifestoPage() {
           </a>
         </section>
 
-        {/* CONTACT */}
+        {/* SUBSCRIBE */}
         <section className="manifesto-section manifesto-section--contact">
-          <h2 className="manifesto-heading">Get in Touch</h2>
-          <div className="manifesto-contact-row">
-            <div className="manifesto-contact-links">
-              <a href="mailto:info@loveandlob.co" className="manifesto-contact-item">
-                info@loveandlob.co
-              </a>
-              <a
-                href="https://www.instagram.com/loveandlobnyc"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="manifesto-contact-item"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://substack.com/@nycblazer"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="manifesto-contact-item"
-              >
-                Substack
-              </a>
-            </div>
-            <ManifestoSubscribe />
-          </div>
+          <ManifestoSubscribe />
         </section>
 
       </div>

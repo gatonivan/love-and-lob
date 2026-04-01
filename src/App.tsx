@@ -16,6 +16,7 @@ import { CommunityDayPage } from './components/ui/community/CommunityDayPage'
 import { LeaguePage } from './components/ui/community/LeaguePage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
 import { EmailSubscribe } from './components/ui/EmailSubscribe'
+import { Footer } from './components/ui/Footer'
 import { useReducedMotion } from './hooks/useReducedMotion'
 import { Analytics } from '@vercel/analytics/react'
 import './App.css'
@@ -48,6 +49,7 @@ function App() {
       <ManifestoPage />
 
       <Navigation />
+      <Footer />
       <EmailSubscribe />
       <Routes>
         {/* / and /schedule are handled by the persistent canvas + overlays */}

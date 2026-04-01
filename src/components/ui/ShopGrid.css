@@ -62,3 +62,127 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* Affiliates Section */
+
+.affiliates-section {
+  max-width: 1200px;
+  margin: 4rem auto 0;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(0, 66, 37, 0.12);
+}
+
+.affiliates-header {
+  margin-bottom: 2rem;
+}
+
+.affiliates-title {
+  font-family: 'FreightBig Pro', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.affiliates-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(0, 66, 37, 0.5);
+  letter-spacing: 0.03em;
+}
+
+.affiliates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.affiliate-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid rgba(0, 66, 37, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.affiliate-card:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(0, 66, 37, 0.2);
+  transform: translateY(-2px);
+}
+
+.affiliate-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  margin-bottom: 1.2rem;
+}
+
+.affiliate-logo {
+  height: 2.5rem;
+  max-width: 140px;
+  width: auto;
+  object-fit: contain;
+}
+
+.affiliate-bio {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(0, 66, 37, 0.7);
+  margin-bottom: 1.2rem;
+}
+
+.affiliate-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.affiliate-code-label {
+  font-family: monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(0, 66, 37, 0.4);
+}
+
+.affiliate-code-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #004225;
+  background: rgba(216, 232, 77, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+  .affiliates-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+  }
+
+  .affiliates-title {
+    font-size: 1.3rem;
+  }
+
+  .affiliates-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .affiliate-card {
+    padding: 1.5rem 1.2rem;
+  }
+}
