@@ -119,11 +119,13 @@
   }
 
   .email-subscribe-form {
-    gap: 0.4rem;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .email-subscribe-btn {
-    padding: 0.5rem 0.6rem;
+    padding: 0.6rem;
     font-size: 0.65rem;
+    width: 100%;
   }
 }
