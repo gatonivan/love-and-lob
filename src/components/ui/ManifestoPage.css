@@ -155,7 +155,7 @@
 .manifesto-featured-img {
   width: 100%;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.25s ease;
 }
 
 .manifesto-featured-card:hover .manifesto-featured-img {
@@ -170,7 +170,7 @@
   align-items: flex-end;
   justify-content: flex-start;
   padding: 1.25rem;
-  transition: background 0.3s ease;
+  transition: background 0.25s ease;
 }
 
 .manifesto-featured-card:hover .manifesto-featured-overlay {
@@ -191,7 +191,7 @@
   border-radius: 4px;
   opacity: 0;
   transform: translateY(0.5rem);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .manifesto-featured-card:hover .manifesto-featured-label {

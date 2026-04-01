@@ -63,7 +63,7 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.38);
-  transition: background 0.4s ease;
+  transition: background 0.25s ease;
 }
 
 .community-section:hover .community-section-overlay {
@@ -110,7 +110,7 @@
   max-width: 400px;
   margin-top: 1rem;
   transform: translateY(0.5rem);
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition: color 0.25s ease, transform 0.25s ease;
 }
 
 .community-section:hover .community-section-subtitle {

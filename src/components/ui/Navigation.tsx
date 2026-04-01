@@ -56,10 +56,14 @@ export function Navigation() {
     }
   }, [isHome, isSubPage, navigate])
 
+  const isCommunitySubPage = pathname.startsWith('/community/')
+
   const handleMenuNav = useCallback((e: React.MouseEvent, to: string) => {
     e.preventDefault()
     setMenuOpen(false)
-    if (isSubPage) {
+    // Community-to-community: navigate instantly
+    const toCommunity = to === '/community' || to.startsWith('/community/')
+    if (isSubPage && !(isCommunitySubPage && toCommunity)) {
       useSceneStore.getState().setPageExiting(true)
       setTimeout(() => {
         useSceneStore.getState().setPageExiting(false)
@@ -68,7 +72,7 @@ export function Navigation() {
     } else {
       navigate(to)
     }
-  }, [isSubPage, navigate])
+  }, [isSubPage, isCommunitySubPage, navigate])
 
   return (
     <nav className="nav">

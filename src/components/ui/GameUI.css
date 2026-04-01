@@ -1,3 +1,13 @@
+.game-ui {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.game-ui--visible {
+  opacity: 1;
+  transition: opacity 0.5s ease 0.15s;
+}
+
 .game-hud {
   position: fixed;
   bottom: 6.5rem;

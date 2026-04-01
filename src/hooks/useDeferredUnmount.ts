@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
  * Returns [shouldRender, isVisible] — render while shouldRender is true,
  * apply visible styles only when isVisible is true.
  */
-export function useDeferredUnmount(active: boolean, delay = 350): [boolean, boolean] {
+export function useDeferredUnmount(active: boolean, delay = 300): [boolean, boolean] {
   const [shouldRender, setShouldRender] = useState(active)
 
   useEffect(() => {

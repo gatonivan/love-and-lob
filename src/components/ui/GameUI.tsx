@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router'
 import { useBreakoutStore } from '../../stores/breakoutStore'
 import { useSceneStore } from '../../stores/sceneStore'
+import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import { SoundToggle } from './SoundToggle'
 import './GameUI.css'
 
@@ -28,12 +29,15 @@ export function GameUI() {
     prevMode.current = cameraMode
   }, [cameraMode])
 
-  if (pathname !== '/' || cameraMode !== 'game' || !cameraSettled) return null
+  const active = pathname === '/' && cameraMode === 'game' && cameraSettled
+  const [shouldRender, isVisible] = useDeferredUnmount(active)
+
+  if (!shouldRender) return null
 
   const playing = gameStatus === 'playing'
 
   return (
-    <>
+    <div className={`game-ui ${isVisible ? 'game-ui--visible' : ''}`}>
       {/* HUD — always rendered to keep flex layout stable */}
       <div
         className={`game-hud ${playing ? '' : 'game-hud--hidden'}`}
@@ -89,6 +93,6 @@ export function GameUI() {
           </button>
         </div>
       )}
-    </>
+    </div>
   )
 }

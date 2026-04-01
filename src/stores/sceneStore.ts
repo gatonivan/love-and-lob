@@ -31,7 +31,9 @@ export const useSceneStore = create<SceneState>((set) => ({
 
   toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
   setReducedMotion: (reduced) => set({ reducedMotion: reduced }),
-  setCameraMode: (mode) => set({ cameraMode: mode, cameraSettled: false }),
+  setCameraMode: (mode) => set((state) =>
+    state.cameraMode === mode ? state : { cameraMode: mode, cameraSettled: false }
+  ),
   setCameraSettled: (settled) => set({ cameraSettled: settled }),
   setOverlayScrolled: (scrolled) => set({ overlayScrolled: scrolled }),
   setLogoHidden: (hidden) => set({ logoHidden: hidden }),

@@ -43,6 +43,14 @@ export function SubPageWrapper({ children }: SubPageWrapperProps) {
       : href
 
     e.preventDefault()
+
+    // Community-to-community: navigate instantly, no exit animation
+    if (routePath === '/community' || routePath.startsWith('/community/')) {
+      navigate(routePath)
+      return
+    }
+
+    // Leaving community: play exit animation first
     useSceneStore.getState().setPageExiting(true)
     setTimeout(() => {
       useSceneStore.getState().setPageExiting(false)

@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router'
+import { useCallback, useEffect, useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import './CommunityPage.css'
@@ -10,6 +10,7 @@ import experiencesImg from '../../assets/community/experiences.jpeg'
 import excursionsImg from '../../assets/community/excursions.jpeg'
 import communityDayImg from '../../assets/community/community_day.jpeg'
 import leagueVideo from '../../assets/community/league_front.mp4'
+import monthlyClassicVideo from '../../assets/community/monthlyclassic_mainvid.mp4'
 
 interface Section {
   name: string
@@ -22,6 +23,7 @@ interface Section {
 }
 
 const sections: Section[] = [
+  { name: 'Monthly Classic', path: '/community/monthly-classic', subtitle: 'Our infamous 2-hour clinics', media: monthlyClassicVideo, mediaType: 'video' },
   { name: 'Absolute Beginner Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game', media: clinicImg, mediaType: 'image', mobileObjectPosition: '65% center' },
   { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture', media: experiencesImg, mediaType: 'image', objectPosition: 'center bottom' },
   { name: 'League', path: '/community/league', subtitle: '3v3 Team Singles — Love & Lob Divisions', media: leagueVideo, mediaType: 'video' },
@@ -32,13 +34,21 @@ const sections: Section[] = [
 
 export function CommunityPage() {
   const pathname = useLocation().pathname
+  const navigate = useNavigate()
   const settled = useSceneStore(
     (s) => s.cameraMode === 'referee' && s.cameraSettled
   )
   const active = pathname === '/community'
-  const [shouldRender, isVisible] = useDeferredUnmount(active)
-  const show = isVisible && settled
+  const onCommunitySubPage = pathname.startsWith('/community/')
+  // Keep mounted while on community sub-pages so there's no flash when navigating back
+  const [shouldRender, isVisible] = useDeferredUnmount(active || onCommunitySubPage)
+  const show = isVisible && active && settled
   const overlayRef = useRef<HTMLDivElement>(null)
+
+  const handleCardClick = useCallback((e: React.MouseEvent, path: string) => {
+    e.preventDefault()
+    navigate(path)
+  }, [navigate])
   // Community: logo hides on scroll, links always hidden
   useEffect(() => {
     if (!active) {
@@ -64,7 +74,7 @@ export function CommunityPage() {
     <div ref={overlayRef} className={`community-overlay ${show ? 'community-overlay--visible' : ''}`}>
       <div className={`community-sections ${show ? 'community-sections--visible' : ''}`}>
         {sections.map((s) => (
-          <Link key={s.path} to={s.path} className={`community-section${!s.media ? ' community-section--no-media' : ''}`}>
+          <a key={s.path} href={s.path} onClick={(e) => handleCardClick(e, s.path)} className={`community-section${!s.media ? ' community-section--no-media' : ''}`}>
             {s.media && s.mediaType === 'video' ? (
               <video
                 className="community-section-bg"
@@ -91,7 +101,7 @@ export function CommunityPage() {
               <span className="community-section-name">{s.name}</span>
               <span className="community-section-subtitle">{s.subtitle}</span>
             </div>
-          </Link>
+          </a>
         ))}
       </div>
     </div>

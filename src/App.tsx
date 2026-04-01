@@ -14,6 +14,7 @@ import { ExperiencesPage } from './components/ui/community/ExperiencesPage'
 import { ExcursionsPage } from './components/ui/community/ExcursionsPage'
 import { CommunityDayPage } from './components/ui/community/CommunityDayPage'
 import { LeaguePage } from './components/ui/community/LeaguePage'
+import { MonthlyClassicPage } from './components/ui/community/MonthlyClassicPage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
 import { EmailSubscribe } from './components/ui/EmailSubscribe'
 import { Footer } from './components/ui/Footer'
@@ -60,6 +61,7 @@ function App() {
         <Route path="/shop/:id" element={null} />
         {/* /community is handled by the persistent CommunityPage overlay */}
         <Route path="/community" element={null} />
+        <Route path="/community/monthly-classic" element={<MonthlyClassicPage />} />
         <Route path="/community/radio" element={<RadioPage />} />
         <Route path="/community/clinic" element={<ClinicPage />} />
         <Route path="/community/experiences" element={<ExperiencesPage />} />
