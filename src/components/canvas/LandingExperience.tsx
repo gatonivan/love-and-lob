@@ -96,7 +96,7 @@ export function LandingExperience() {
 
       <ambientLight intensity={0.4} />
       <directionalLight position={[0, -5, 10]} intensity={0.3} />
-      <directionalLight position={[-3, 2, 8]} intensity={0.15} color="#b0c4ff" />
+      <directionalLight position={[-3, 2, 8]} intensity={0.15} color="#fffbe6" />
 
       <Suspense fallback={null}>
         <TennisCourt />

@@ -6,9 +6,18 @@ import {
 } from './constants'
 
 // Court colors
-const LINE_COLOR = '#e8e8d8'   // court lines
+const LINE_COLOR = '#ffffff' // pure white lines on grass — Wimbledon style
 const LINE_WIDTH = 0.04
-const LINE_Z = -0.11  // lines sit on top of the surface
+const LINE_Z = -0.02  // lines clearly above grass surface
+const SURFACE_Z = -0.12 // grass surface sits below lines
+
+// Mow stripes — alternating light/dark green like Wimbledon
+const GRASS_LIGHT = '#6bb572'
+const GRASS_DARK = '#3a7d44'
+const COURT_W = ARENA_WIDTH + 0.6
+const COURT_H = ARENA_HEIGHT + 0.6
+const STRIPE_COUNT = 10
+const STRIPE_W = COURT_W / STRIPE_COUNT
 
 // Court proportions mapped to our arena (6w × 8h)
 const HALF_W = ARENA_WIDTH / 2    // 3
@@ -84,7 +93,12 @@ function CourtLine({ points }: { points: [number, number][] }) {
 
   return (
     <mesh position={[0, 0, LINE_Z]} geometry={geometry}>
-      <meshStandardMaterial color={LINE_COLOR} roughness={0.8} />
+      <meshStandardMaterial
+        color={LINE_COLOR}
+        emissive={LINE_COLOR}
+        emissiveIntensity={0.3}
+        roughness={0.6}
+      />
     </mesh>
   )
 }
@@ -92,6 +106,20 @@ function CourtLine({ points }: { points: [number, number][] }) {
 export function TennisCourt() {
   return (
     <group>
+      {/* === Grass surface — alternating mow stripes === */}
+      {Array.from({ length: STRIPE_COUNT }, (_, i) => {
+        const x = -COURT_W / 2 + STRIPE_W / 2 + i * STRIPE_W
+        return (
+          <mesh key={i} position={[x, 0, SURFACE_Z]}>
+            <planeGeometry args={[STRIPE_W, COURT_H]} />
+            <meshStandardMaterial
+              color={i % 2 === 0 ? GRASS_LIGHT : GRASS_DARK}
+              roughness={0.85}
+            />
+          </mesh>
+        )
+      })}
+
       {/* === Court lines === */}
 
       {/* Outer boundary (doubles sidelines + baselines) */}
@@ -142,25 +170,27 @@ export function TennisCourt() {
         {/* Net post left */}
         <mesh position={[-HALF_W - 0.1, 0, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.03, 0.03, 0.25, 8]} />
-          <meshStandardMaterial color={LINE_COLOR} />
+          <meshStandardMaterial color={LINE_COLOR} emissive={LINE_COLOR} emissiveIntensity={0.2} />
         </mesh>
         {/* Net post right */}
         <mesh position={[HALF_W + 0.1, 0, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.03, 0.03, 0.25, 8]} />
-          <meshStandardMaterial color={LINE_COLOR} />
+          <meshStandardMaterial color={LINE_COLOR} emissive={LINE_COLOR} emissiveIntensity={0.2} />
         </mesh>
         {/* Net cord (top) */}
         <mesh position={[0, 0, 0.22]}>
           <boxGeometry args={[ARENA_WIDTH + 0.4, 0.02, 0.015]} />
-          <meshStandardMaterial color={LINE_COLOR} />
+          <meshStandardMaterial color={LINE_COLOR} emissive={LINE_COLOR} emissiveIntensity={0.2} />
         </mesh>
         {/* Net mesh — semi-transparent, standing upright */}
         <mesh position={[0, 0, 0.11]} rotation={[Math.PI / 2, 0, 0]}>
           <planeGeometry args={[ARENA_WIDTH + 0.3, 0.22]} />
           <meshStandardMaterial
             color={LINE_COLOR}
+            emissive={LINE_COLOR}
+            emissiveIntensity={0.15}
             transparent
-            opacity={0.35}
+            opacity={0.45}
             side={THREE.DoubleSide}
           />
         </mesh>

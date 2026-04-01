@@ -2,7 +2,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
-import { BALL_RADIUS } from './constants'
+import { BALL_RADIUS, COLOR_ACCENT } from './constants'
 
 interface BallProps {
   positionRef: React.RefObject<[number, number]>
@@ -37,8 +37,8 @@ export function Ball({ positionRef }: BallProps) {
         mat.metalness = 0
         mat.metalnessMap = null
         mat.roughnessMap = null
-        mat.emissive = new THREE.Color('#d8e84d')
-        mat.emissiveIntensity = 0.15
+        mat.emissive = new THREE.Color(COLOR_ACCENT)
+        mat.emissiveIntensity = 0.35
         if (mat.normalMap) {
           mat.normalScale = new THREE.Vector2(0.3, 0.3)
         }

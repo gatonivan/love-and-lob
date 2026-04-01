@@ -35,10 +35,15 @@ export function GameUI() {
   return (
     <>
       {/* HUD — always rendered to keep flex layout stable */}
-      <div className={`game-hud ${playing ? '' : 'game-hud--hidden'}`}>
+      <div
+        className={`game-hud ${playing ? '' : 'game-hud--hidden'}`}
+        role="status"
+        aria-live="polite"
+        aria-label={`Score: ${score}, Level ${level}, ${lives} lives remaining`}
+      >
         <span className="game-hud-item">Score: {score}</span>
         <span className="game-hud-item">Level {level}</span>
-        <span className="game-hud-item">
+        <span className="game-hud-item" aria-label={`${lives} of 3 lives remaining`}>
           {'♥'.repeat(lives)}{'♡'.repeat(3 - lives)}
         </span>
         <SoundToggle />
@@ -46,8 +51,9 @@ export function GameUI() {
 
       {/* Idle prompt */}
       {gameStatus === 'idle' && (
-        <div className="game-prompt">
+        <div className="game-prompt" role="alert">
           <span className="game-prompt-text">Tap / Click to Start</span>
+          <span className="game-prompt-hint">Arrow keys or mouse to move paddle</span>
         </div>
       )}
 

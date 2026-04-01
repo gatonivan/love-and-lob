@@ -36,15 +36,17 @@ export const COLOR_BG = '#F1F0E2'
 export const COLOR_WALL = '#F1F0E2'
 export const COLOR_PADDLE = '#1a7243'
 export const COLOR_COURT = '#004225'
+export const COLOR_GRASS = '#3a7d44'   // perennial ryegrass — Wimbledon green
+export const COLOR_COURT_LINE = '#F1F0E2' // white lines on grass
 
-// Brick row colors — dark greens with lime accent on top row
+// Brick row colors — bright warm wireframes visible on grass
 export const BRICK_ROW_COLORS = [
-  '#d8e84d', // row 0 (top) — accent lime
-  '#3d7a30',
-  '#1a6a35',
-  '#0d5a2d',
-  '#084a25',
-  '#004225', // row 5 (bottom) — darkest green
+  '#f5e88a', // row 0 (top) — bright yellow
+  '#f0c850', // row 1 — golden
+  '#eeaa40', // row 2 — amber
+  '#e88a3a', // row 3 — orange
+  '#e06840', // row 4 — coral
+  '#d84848', // row 5 (bottom) — red
 ]
 
 // Scoring
