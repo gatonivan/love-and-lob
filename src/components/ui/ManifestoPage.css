@@ -266,10 +266,12 @@
 .manifesto-subscribe-form {
   display: flex;
   gap: 0.5rem;
+  max-width: 100%;
 }
 
 .manifesto-subscribe-input {
   flex: 1;
+  min-width: 0;
   background: rgba(0, 66, 37, 0.06);
   border: 1px solid rgba(0, 66, 37, 0.15);
   border-radius: 4px;
@@ -349,6 +351,15 @@
 
   .manifesto-subscribe {
     max-width: 100%;
+  }
+
+  .manifesto-subscribe-form {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .manifesto-subscribe-btn {
+    width: 100%;
   }
 
   .manifesto-featured {

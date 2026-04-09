@@ -32,6 +32,8 @@ export function Brick({ position, color, alive }: BrickProps) {
       meshRef.current.visible = true
       meshRef.current.scale.set(1, 1, 1)
       if (edgeMatRef.current) edgeMatRef.current.opacity = 1
+      prevAlive.current = alive
+      return
     }
 
     prevAlive.current = alive
@@ -41,16 +43,20 @@ export function Brick({ position, color, alive }: BrickProps) {
       breakTimer.current += delta
       const progress = Math.min(breakTimer.current / BREAK_DURATION, 1)
 
+      if (progress >= 1) {
+        // Animation done — hide and stop processing
+        meshRef.current.visible = false
+        return
+      }
+
       const scale = 1 - progress
       meshRef.current.scale.set(scale, scale, scale)
       if (edgeMatRef.current) edgeMatRef.current.opacity = 1 - progress
-
-      meshRef.current.visible = progress < 1
     } else {
-      // Normal state
-      meshRef.current.visible = alive
-      meshRef.current.scale.set(1, 1, 1)
-      if (edgeMatRef.current) edgeMatRef.current.opacity = 1
+      // Normal state — only update when needed
+      if (meshRef.current.visible !== alive) {
+        meshRef.current.visible = alive
+      }
     }
   })
 
