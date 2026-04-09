@@ -1,10 +1,6 @@
 import { Suspense, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import {
-  AdaptiveDpr,
-  AdaptiveEvents,
-  PerformanceMonitor,
-} from '@react-three/drei'
+import { AdaptiveEvents } from '@react-three/drei'
 import { Vector3 } from 'three'
 import { damp3 } from 'maath/easing'
 import { BreakoutGame } from './game/BreakoutGame'
@@ -87,10 +83,7 @@ export function LandingExperience() {
     <>
       <color attach="background" args={['#F1F0E2']} />
 
-      <PerformanceMonitor flipflops={3}>
-        <AdaptiveDpr pixelated />
-        <AdaptiveEvents />
-      </PerformanceMonitor>
+      <AdaptiveEvents />
 
       <CameraController />
 
@@ -100,8 +93,9 @@ export function LandingExperience() {
 
       <Suspense fallback={null}>
         <TennisCourt />
-        {cameraMode === 'game' && <BreakoutGame />}
-        {/* TODO: referee mode — courtside scene elements could go here */}
+        <group visible={cameraMode === 'game'}>
+          <BreakoutGame />
+        </group>
       </Suspense>
 
       <PostProcessing />

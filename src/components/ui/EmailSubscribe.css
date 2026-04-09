@@ -59,10 +59,12 @@
 .email-subscribe-form {
   display: flex;
   gap: 0.5rem;
+  max-width: 100%;
 }
 
 .email-subscribe-input {
   flex: 1;
+  min-width: 0;
   background: rgba(0, 66, 37, 0.06);
   border: 1px solid rgba(0, 66, 37, 0.12);
   border-radius: 5px;
