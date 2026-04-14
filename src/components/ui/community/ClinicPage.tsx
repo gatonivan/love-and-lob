@@ -21,7 +21,7 @@ export function ClinicPage() {
       <div className="community-sub-section">
         <h2>Details</h2>
         <p>
-          Every Sunday, 9am. $10 per session. Yes, $10. No experience
+          Starting in July. Every Sunday, 9am. $10 per session. Yes, $10. No experience
           necessary &mdash; just bring a racket (or rent one for $5) &amp;
           good energy. This 1-hour class is designed for complete newcomers
           who want to learn the fundamentals in a welcoming, low-pressure
