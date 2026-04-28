@@ -19,8 +19,10 @@ const SHOP_DIR = new Vector3(0, -3, 0.8).normalize() // low and close — courts
 const FOV = 45
 const HALF_TAN = Math.tan((FOV * Math.PI / 180) / 2)
 
-// Fitting constraints
-const REQ_WIDTH = ARENA_WIDTH + 1.0
+// Fitting constraints. The +2.5 horizontal margin keeps the court off the
+// screen edges on narrow (mobile/tablet) viewports where the camera is
+// width-bound. Desktop is height-bound so this has no visual effect there.
+const REQ_WIDTH = ARENA_WIDTH + 2.5
 const REQ_HEIGHT = ARENA_HEIGHT + 2
 const PADDLE_FORWARD_OFFSET = 2.4
 

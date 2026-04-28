@@ -118,6 +118,16 @@
   transform: translateY(0);
 }
 
+@media (max-width: 900px) {
+  .community-section-name {
+    font-size: 2.75rem;
+  }
+
+  .community-section-text {
+    padding: 2.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .community-section-bg--mobile-reposition {
     object-position: var(--mobile-obj-pos, center) !important;

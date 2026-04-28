@@ -145,6 +145,16 @@
   background: rgba(0, 66, 37, 0.06);
 }
 
+@media (max-width: 900px) {
+  .nav-links {
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    font-size: 22px;
+  }
+}
+
 @media (max-width: 480px) {
   .nav-logo {
     top: 1rem;

@@ -15,7 +15,9 @@ export function EmailSubscribe() {
   const pathname = useLocation().pathname
   const isHome = pathname === '/'
   const isManifesto = pathname === '/manifesto'
-  const shouldShow = !isHome && !isManifesto && !wasDismissedRecently()
+  const isCommunity = pathname === '/community' || pathname.startsWith('/community/')
+  const isShop = pathname === '/shop' || pathname.startsWith('/shop/')
+  const shouldShow = !isHome && !isManifesto && !isCommunity && !isShop && !wasDismissedRecently()
   const [visible, setVisible] = useState(false)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
