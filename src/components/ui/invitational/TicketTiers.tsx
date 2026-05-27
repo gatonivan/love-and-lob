@@ -18,14 +18,18 @@ export function TicketTiers({ tickets }: TicketTiersProps) {
             {t.prices.map((p) => (
               <p key={p} className="inv-ticket-price">{p}</p>
             ))}
-            <p className="inv-ticket-label">What&apos;s Included?</p>
-            <ul className="inv-ticket-list">
-              {t.includes.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            {t.includes.length > 0 && (
+              <>
+                <p className="inv-ticket-label">What&apos;s Included?</p>
+                <ul className="inv-ticket-list">
+                  {t.includes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </>
+            )}
             {t.status === 'available' && t.cta && (
-              <a className="inv-ticket-cta" href={t.cta.href}>{t.cta.label}</a>
+              <a className="inv-ticket-cta" href={t.cta.href} target="_blank" rel="noopener noreferrer">{t.cta.label}</a>
             )}
           </article>
         ))}

@@ -21,8 +21,8 @@ export function InvitationalPage() {
       <section className="inv-section">
         <p className="inv-venue">{d.venue.address}</p>
         <p className="inv-venue">{d.dateLabel} · {d.timeLabel}</p>
-        {d.intro.map((p, i) => (
-          <p key={i} className="inv-intro">{p}</p>
+        {d.intro.map((p) => (
+          <p key={p} className="inv-intro">{p}</p>
         ))}
       </section>
 
