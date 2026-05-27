@@ -1,0 +1,62 @@
+/* Page-level crossfade-over-canvas entry/exit (mirrors community-sub pattern,
+   kept local to decouple invitational layout from community styles). */
+.inv-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 8rem 0 4rem;
+  color: #F1F0E2;
+  background: rgba(10, 10, 10, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: inv-bg-in 0.6s ease forwards;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, opacity 0.3s ease;
+}
+
+.inv-page--exiting {
+  opacity: 0;
+  background: rgba(10, 10, 10, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+}
+
+@keyframes inv-bg-in {
+  from { background: rgba(10, 10, 10, 0); backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+  to   { background: rgba(10, 10, 10, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+}
+
+.inv-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 4rem 4rem;
+  animation: inv-content-in 0.5s ease 0.25s both;
+}
+
+@keyframes inv-content-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.inv-back {
+  display: inline-block;
+  margin: 0 4rem 2rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(241, 240, 226, 0.55);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.inv-back:hover { color: #d8e84d; }
+
+@media (max-width: 768px) {
+  .inv-section { padding: 0 2rem 3rem; }
+  .inv-back { margin: 0 2rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .inv-page { padding: 5rem 0 3rem; }
+  .inv-section { padding: 0 1.25rem 2.5rem; }
+  .inv-back { margin: 0 1.25rem 1rem; font-size: 0.85rem; }
+}

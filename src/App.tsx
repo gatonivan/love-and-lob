@@ -15,6 +15,7 @@ import { ExcursionsPage } from './components/ui/community/ExcursionsPage'
 import { CommunityDayPage } from './components/ui/community/CommunityDayPage'
 import { LeaguePage } from './components/ui/community/LeaguePage'
 import { MonthlyClassicPage } from './components/ui/community/MonthlyClassicPage'
+import { InvitationalPage } from './components/ui/invitational/InvitationalPage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
 import { EmailSubscribe } from './components/ui/EmailSubscribe'
 import { Footer } from './components/ui/Footer'
@@ -68,6 +69,8 @@ function App() {
         <Route path="/community/excursions" element={<ExcursionsPage />} />
         <Route path="/community/community-day" element={<CommunityDayPage />} />
         <Route path="/community/league" element={<LeaguePage />} />
+        <Route path="/community/invitational" element={<InvitationalPage />} />
+        <Route path="/invitational" element={<Navigate to="/community/invitational" replace />} />
 <Route path="/manifesto" element={null} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

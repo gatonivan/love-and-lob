@@ -23,6 +23,7 @@ interface Section {
 }
 
 const sections: Section[] = [
+  { name: 'Invitational', path: '/community/invitational', subtitle: 'Vol. 2 ft. Courtside Theory — Sat June 13' },
   { name: 'Monthly Classic', path: '/community/monthly-classic', subtitle: 'Our infamous 2-hour clinics', media: monthlyClassicVideo, mediaType: 'video' },
   { name: 'Absolute Beginner Clinic', path: '/community/clinic', subtitle: 'No experience needed — just show up and learn the game', media: clinicImg, mediaType: 'image', mobileObjectPosition: '65% center' },
   { name: 'Experiences', path: '/community/experiences', subtitle: 'Watch parties, wine nights, and off-court culture', media: experiencesImg, mediaType: 'image', objectPosition: 'center bottom' },
