@@ -113,6 +113,23 @@ export function SchedulePage() {
         <section className="schedule-header">
           <h1 className="schedule-title">Schedule</h1>
 
+          {/* ── Featured Invitational (own section, above the seasons) ── */}
+          {invitationalData.showOnSchedule && (
+            <section className="schedule-invitational">
+              <Link to="/invitational" className="schedule-invitational-card">
+                <span className="schedule-invitational-tag">Featured Event</span>
+                <h2 className="schedule-invitational-name">
+                  {invitationalData.name}
+                  {invitationalData.feat ? ` ft. ${invitationalData.feat}` : ''}
+                </h2>
+                <p className="schedule-invitational-meta">
+                  {invitationalData.dateLabel} &middot; {invitationalData.timeLabel} &middot; {invitationalData.venue.address}
+                </p>
+                <span className="schedule-invitational-cta">View details &rarr;</span>
+              </Link>
+            </section>
+          )}
+
           <div className="schedule-seasons">
             <div className="schedule-season">
               <h2 className="schedule-season-name">Winter Season</h2>
@@ -149,23 +166,6 @@ export function SchedulePage() {
             </div>
           </div>
         </section>
-
-        {/* ── Featured Invitational (own section) ── */}
-        {invitationalData.showOnSchedule && (
-          <section className="schedule-invitational">
-            <Link to="/invitational" className="schedule-invitational-card">
-              <span className="schedule-invitational-tag">Featured Event</span>
-              <h2 className="schedule-invitational-name">
-                {invitationalData.name}
-                {invitationalData.feat ? ` ft. ${invitationalData.feat}` : ''}
-              </h2>
-              <p className="schedule-invitational-meta">
-                {invitationalData.dateLabel} &middot; {invitationalData.timeLabel} &middot; {invitationalData.venue.address}
-              </p>
-              <span className="schedule-invitational-cta">View details &rarr;</span>
-            </Link>
-          </section>
-        )}
 
         {/* ── BOTTOM: Split layout ── */}
         <div className="schedule-bottom">
