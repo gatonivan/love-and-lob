@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a mobile-first, data-driven `/invitational` event landing page for the Love & Lob Invitational Vol. 2 (Sat June 13, 2026), reusing the existing crossfade-over-canvas page pattern.
+**Goal:** Add a mobile-first, data-driven `/community/invitational` event landing page for the Love & Lob Invitational Vol. 2 (Sat June 13, 2026), linked from the Community page like the other community items, with a `/invitational` redirect for the short URL.
 
-**Architecture:** A standalone route-element page rendered over the 3D canvas with the established crossfade entry/exit (driven by the `pageExiting` store flag). The whole page renders from a single typed `invitationalData` object so the August re-run is just new data. The facility map is built as an interactive shell (legend + tappable hotspot zones) against a placeholder image, swappable for the final art later.
+**Architecture:** A community sub-route (`/community/invitational`) rendered over the 3D canvas, reusing the existing community sub-page plumbing: the `referee` camera mode (already mapped for `/community/*`), a **generalized** `SubPageWrapper` for the crossfade + community-to-community nav + logo handling, and an Invitational card added to the Community page. The page keeps a bespoke dark event-landing layout driven entirely by a single typed `invitationalData` object so the August re-run is just new data. The facility map is built as an interactive shell (legend + tappable hotspot zones) against a placeholder image, swappable for the final art later.
 
-**Tech Stack:** React 19 + TypeScript (strict), React Router, Zustand (`sceneStore`), Three.js/R3F (camera mode only), plain co-located CSS.
+**Tech Stack:** React 19 + TypeScript (strict), React Router, Zustand (`sceneStore`), plain co-located CSS. (No camera/3D changes — the existing `referee` mode covers `/community/*`.)
 
 > **Testing note (deliberate deviation from default TDD):** This repo has no unit-test runner (no vitest/jest) and zero existing tests; the feature is visual. Per "follow existing patterns" and the tomorrow deadline, verification gates are `pnpm build` (tsc type-check + vite build), `pnpm lint`, and a manual visual checklist (Task 11). Adding a vitest/Playwright harness is explicitly out of scope for this deadline — raise it with the user as a follow-up.
 
@@ -26,11 +26,11 @@
 - `src/assets/invitational/map-placeholder.svg` — placeholder map base image
 
 **Modify:**
-- `src/stores/sceneStore.ts` — add `'invitational'` to the `CameraMode` union
-- `src/components/canvas/LandingExperience.tsx` — add `INVITATIONAL_DIR` + ternary case
-- `src/components/ui/RouteSync.tsx` — map `/invitational` → `'invitational'` camera mode
-- `src/App.tsx` — import + `<Route path="/invitational" .../>`
-- `src/components/ui/Navigation.tsx` — include `/invitational` in the exit-animation path set
+- `src/components/ui/community/SubPageWrapper.tsx` — add optional `className`/`contentClassName` props (backward-compatible defaults)
+- `src/App.tsx` — import `InvitationalPage`, add `/community/invitational` route + `/invitational` redirect
+- `src/components/ui/CommunityPage.tsx` — add an `Invitational` entry to the `sections` array
+
+**No changes needed:** `RouteSync.tsx`, `sceneStore.ts`, `LandingExperience.tsx`, `Navigation.tsx` — the `referee` camera + `/community/*` sub-page behavior already cover this route.
 
 ---
 
@@ -145,7 +145,7 @@ export const invitationalData: InvitationalData = {
         'Goodie bag',
         'Drinks',
       ],
-      cta: { label: "Let's Eat & Drink!", href: '#' }, // TODO(content): real ticketing URL
+      cta: { label: "Let's Eat & Drink!", href: 'https://lu.ma' }, // TODO(content): real ticketing URL (must be an external http(s) link so SubPageWrapper passes it through)
     },
   ],
   schedule: [
@@ -196,113 +196,93 @@ git commit -m "feat: add invitational page data model and content scaffold"
 
 ---
 
-## Task 2: Camera mode wiring
+## Task 2: Generalize `SubPageWrapper` for reuse
 
 **Files:**
-- Modify: `src/stores/sceneStore.ts:3`
-- Modify: `src/components/canvas/LandingExperience.tsx:18` and `:49-54`
-- Modify: `src/components/ui/RouteSync.tsx:10-15`
+- Modify: `src/components/ui/community/SubPageWrapper.tsx`
 
-- [ ] **Step 1: Extend the `CameraMode` union**
+The wrapper hardcodes the `community-sub-page` / `community-sub-content` class names. Add optional `className` / `contentClassName` props defaulting to those, so the invitational page reuses the same crossfade + community-to-community instant nav + forced-logo-hidden behavior with its own dark layout. All 7 existing community sub-pages pass no props and are unaffected.
 
-In `src/stores/sceneStore.ts`, change line 3:
+- [ ] **Step 1: Add the props**
 
-```ts
-type CameraMode = 'game' | 'birdseye' | 'referee' | 'umpire' | 'shop' | 'invitational'
+Replace the props interface and the function signature in `SubPageWrapper.tsx`:
+
+```tsx
+interface SubPageWrapperProps {
+  children: React.ReactNode
+  className?: string
+  contentClassName?: string
+}
+
+export function SubPageWrapper({
+  children,
+  className = 'community-sub-page',
+  contentClassName = 'community-sub-content',
+}: SubPageWrapperProps) {
 ```
 
-- [ ] **Step 2: Add the camera direction + case**
+Leave the `useEffect` logo logic and the `handleClick` handler exactly as they are.
 
-In `src/components/canvas/LandingExperience.tsx`, add after the `SHOP_DIR` constant (line 18):
+- [ ] **Step 2: Use the props in the returned JSX**
 
-```ts
-const INVITATIONAL_DIR = new Vector3(0, -4, 1.5).normalize() // courtside angle (mirrors umpire); page sections are opaque
+Replace the returned JSX (the exit class is derived from `className` so it stays correct for both variants):
+
+```tsx
+  return (
+    <div
+      className={`${className}${exiting ? ` ${className}--exiting` : ''}`}
+      onClick={handleClick}
+    >
+      <div className={contentClassName}>
+        {children}
+      </div>
+    </div>
+  )
 ```
 
-Then in the `dir` ternary inside `CameraController` (lines 49–54), add the case before the `GAME_DIR` fallback:
+- [ ] **Step 3: Verify build + lint, then regression-check**
 
-```ts
-    const dir =
-      cameraMode === 'birdseye' ? BIRDSEYE_DIR :
-      cameraMode === 'referee' ? REFEREE_DIR :
-      cameraMode === 'umpire' ? UMPIRE_DIR :
-      cameraMode === 'shop' ? SHOP_DIR :
-      cameraMode === 'invitational' ? INVITATIONAL_DIR :
-      GAME_DIR
-```
+Run: `pnpm build && pnpm lint`
+Expected: PASS.
 
-- [ ] **Step 3: Map the route to the mode**
+Run: `pnpm dev`, visit `/community/league` and one other sub-page.
+Expected: each still fades in over the cream panel and animates out exactly as before (defaults preserved).
 
-In `src/components/ui/RouteSync.tsx`, update the mode resolution (lines 10–15):
-
-```ts
-    const mode =
-      pathname === '/schedule' ? 'birdseye' :
-      pathname.startsWith('/community') ? 'referee' :
-      pathname === '/manifesto' ? 'umpire' :
-      pathname.startsWith('/shop') ? 'shop' :
-      pathname === '/invitational' ? 'invitational' :
-      'game'
-```
-
-- [ ] **Step 4: Verify type-check passes**
-
-Run: `pnpm build`
-Expected: PASS (the new union member is exhaustively handled; no errors).
-
-- [ ] **Step 5: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
-git add src/stores/sceneStore.ts src/components/canvas/LandingExperience.tsx src/components/ui/RouteSync.tsx
-git commit -m "feat: add invitational camera mode and route sync"
+git add src/components/ui/community/SubPageWrapper.tsx
+git commit -m "refactor: make SubPageWrapper class names configurable"
 ```
 
 ---
 
-## Task 3: Page shell + route + crossfade wrapper
+## Task 3: Page shell + community route + redirect + card
 
 **Files:**
 - Create: `src/components/ui/invitational/InvitationalPage.tsx`
 - Create: `src/components/ui/invitational/invitational.css`
 - Modify: `src/App.tsx`
-- Modify: `src/components/ui/Navigation.tsx:18`
+- Modify: `src/components/ui/CommunityPage.tsx`
 
 - [ ] **Step 1: Create the page shell with stubbed sections**
 
-The shell reads `pageExiting` to drive the exit fade, hides the logo (already handled by Navigation for non-home), reveals nav links at bottom via `useBottomScroll(true)`, and intercepts an internal "back home" navigation to play the exit animation. Sections are imported in later tasks; stub them here as inline placeholders so the shell is testable now.
+The shell reuses the generalized `SubPageWrapper` (which supplies the crossfade, forced-logo-hidden, and community-to-community instant nav), calls `useBottomScroll(true)` for the bottom nav-link reveal, and uses a "← Community" back link (intercepted by `SubPageWrapper` → instant nav, matching the other sub-pages). Sections are imported in later tasks; stub them here so the shell is testable now.
 
 ```tsx
-import { useCallback } from 'react'
-import { useNavigate } from 'react-router'
-import { useSceneStore } from '../../../stores/sceneStore'
+import { Link } from 'react-router'
 import { useBottomScroll } from '../../../hooks/useBottomScroll'
+import { SubPageWrapper } from '../community/SubPageWrapper'
 import { invitationalData } from './invitationalData'
 import './invitational.css'
 
 export function InvitationalPage() {
   useBottomScroll(true)
-  const exiting = useSceneStore((s) => s.pageExiting)
-  const navigate = useNavigate()
-
-  const goHome = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault()
-      useSceneStore.getState().setPageExiting(true)
-      setTimeout(() => {
-        useSceneStore.getState().setPageExiting(false)
-        navigate('/')
-      }, 300)
-    },
-    [navigate],
-  )
-
   const d = invitationalData
 
   return (
-    <div className={`inv-page${exiting ? ' inv-page--exiting' : ''}`}>
-      <a href="/" className="inv-back" onClick={goHome}>
-        &larr; Home
-      </a>
+    <SubPageWrapper className="inv-page" contentClassName="inv-content">
+      <Link to="/community" className="inv-back">&larr; Community</Link>
 
       {/* Sections added in later tasks */}
       <section className="inv-section inv-section--stub">
@@ -311,7 +291,7 @@ export function InvitationalPage() {
         <p>{d.dateLabel} · {d.timeLabel}</p>
         <p>{d.venue.address}</p>
       </section>
-    </div>
+    </SubPageWrapper>
   )
 }
 ```
@@ -383,7 +363,7 @@ export function InvitationalPage() {
 }
 ```
 
-- [ ] **Step 3: Register the route**
+- [ ] **Step 3: Register the routes**
 
 In `src/App.tsx`, add the import alongside the other UI imports:
 
@@ -391,18 +371,23 @@ In `src/App.tsx`, add the import alongside the other UI imports:
 import { InvitationalPage } from './components/ui/invitational/InvitationalPage'
 ```
 
-And add the route inside `<Routes>` (after the `/manifesto` route, before the catch-all):
+Add the canonical community route next to the other `/community/*` routes, and a redirect for the short URL (`Navigate` is already imported in `App.tsx` for the catch-all):
 
 ```tsx
-        <Route path="/invitational" element={<InvitationalPage />} />
+        <Route path="/community/invitational" element={<InvitationalPage />} />
+        <Route path="/invitational" element={<Navigate to="/community/invitational" replace />} />
 ```
 
-- [ ] **Step 4: Extend Navigation exit-animation paths**
+- [ ] **Step 4: Add the Invitational card to the Community page**
 
-In `src/components/ui/Navigation.tsx`, line 18, include `/invitational` so the logo/menu navigation plays the exit fade:
+In `src/components/ui/CommunityPage.tsx`, add an entry at the **top** of the `sections` array (the array starting at line 25). No media yet → it renders as a `--no-media` text card (poster art swapped in later).
 
 ```ts
-  const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/') || pathname === '/invitational'
+const sections: Section[] = [
+  { name: 'Invitational', path: '/community/invitational', subtitle: 'Vol. 2 ft. Courtside Theory — Sat June 13' },
+  { name: 'Monthly Classic', path: '/community/monthly-classic', subtitle: 'Our infamous 2-hour clinics', media: monthlyClassicVideo, mediaType: 'video' },
+  // ...remaining entries unchanged
+]
 ```
 
 - [ ] **Step 5: Verify build + lint, then manual check**
@@ -410,14 +395,13 @@ In `src/components/ui/Navigation.tsx`, line 18, include `/invitational` so the l
 Run: `pnpm build && pnpm lint`
 Expected: PASS.
 
-Run: `pnpm dev`, navigate to `/invitational`.
-Expected: page fades in over canvas with blur; logo hidden; clicking "← Home" fades out then returns to `/`; nav hamburger appears once camera settles.
+Run: `pnpm dev`. On `/community`, confirm the Invitational card appears; clicking it opens `/community/invitational`, which fades in over the canvas (logo hidden, hamburger appears once the camera settles, "← Community" returns instantly). Visit `/invitational` directly → redirects to `/community/invitational`.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/components/ui/invitational/InvitationalPage.tsx src/components/ui/invitational/invitational.css src/App.tsx src/components/ui/Navigation.tsx
-git commit -m "feat: add invitational route, page shell, and crossfade wrapper"
+git add src/components/ui/invitational/InvitationalPage.tsx src/components/ui/invitational/invitational.css src/App.tsx src/components/ui/CommunityPage.tsx
+git commit -m "feat: add invitational community sub-route, page shell, and card"
 ```
 
 ---
@@ -1021,7 +1005,9 @@ Expected: PASS, no warnings introduced.
 
 - [ ] **Step 2: Manual verification checklist** (`pnpm dev`, then resize to 375px, 480px, 768px, desktop)
 
-- [ ] `/invitational` fades in over the canvas with blur; exit fade plays when leaving via back link / nav.
+- [ ] Community page shows the Invitational card; clicking it opens `/community/invitational`. `/invitational` redirects there.
+- [ ] `/community/invitational` fades in over the canvas with blur; exit fade plays when leaving via "← Community" / nav.
+- [ ] The other community sub-pages (e.g. `/community/league`) still render and animate unchanged.
 - [ ] Logo hidden throughout; hamburger menu appears after camera settles; nav links reveal at bottom scroll.
 - [ ] Hero title scales without overflow; date badge stays circular.
 - [ ] Tickets are two columns on desktop, stacked ≤768px; "Sold Out" badge on Tennis; CTA only on Spectator.

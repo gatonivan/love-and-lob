@@ -1,7 +1,7 @@
 # Invitational Page — Design Spec
 
 **Date:** 2026-05-27
-**Route:** `/invitational`
+**Route:** `/community/invitational` (canonical) · `/invitational` redirects to it
 **Status:** Draft for review
 **Deadline:** May 28 (tomorrow)
 
@@ -26,23 +26,25 @@ The event is **already sold out** for tennis registration, so the page's job is 
 
 ## Architecture decision
 
-**Standalone route-element page at `/invitational`, data-driven, reusing the existing crossfade-over-canvas pattern** (the same approach as the `/community/*` sub-pages: `SubPageWrapper` + `community-sub.css` entry animation), **not** a heavy 3D-camera persistent overlay like Schedule/Shop/Manifesto.
+**Community sub-route at `/community/invitational`, listed on the Community page like the other community links, data-driven, reusing the existing community sub-page plumbing** (a generalized `SubPageWrapper` + the existing `referee` camera mode) — while keeping a **bespoke dark event-landing layout** (hero, tickets, interactive map) rather than the plainer community-sub cream template. A top-level **`/invitational` route redirects** to the canonical community path so the short URL still resolves.
 
 **Rationale:**
-- The reference is a flat scrolling landing page with opaque sections — full camera choreography adds work and buys nothing visible.
-- The route-element pattern is the lightest and most replicable. Matches "keep data JSON-driven" preference.
+- **User directive:** the invitational must be a sub-route within `/community` and appear as a link like the other community items.
+- Reusing the community plumbing means **no new camera mode and no Navigation changes** — `/community/*` already maps to `referee` and is already treated as a sub-page for logo/link/exit behavior. Fewer moving parts, lower risk against the deadline.
+- The directive is about **linking/routing** ("link within /community", "sub route … like the other links"), not the visual template — so the **bespoke event-landing design is preserved** (it should still read like the event-poster reference). The card/route is what matches the other links.
+- `SubPageWrapper` is **generalized with additive, backward-compatible props** so the invitational reuses the exact crossfade + community-to-community instant nav + logo handling without duplicating ~25 lines (DRY). All 7 existing community sub-pages keep their current behavior via defaults.
 
 **Alternatives considered:**
-- *Full persistent 3D overlay + dedicated camera choreography* (Schedule/Shop style): overkill for a flat landing page; more code, more risk against a tomorrow deadline. Rejected.
-- *Sub-page under `/community/invitational`*: user explicitly asked for the top-level `/invitational` path, and the invitational is a flagship event, not a community sub-item. Rejected.
+- *Top-level standalone `/invitational` with a dedicated camera mode* (the original plan): rejected — user wants it as a community sub-route linked like the others. The short URL is preserved via a redirect instead.
+- *Restyle to the plain community-sub cream template*: rejected — would discard the event-landing design the user explicitly asked to replicate; the directive concerns linking, not visuals. (Flagged as a confirm-if-wrong assumption.)
+- *Full persistent 3D overlay* (Schedule/Shop style): overkill for a flat landing page. Rejected.
 
 ## Integration touchpoints
 
-1. **`src/App.tsx`** — add `<Route path="/invitational" element={<InvitationalPage />} />` and the import.
-2. **`src/components/ui/RouteSync.tsx`** — map `pathname === '/invitational'` → new `'invitational'` camera mode.
-3. **`src/stores/sceneStore.ts`** — extend the `CameraMode` union with `'invitational'`.
-4. **Camera rig** (the component that positions the camera per mode — to be located during planning) — add an `'invitational'` case. Position can mirror an existing calm mode (e.g. `umpire` `(0, -4, 1.5)`) since page sections are opaque and the canvas is barely visible behind the blur. A distinct mode (vs reusing an existing one) keeps per-page gating clean and avoids cross-page show/hide surprises.
-5. **`src/components/ui/Navigation.tsx`** — extend the logo-click exit-animation branch (currently `isSubPage = /community/* || /shop/*`) to also include `/invitational`, so leaving the page plays the crossfade-out. Logo-hide and link-reveal already behave correctly for a non-home path.
+1. **`src/App.tsx`** — add `<Route path="/community/invitational" element={<InvitationalPage />} />` and `<Route path="/invitational" element={<Navigate to="/community/invitational" replace />} />` (`Navigate` is already imported), plus the `InvitationalPage` import.
+2. **`src/components/ui/CommunityPage.tsx`** — add an `Invitational` entry to the `sections` array so it renders as a card/link like the others (no media initially → `--no-media` card; swap in poster art later).
+3. **`src/components/ui/community/SubPageWrapper.tsx`** — generalize with optional `className` / `contentClassName` props (defaulting to `community-sub-page` / `community-sub-content`), so the invitational reuses it with its own dark `inv-page` layout and crossfade.
+4. **No changes** to `RouteSync.tsx`, `sceneStore.ts`, `LandingExperience.tsx`, or `Navigation.tsx` — the existing `referee` camera mapping for `/community/*` and the existing `/community/` sub-page logo/link/exit handling already cover the invitational route.
 
 ## Components & files
 
@@ -62,11 +64,9 @@ Sponsors and Directions are simple enough to render inline in `InvitationalPage.
 
 ### Crossfade wrapper
 
-Reuse the `community-sub.css` entry/exit animation (translucent cream bg + backdrop blur, content fades up; `pageExiting` flag drives exit). Either:
-- Generalize `SubPageWrapper` to accept a configurable back-link target / exit-path rule, **or**
-- Add a thin `InvitationalPage`-local wrapper that reuses the same CSS classes.
+**Decided:** generalize `SubPageWrapper` (`src/components/ui/community/SubPageWrapper.tsx`) with optional `className` / `contentClassName` props that default to the current `community-sub-page` / `community-sub-content` (so all 7 existing pages are unaffected). `InvitationalPage` uses it with `className="inv-page"` / `contentClassName="inv-content"` and supplies its own full-bleed dark sections + crossfade via `invitational.css` (`.inv-page`, `.inv-page--exiting`).
 
-Decision deferred to the implementation plan; leaning toward a small local wrapper to avoid entangling community-specific link logic. The page is multi-section and full-bleed, so it will likely use its own `invitational.css` for section layout while borrowing the page-level fade keyframes.
+This reuses the shared community-to-community instant nav, leaving-community exit fade (`pageExiting`), and forced-logo-hidden behavior without duplication. The in-page back link is **"← Community"** (instant nav, matching the other sub-pages), not "← Home".
 
 ## Data model
 
@@ -148,6 +148,8 @@ Per user: **scaffold all copy from Vol. 1** (seen in the reference video) as rea
 ## Testing notes
 
 - Type-check + lint pass (`pnpm build`, `pnpm lint`).
-- Manual: navigate to `/invitational` — crossfade entry plays, logo hidden, hamburger menu appears once camera settles, nav links reveal at bottom scroll, exit crossfade plays when leaving.
+- Manual: the Community page shows an Invitational card; clicking it opens `/community/invitational`. Visiting `/invitational` redirects there.
+- Manual: crossfade entry plays, logo hidden, hamburger menu appears once camera settles, nav links reveal at bottom scroll, "← Community" returns instantly, exit crossfade plays when leaving to home.
+- Regression: the other 7 community sub-pages still render and animate unchanged after the `SubPageWrapper` generalization.
 - Mobile: verify 480px and 768px layouts; tickets stack; map hotspots tappable.
 - Data-driven: confirm changing a value in `invitationalData.ts` updates the page.
