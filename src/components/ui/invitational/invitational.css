@@ -220,3 +220,12 @@
 .inv-map-legend-label { display: block; font-family: 'Inter', sans-serif; font-weight: 700; color: #d8e84d; }
 .inv-map-legend-desc { display: block; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: rgba(241, 240, 226, 0.8); }
 @media (max-width: 768px) { .inv-map { grid-template-columns: 1fr; } }
+
+@media (max-width: 480px) {
+  .inv-ticket { padding: 1.25rem; }
+  .inv-ticket-head h3 { font-size: 1.2rem; }
+  .inv-map { gap: 1.25rem; }
+  .inv-map-legend-desc { font-size: 0.85rem; }
+  .inv-sponsor-list { gap: 1.25rem; }
+  .inv-sponsor span { font-size: 1.1rem; }
+}
