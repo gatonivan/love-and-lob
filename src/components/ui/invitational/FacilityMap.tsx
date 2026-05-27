@@ -16,7 +16,7 @@ export function FacilityMap({ image, alt, zones }: FacilityMapProps) {
       <div className="inv-map">
         <div className="inv-map-canvas">
           {image && <img className="inv-map-img" src={image} alt={alt} />}
-          {zones.map((z) => (
+          {image && zones.map((z) => (
             <button
               key={z.id}
               type="button"
@@ -33,15 +33,17 @@ export function FacilityMap({ image, alt, zones }: FacilityMapProps) {
         </div>
         <ul className="inv-map-legend">
           {zones.map((z) => (
-            <li
-              key={z.id}
-              className={`inv-map-legend-item${activeId === z.id ? ' inv-map-legend-item--active' : ''}`}
-              onMouseEnter={() => setActiveId(z.id)}
-              onMouseLeave={() => setActiveId(null)}
-              onClick={() => setActiveId((cur) => (cur === z.id ? null : z.id))}
-            >
-              <span className="inv-map-legend-label">{z.label}</span>
-              <span className="inv-map-legend-desc">{z.description}</span>
+            <li key={z.id}>
+              <button
+                type="button"
+                className={`inv-map-legend-item${activeId === z.id ? ' inv-map-legend-item--active' : ''}`}
+                onMouseEnter={() => setActiveId(z.id)}
+                onMouseLeave={() => setActiveId(null)}
+                onClick={() => setActiveId((cur) => (cur === z.id ? null : z.id))}
+              >
+                <span className="inv-map-legend-label">{z.label}</span>
+                <span className="inv-map-legend-desc">{z.description}</span>
+              </button>
             </li>
           ))}
         </ul>

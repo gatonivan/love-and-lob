@@ -36,7 +36,8 @@ body,
 .shop-page,
 .product-detail,
 .community-sub-page,
-.manifesto-page {
+.manifesto-page,
+.inv-page {
   overflow-y: auto;
   height: 100vh;
   height: 100dvh;
@@ -67,7 +68,8 @@ a, button, [role="button"], input[type="submit"],
 .shop-page,
 .product-detail,
 .community-sub-page,
-.manifesto-page {
+.manifesto-page,
+.inv-page {
   position: relative;
   z-index: 1;
 }

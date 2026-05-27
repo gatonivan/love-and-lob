@@ -196,6 +196,11 @@
 }
 .inv-map-zone:hover,
 .inv-map-zone--active { background: rgba(216, 232, 77, 0.28); border-color: #d8e84d; }
+.inv-map-zone:focus-visible,
+.inv-map-legend-item:focus-visible {
+  outline: 2px solid #d8e84d;
+  outline-offset: 2px;
+}
 .inv-map-zone-tag {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
   font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; color: #0a0a0a;
@@ -206,7 +211,8 @@
 .inv-map-zone--active .inv-map-zone-tag { opacity: 1; }
 .inv-map-legend { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
 .inv-map-legend-item {
-  cursor: pointer; padding: 0.6rem 0.75rem; border-radius: 6px;
+  width: 100%; display: block; text-align: left; background: transparent; color: inherit;
+  font-family: inherit; cursor: pointer; padding: 0.6rem 0.75rem; border-radius: 6px;
   border: 1px solid rgba(241, 240, 226, 0.12); transition: border-color 0.15s, background 0.15s;
 }
 .inv-map-legend-item:hover,
