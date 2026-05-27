@@ -29,8 +29,8 @@ export interface Sponsor {
 }
 
 export interface Faq {
-  q: string
-  a: string
+  question: string
+  answer: string
 }
 
 export interface MapZone {
@@ -115,8 +115,8 @@ export const invitationalData: InvitationalData = {
   ],
   faqs: [
     // TODO(content): real Vol. 2 FAQ answers
-    { q: 'Is the event sold out?', a: 'Tennis registration is sold out. Spectator tickets are still available.' },
-    { q: 'What should I bring?', a: 'TODO(content): bring details.' },
+    { question: 'Is the event sold out?', answer: 'Tennis registration is sold out. Spectator tickets are still available.' },
+    { question: 'What should I bring?', answer: 'TODO(content): bring details.' },
   ],
   directions: {
     // TODO(content): real directions/parking for Atlantic Beach
