@@ -16,7 +16,7 @@ The event is **already sold out** for tennis registration, so the page's job is 
 | Field | Value |
 |-------|-------|
 | Name | Love & Lob Invitational Vol. 2 ft. Courtside Theory |
-| Date | Saturday, June 13 ⚠️ **year to confirm** (see Open Items) |
+| Date | Saturday, June 13, 2026 |
 | Time | 12:30 pm – 6:30 pm |
 | Venue | 60 The Plz, Atlantic Beach, NY |
 | Tennis registration | **SOLD OUT** — still list what the ticket includes |
@@ -136,7 +136,7 @@ Per user: **scaffold all copy from Vol. 1** (seen in the reference video) as rea
 
 ## Open items (need user confirmation at review)
 
-1. **Event year.** Notion and the user both say "Saturday, June 13 **2025**", but June 13 is a Saturday in **2026**, not 2025 (2025-06-13 is a Friday), and the due date is May 2026. Spec assumes **June 13, 2026** — confirm.
+1. ~~Event year~~ — **Confirmed: Saturday, June 13, 2026.**
 2. **Map art delivery** — user provides the final PNG; until then the page ships with the interactive shell + placeholder.
 
 ## Out of scope
