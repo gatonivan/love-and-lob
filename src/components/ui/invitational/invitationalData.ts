@@ -1,3 +1,5 @@
+import mapPlaceholder from '../../../assets/invitational/map-placeholder.svg'
+
 // ── FILL-IN CHECKLIST (real Vol. 2 values) ───────────────────────────────
 // [ ] Spectator pricing tiers
 // [ ] Tennis + Spectator inclusion lists
@@ -124,7 +126,7 @@ export const invitationalData: InvitationalData = {
     parking: 'TODO(content): parking details.',
   },
   map: {
-    image: undefined, // set to an imported placeholder in a later task; final art later
+    image: mapPlaceholder,
     alt: 'Love & Lob Invitational facility map',
     zones: [
       // TODO(content): real zones + hotspot coords once final art arrives

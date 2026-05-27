@@ -6,6 +6,7 @@ import { InvitationalHero } from './InvitationalHero'
 import { TicketTiers } from './TicketTiers'
 import { ScheduleTimeline } from './ScheduleTimeline'
 import { FaqList } from './FaqList'
+import { FacilityMap } from './FacilityMap'
 import './invitational.css'
 
 export function InvitationalPage() {
@@ -25,6 +26,8 @@ export function InvitationalPage() {
           <p key={p} className="inv-intro">{p}</p>
         ))}
       </section>
+
+      <FacilityMap image={d.map.image} alt={d.map.alt} zones={d.map.zones} />
 
       <TicketTiers tickets={d.tickets} />
 

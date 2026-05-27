@@ -184,3 +184,33 @@
   color: rgba(241, 240, 226, 0.85); text-transform: uppercase; letter-spacing: 0.05em;
 }
 .inv-sponsor img { max-height: 48px; width: auto; filter: brightness(0) invert(1); opacity: 0.85; }
+
+/* ── Facility Map ─────────────────────────────────────────────────────── */
+.inv-map { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start; }
+.inv-map-canvas { position: relative; border-radius: 10px; overflow: hidden; }
+.inv-map-img { width: 100%; display: block; }
+.inv-map-zone {
+  position: absolute; padding: 0; margin: 0; cursor: pointer;
+  background: rgba(216, 232, 77, 0.08); border: 1.5px solid transparent; border-radius: 6px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.inv-map-zone:hover,
+.inv-map-zone--active { background: rgba(216, 232, 77, 0.28); border-color: #d8e84d; }
+.inv-map-zone-tag {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; color: #0a0a0a;
+  background: #d8e84d; padding: 0.1rem 0.4rem; border-radius: 4px; white-space: nowrap;
+  opacity: 0; transition: opacity 0.15s; pointer-events: none;
+}
+.inv-map-zone:hover .inv-map-zone-tag,
+.inv-map-zone--active .inv-map-zone-tag { opacity: 1; }
+.inv-map-legend { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.inv-map-legend-item {
+  cursor: pointer; padding: 0.6rem 0.75rem; border-radius: 6px;
+  border: 1px solid rgba(241, 240, 226, 0.12); transition: border-color 0.15s, background 0.15s;
+}
+.inv-map-legend-item:hover,
+.inv-map-legend-item--active { border-color: #d8e84d; background: rgba(216, 232, 77, 0.08); }
+.inv-map-legend-label { display: block; font-family: 'Inter', sans-serif; font-weight: 700; color: #d8e84d; }
+.inv-map-legend-desc { display: block; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: rgba(241, 240, 226, 0.8); }
+@media (max-width: 768px) { .inv-map { grid-template-columns: 1fr; } }
