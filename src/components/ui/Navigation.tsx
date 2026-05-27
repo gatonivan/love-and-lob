@@ -15,7 +15,7 @@ export function Navigation() {
   const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
-  const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/')
+  const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/') || pathname === '/invitational'
   const showIconMenu = !isHome && cameraSettled
 
   // Logo: visible on home only

@@ -15,7 +15,7 @@ export function InvitationalPage() {
 
   return (
     <SubPageWrapper className="inv-page" contentClassName="inv-content">
-      <Link to="/community" className="inv-back">&larr; Community</Link>
+      <Link to="/schedule" className="inv-back">&larr; Schedule</Link>
 
       <InvitationalHero data={d} />
 

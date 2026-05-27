@@ -44,6 +44,9 @@ export interface MapZone {
 }
 
 export interface InvitationalData {
+  /** When true, a featured card linking to /invitational appears at the top of
+   *  /schedule's Upcoming list. Keep false until the invitational is open/announced. */
+  showOnSchedule: boolean
   name: string
   feat?: string
   scriptLine: string
@@ -61,6 +64,7 @@ export interface InvitationalData {
 }
 
 export const invitationalData: InvitationalData = {
+  showOnSchedule: false, // flip to true to publish the featured card on /schedule
   name: 'Love & Lob Invitational Vol. 2',
   feat: 'Courtside Theory',
   scriptLine: 'Tennis at the',

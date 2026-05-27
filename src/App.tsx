@@ -69,8 +69,7 @@ function App() {
         <Route path="/community/excursions" element={<ExcursionsPage />} />
         <Route path="/community/community-day" element={<CommunityDayPage />} />
         <Route path="/community/league" element={<LeaguePage />} />
-        <Route path="/community/invitational" element={<InvitationalPage />} />
-        <Route path="/invitational" element={<Navigate to="/community/invitational" replace />} />
+        <Route path="/invitational" element={<InvitationalPage />} />
 <Route path="/manifesto" element={null} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

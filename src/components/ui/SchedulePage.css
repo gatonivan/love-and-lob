@@ -157,6 +157,37 @@
   border-color: rgba(0, 66, 37, 0.12);
 }
 
+.schedule-card--featured {
+  flex-direction: column;
+  gap: 0.4rem;
+  background: rgba(216, 232, 77, 0.18);
+  border-color: #004225;
+  margin-bottom: 0.75rem;
+}
+
+.schedule-card--featured:hover {
+  background: rgba(216, 232, 77, 0.3);
+  border-color: #004225;
+}
+
+.schedule-card-tag {
+  align-self: flex-start;
+  font-family: monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #004225;
+  background: #d8e84d;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+.schedule-card--featured .schedule-card-name {
+  white-space: normal;
+  font-size: 0.9rem;
+}
+
 .schedule-card-cover {
   width: 52px;
   height: 52px;
