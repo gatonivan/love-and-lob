@@ -4,9 +4,15 @@ import { useSceneStore } from '../../../stores/sceneStore'
 
 interface SubPageWrapperProps {
   children: React.ReactNode
+  className?: string
+  contentClassName?: string
 }
 
-export function SubPageWrapper({ children }: SubPageWrapperProps) {
+export function SubPageWrapper({
+  children,
+  className = 'community-sub-page',
+  contentClassName = 'community-sub-content',
+}: SubPageWrapperProps) {
   const exiting = useSceneStore((s) => s.pageExiting)
   const navigate = useNavigate()
 
@@ -60,10 +66,10 @@ export function SubPageWrapper({ children }: SubPageWrapperProps) {
 
   return (
     <div
-      className={`community-sub-page${exiting ? ' community-sub-page--exiting' : ''}`}
+      className={`${className}${exiting ? ` ${className}--exiting` : ''}`}
       onClick={handleClick}
     >
-      <div className="community-sub-content">
+      <div className={contentClassName}>
         {children}
       </div>
     </div>
