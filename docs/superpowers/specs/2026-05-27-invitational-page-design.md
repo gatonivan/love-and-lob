@@ -1,8 +1,8 @@
 # Invitational Page — Design Spec
 
 **Date:** 2026-05-27
-**Route:** `/community/invitational` (canonical) · `/invitational` redirects to it
-**Status:** Draft for review
+**Route:** `/invitational` (top-level). Entry point is a **gated featured card** at the top of `/schedule`'s "Upcoming" section, shown only when `invitationalData.showOnSchedule` is `true`.
+**Status:** Implemented
 **Deadline:** May 28 (tomorrow)
 
 ## Goal
@@ -26,7 +26,9 @@ The event is **already sold out** for tennis registration, so the page's job is 
 
 ## Architecture decision
 
-**Community sub-route at `/community/invitational`, listed on the Community page like the other community links, data-driven, reusing the existing community sub-page plumbing** (a generalized `SubPageWrapper` + the existing `referee` camera mode) — while keeping a **bespoke dark event-landing layout** (hero, tickets, interactive map) rather than the plainer community-sub cream template. A top-level **`/invitational` route redirects** to the canonical community path so the short URL still resolves.
+> **Revision history:** originally specced as a top-level page; then moved to a `/community/invitational` sub-route on user request; then **finalized** as a top-level `/invitational` page surfaced through `/schedule` because the invitational is an *upcoming event*, not a community item. This section describes the final state.
+
+**Top-level route `/invitational`, surfaced via a gated featured card on `/schedule`, data-driven, reusing the generalized `SubPageWrapper` + the existing `birdseye` camera mode** (shared with `/schedule`, so navigating from the schedule card requires no camera move). The page keeps its **bespoke dark event-landing layout** (hero, tickets, interactive map). It is **not** under `/community` (no card, no route). The featured card on `/schedule` is gated behind `invitationalData.showOnSchedule` (default `false`) so the event stays unadvertised until it's opened/announced — though the page remains directly reachable at `/invitational` for preview/sharing.
 
 **Rationale:**
 - **User directive:** the invitational must be a sub-route within `/community` and appear as a link like the other community items.
@@ -39,12 +41,16 @@ The event is **already sold out** for tennis registration, so the page's job is 
 - *Restyle to the plain community-sub cream template*: rejected — would discard the event-landing design the user explicitly asked to replicate; the directive concerns linking, not visuals. (Flagged as a confirm-if-wrong assumption.)
 - *Full persistent 3D overlay* (Schedule/Shop style): overkill for a flat landing page. Rejected.
 
-## Integration touchpoints
+## Integration touchpoints (final)
 
-1. **`src/App.tsx`** — add `<Route path="/community/invitational" element={<InvitationalPage />} />` and `<Route path="/invitational" element={<Navigate to="/community/invitational" replace />} />` (`Navigate` is already imported), plus the `InvitationalPage` import.
-2. **`src/components/ui/CommunityPage.tsx`** — add an `Invitational` entry to the `sections` array so it renders as a card/link like the others (no media initially → `--no-media` card; swap in poster art later).
-3. **`src/components/ui/community/SubPageWrapper.tsx`** — generalize with optional `className` / `contentClassName` props (defaulting to `community-sub-page` / `community-sub-content`), so the invitational reuses it with its own dark `inv-page` layout and crossfade.
-4. **No changes** to `RouteSync.tsx`, `sceneStore.ts`, `LandingExperience.tsx`, or `Navigation.tsx` — the existing `referee` camera mapping for `/community/*` and the existing `/community/` sub-page logo/link/exit handling already cover the invitational route.
+1. **`src/App.tsx`** — `<Route path="/invitational" element={<InvitationalPage />} />` (top-level; no community route, no redirect).
+2. **`src/components/ui/RouteSync.tsx`** — `/invitational` → `birdseye` camera (shared with `/schedule`).
+3. **`src/components/ui/Navigation.tsx`** — `/invitational` added to `isSubPage` (logo hidden, exit fade, links revealed at bottom).
+4. **`src/components/ui/SchedulePage.tsx`** + **`SchedulePage.css`** — a gated featured `<Link>` card at the top of the "Upcoming" section, styled for the schedule page's light theme, rendered only when `invitationalData.showOnSchedule` is `true`.
+5. **`src/components/ui/invitational/invitationalData.ts`** — `showOnSchedule: boolean` field (default `false`) is the publish toggle.
+6. **`src/components/ui/invitational/InvitationalPage.tsx`** — back link is "← Schedule" → `/schedule`.
+7. **`src/components/ui/community/SubPageWrapper.tsx`** — still generalized with optional `className`/`contentClassName` props; the invitational page reuses it as `inv-page`. `App.css` registers `.inv-page` in the scroll + z-index allowlists.
+8. **CommunityPage** — the invitational card/route was removed; the page is no longer under `/community`.
 
 ## Components & files
 

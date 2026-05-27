@@ -70,7 +70,7 @@ function App() {
         <Route path="/community/community-day" element={<CommunityDayPage />} />
         <Route path="/community/league" element={<LeaguePage />} />
         <Route path="/invitational" element={<InvitationalPage />} />
-<Route path="/manifesto" element={null} />
+        <Route path="/manifesto" element={null} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
