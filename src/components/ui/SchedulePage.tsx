@@ -157,22 +157,6 @@ export function SchedulePage() {
           <section className="schedule-calendar">
             <h2 className="schedule-section-heading">Upcoming</h2>
 
-            {invitationalData.showOnSchedule && (
-              <Link to="/invitational" className="schedule-card schedule-card--featured">
-                <span className="schedule-card-tag">Featured</span>
-                <div className="schedule-card-info">
-                  <div className="schedule-card-date">
-                    {invitationalData.dateLabel} &middot; {invitationalData.timeLabel}
-                  </div>
-                  <div className="schedule-card-name">
-                    {invitationalData.name}
-                    {invitationalData.feat ? ` ft. ${invitationalData.feat}` : ''}
-                  </div>
-                  <div className="schedule-card-location">{invitationalData.venue.address}</div>
-                </div>
-              </Link>
-            )}
-
             {loading ? (
               <div className="schedule-loading">Loading schedule...</div>
             ) : events.length === 0 ? (
@@ -207,6 +191,22 @@ export function SchedulePage() {
                   </a>
                 ))}
               </div>
+            )}
+
+            {invitationalData.showOnSchedule && (
+              <Link to="/invitational" className="schedule-card schedule-card--featured">
+                <span className="schedule-card-tag">Featured</span>
+                <div className="schedule-card-info">
+                  <div className="schedule-card-date">
+                    {invitationalData.dateLabel} &middot; {invitationalData.timeLabel}
+                  </div>
+                  <div className="schedule-card-name">
+                    {invitationalData.name}
+                    {invitationalData.feat ? ` ft. ${invitationalData.feat}` : ''}
+                  </div>
+                  <div className="schedule-card-location">{invitationalData.venue.address}</div>
+                </div>
+              </Link>
             )}
 
             <a
