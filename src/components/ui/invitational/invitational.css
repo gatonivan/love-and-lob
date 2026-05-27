@@ -60,3 +60,127 @@
   .inv-section { padding: 0 1.25rem 2.5rem; }
   .inv-back { margin: 0 1.25rem 1rem; font-size: 0.85rem; }
 }
+
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+.inv-hero {
+  max-width: 1100px;
+  margin: 0 auto 3rem;
+  padding: 0 4rem;
+  text-align: center;
+  animation: inv-content-in 0.5s ease 0.25s both;
+}
+.inv-hero-script {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  color: #d8e84d;
+  margin-bottom: 0.5rem;
+}
+.inv-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 9vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.inv-hero-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(120px, 22vw, 180px);
+  height: clamp(120px, 22vw, 180px);
+  margin: 1.5rem auto;
+  border: 2px solid #d8e84d;
+  border-radius: 50%;
+  color: #d8e84d;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.inv-hero-badge-weekday,
+.inv-hero-badge-month { font-size: 0.9rem; letter-spacing: 0.15em; }
+.inv-hero-badge-day { font-size: clamp(2rem, 7vw, 3.25rem); font-weight: 900; line-height: 1; }
+.inv-hero-feat {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(241, 240, 226, 0.7);
+}
+@media (max-width: 768px) { .inv-hero { padding: 0 2rem; } }
+@media (max-width: 480px) { .inv-hero { padding: 0 1.25rem; margin-bottom: 2rem; } }
+
+/* ── Welcome / intro ──────────────────────────────────────────────────── */
+.inv-venue { font-family: 'Inter', sans-serif; font-weight: 600; color: #d8e84d; margin-bottom: 0.25rem; }
+.inv-intro { font-family: 'Inter', sans-serif; font-size: 1.1rem; line-height: 1.7; color: rgba(241, 240, 226, 0.85); margin: 1rem 0; }
+@media (max-width: 480px) { .inv-intro { font-size: 0.95rem; } }
+
+/* ── Shared heading ───────────────────────────────────────────────────── */
+.inv-h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  text-transform: uppercase;
+  color: #d8e84d;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Tickets ──────────────────────────────────────────────────────────── */
+.inv-tickets { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.inv-ticket {
+  border: 1px solid rgba(216, 232, 77, 0.25);
+  border-radius: 10px;
+  padding: 1.75rem;
+  background: rgba(241, 240, 226, 0.03);
+}
+.inv-ticket-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+.inv-ticket-head h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 900; }
+.inv-badge-soldout {
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #0a0a0a; background: #d8e84d; padding: 0.2rem 0.5rem; border-radius: 4px;
+}
+.inv-ticket-price { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.8); margin: 0.2rem 0; }
+.inv-ticket-label { font-family: 'Inter', sans-serif; font-weight: 700; font-style: italic; margin: 1rem 0 0.5rem; }
+.inv-ticket-list { list-style: none; padding: 0; margin: 0; }
+.inv-ticket-list li { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.85); padding: 0.25rem 0 0.25rem 1.5rem; position: relative; }
+.inv-ticket-list li::before { content: '✓'; position: absolute; left: 0; color: #d8e84d; }
+.inv-ticket-cta {
+  display: inline-block; margin-top: 1.25rem; padding: 0.7rem 1.5rem; border-radius: 999px;
+  font-family: 'Inter', sans-serif; font-weight: 700; text-decoration: none;
+  color: #0a0a0a; background: #d8e84d; transition: transform 0.15s, opacity 0.15s;
+}
+.inv-ticket-cta:hover { transform: translateY(-1px); opacity: 0.9; }
+@media (max-width: 768px) { .inv-tickets { grid-template-columns: 1fr; gap: 1.25rem; } }
+
+/* ── Schedule ─────────────────────────────────────────────────────────── */
+.inv-schedule { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.inv-schedule-item {
+  display: flex; align-items: baseline; gap: 1.25rem;
+  border-left: 2px solid #d8e84d; padding: 0.75rem 0 0.75rem 1.25rem;
+}
+.inv-schedule-time { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 1.25rem; color: #d8e84d; min-width: 5.5rem; }
+.inv-schedule-label { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.9); }
+@media (max-width: 480px) { .inv-schedule-time { font-size: 1.05rem; min-width: 4.5rem; } }
+
+/* ── FAQs ─────────────────────────────────────────────────────────────── */
+.inv-faqs { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2.5rem; }
+.inv-faq { border-bottom: 1px solid rgba(241, 240, 226, 0.15); padding: 0.75rem 0; }
+.inv-faq summary { font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; list-style: none; }
+.inv-faq summary::-webkit-details-marker { display: none; }
+.inv-faq summary::after { content: '+'; float: right; color: #d8e84d; }
+.inv-faq[open] summary::after { content: '−'; }
+.inv-faq p { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.8); margin-top: 0.5rem; line-height: 1.6; }
+.inv-directions p { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.85); line-height: 1.7; margin: 0.5rem 0; }
+.inv-directions strong { color: #d8e84d; }
+
+/* ── Sponsors ─────────────────────────────────────────────────────────── */
+.inv-sponsor-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center;
+}
+.inv-sponsor span {
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 1.25rem;
+  color: rgba(241, 240, 226, 0.85); text-transform: uppercase; letter-spacing: 0.05em;
+}
+.inv-sponsor img { max-height: 48px; width: auto; filter: brightness(0) invert(1); opacity: 0.85; }
