@@ -157,35 +157,72 @@
   border-color: rgba(0, 66, 37, 0.12);
 }
 
-.schedule-card--featured {
-  flex-direction: column;
-  gap: 0.4rem;
+/* ── Featured Invitational (own section) ── */
+
+.schedule-invitational {
+  margin-bottom: 3rem;
+}
+
+.schedule-invitational-card {
+  display: block;
+  padding: 1.75rem 2rem;
+  border-radius: 12px;
   background: rgba(216, 232, 77, 0.18);
-  border-color: #004225;
-  margin-top: 0.75rem;
+  border: 1.5px solid #004225;
+  text-decoration: none;
+  color: #004225;
+  transition: background 0.2s, transform 0.15s;
 }
 
-.schedule-card--featured:hover {
+.schedule-invitational-card:hover {
   background: rgba(216, 232, 77, 0.3);
-  border-color: #004225;
+  transform: translateY(-2px);
 }
 
-.schedule-card-tag {
-  align-self: flex-start;
+.schedule-invitational-tag {
+  display: inline-block;
   font-family: monospace;
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #004225;
   background: #d8e84d;
-  padding: 0.1rem 0.4rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 4px;
+  margin-bottom: 0.85rem;
 }
 
-.schedule-card--featured .schedule-card-name {
-  white-space: normal;
-  font-size: 0.9rem;
+.schedule-invitational-name {
+  font-family: 'FreightBig Pro', Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0 0 0.6rem;
+}
+
+.schedule-invitational-meta {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: rgba(0, 66, 37, 0.55);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 1rem;
+}
+
+.schedule-invitational-cta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #004225;
+}
+
+@media (max-width: 480px) {
+  .schedule-invitational { margin-bottom: 2rem; }
+  .schedule-invitational-card { padding: 1.25rem; }
 }
 
 .schedule-card-cover {

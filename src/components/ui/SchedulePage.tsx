@@ -150,6 +150,23 @@ export function SchedulePage() {
           </div>
         </section>
 
+        {/* ── Featured Invitational (own section) ── */}
+        {invitationalData.showOnSchedule && (
+          <section className="schedule-invitational">
+            <Link to="/invitational" className="schedule-invitational-card">
+              <span className="schedule-invitational-tag">Featured Event</span>
+              <h2 className="schedule-invitational-name">
+                {invitationalData.name}
+                {invitationalData.feat ? ` ft. ${invitationalData.feat}` : ''}
+              </h2>
+              <p className="schedule-invitational-meta">
+                {invitationalData.dateLabel} &middot; {invitationalData.timeLabel} &middot; {invitationalData.venue.address}
+              </p>
+              <span className="schedule-invitational-cta">View details &rarr;</span>
+            </Link>
+          </section>
+        )}
+
         {/* ── BOTTOM: Split layout ── */}
         <div className="schedule-bottom">
 
@@ -191,22 +208,6 @@ export function SchedulePage() {
                   </a>
                 ))}
               </div>
-            )}
-
-            {invitationalData.showOnSchedule && (
-              <Link to="/invitational" className="schedule-card schedule-card--featured">
-                <span className="schedule-card-tag">Featured</span>
-                <div className="schedule-card-info">
-                  <div className="schedule-card-date">
-                    {invitationalData.dateLabel} &middot; {invitationalData.timeLabel}
-                  </div>
-                  <div className="schedule-card-name">
-                    {invitationalData.name}
-                    {invitationalData.feat ? ` ft. ${invitationalData.feat}` : ''}
-                  </div>
-                  <div className="schedule-card-location">{invitationalData.venue.address}</div>
-                </div>
-              </Link>
             )}
 
             <a
