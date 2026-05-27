@@ -15,6 +15,7 @@ export function Navigation() {
   const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
+  const isDarkPage = isCommunity || pathname === '/invitational' // dark-bg pages use the light nav icon
   const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/') || pathname === '/invitational'
   const showIconMenu = !isHome && cameraSettled
 
@@ -88,7 +89,7 @@ export function Navigation() {
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="Menu"
           >
-            <img src={isCommunity ? dropdownIconWhite : dropdownIconGreen} alt="" className="nav-icon-img" />
+            <img src={isDarkPage ? dropdownIconWhite : dropdownIconGreen} alt="" className="nav-icon-img" />
           </button>
           <div className={`nav-dropdown ${menuOpen ? 'nav-dropdown--open' : ''}`}>
             <a href="/" onClick={(e) => handleMenuNav(e, '/')}>Home</a>

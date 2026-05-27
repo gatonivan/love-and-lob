@@ -5,7 +5,7 @@
   min-height: 100dvh;
   padding: 8rem 0 4rem;
   color: #F1F0E2;
-  background: rgba(10, 10, 10, 0.96);
+  background: rgba(0, 66, 37, 0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   animation: inv-bg-in 0.6s ease forwards;
@@ -14,14 +14,14 @@
 
 .inv-page--exiting {
   opacity: 0;
-  background: rgba(10, 10, 10, 0);
+  background: rgba(0, 66, 37, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
 }
 
 @keyframes inv-bg-in {
-  from { background: rgba(10, 10, 10, 0); backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
-  to   { background: rgba(10, 10, 10, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  from { background: rgba(0, 66, 37, 0); backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+  to   { background: rgba(0, 66, 37, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 }
 
 .inv-section {
