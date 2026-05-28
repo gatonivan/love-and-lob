@@ -27,7 +27,7 @@ export function InvitationalPage() {
         ))}
       </section>
 
-      <FacilityMap image={d.map.image} alt={d.map.alt} zones={d.map.zones} />
+      <FacilityMap image={d.map.image} alt={d.map.alt} />
 
       <TicketTiers tickets={d.tickets} />
 

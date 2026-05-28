@@ -185,47 +185,54 @@
 }
 .inv-sponsor img { max-height: 48px; width: auto; filter: brightness(0) invert(1); opacity: 0.85; }
 
-/* ── Facility Map ─────────────────────────────────────────────────────── */
-.inv-map { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start; }
-.inv-map-canvas { position: relative; border-radius: 10px; overflow: hidden; }
-.inv-map-img { width: 100%; display: block; }
-.inv-map-zone {
-  position: absolute; padding: 0; margin: 0; cursor: pointer;
-  background: rgba(216, 232, 77, 0.08); border: 1.5px solid transparent; border-radius: 6px;
-  transition: background 0.15s, border-color 0.15s;
+/* ── Facility Map (interactive SVG recreation + kept artwork) ─────────── */
+.evmap-svg {
+  width: 100%; height: auto; display: block; border-radius: 10px;
+  border: 1px solid rgba(0, 66, 37, 0.15);
 }
-.inv-map-zone:hover,
-.inv-map-zone--active { background: rgba(216, 232, 77, 0.28); border-color: #d8e84d; }
-.inv-map-zone:focus-visible,
-.inv-map-legend-item:focus-visible {
-  outline: 2px solid #d8e84d;
-  outline-offset: 2px;
+.evmap-zone { cursor: pointer; outline: none; }
+.evmap-fill { stroke: transparent; stroke-width: 0; transition: stroke 0.15s, stroke-width 0.15s, filter 0.15s; }
+.evmap-zone:hover .evmap-fill,
+.evmap-zone--active .evmap-fill { stroke: #d8e84d; stroke-width: 4; filter: brightness(1.05); }
+.evmap-zone:focus-visible .evmap-fill { stroke: #d8e84d; stroke-width: 4; }
+.evmap-label {
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 16px;
+  fill: #08311e; text-anchor: middle; text-transform: uppercase; letter-spacing: 0.02em;
+  pointer-events: none;
+  opacity: 0; transition: opacity 0.18s ease;
 }
-.inv-map-zone-tag {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; color: #0a0a0a;
-  background: #d8e84d; padding: 0.1rem 0.4rem; border-radius: 4px; white-space: nowrap;
-  opacity: 0; transition: opacity 0.15s; pointer-events: none;
+.evmap-zone:hover .evmap-label,
+.evmap-zone:focus-visible .evmap-label,
+.evmap-zone--active .evmap-label { opacity: 1; }
+.evmap-label--light { fill: #f1f0e2; }
+.evmap-gate {
+  font-family: 'Inter', sans-serif; font-size: 11px; fill: rgba(8, 49, 30, 0.7);
+  text-anchor: middle; text-transform: uppercase; letter-spacing: 0.04em;
 }
-.inv-map-zone:hover .inv-map-zone-tag,
-.inv-map-zone--active .inv-map-zone-tag { opacity: 1; }
-.inv-map-legend { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-.inv-map-legend-item {
-  width: 100%; display: block; text-align: left; background: transparent; color: inherit;
-  font-family: inherit; cursor: pointer; padding: 0.6rem 0.75rem; border-radius: 6px;
-  border: 1px solid rgba(241, 240, 226, 0.12); transition: border-color 0.15s, background 0.15s;
+
+.inv-map-caption {
+  margin-top: 0.75rem; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+  color: rgba(241, 240, 226, 0.75); text-align: center; min-height: 1.2em;
 }
-.inv-map-legend-item:hover,
-.inv-map-legend-item--active { border-color: #d8e84d; background: rgba(216, 232, 77, 0.08); }
-.inv-map-legend-label { display: block; font-family: 'Inter', sans-serif; font-weight: 700; color: #d8e84d; }
-.inv-map-legend-desc { display: block; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: rgba(241, 240, 226, 0.8); }
-@media (max-width: 768px) { .inv-map { grid-template-columns: 1fr; } }
+.inv-map-caption strong { color: #d8e84d; }
+
+.inv-map-artwork { margin: 1.75rem 0 0; text-align: center; }
+.inv-map-artwork-label {
+  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: rgba(241, 240, 226, 0.5); margin-bottom: 0.6rem;
+}
+.inv-map-img { width: 100%; display: block; border-radius: 10px; }
+.inv-map-enlarge {
+  display: inline-block; margin-top: 0.5rem; padding: 0; border: 0; background: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase; color: #d8e84d;
+}
+.inv-map-enlarge:hover { opacity: 0.8; }
 
 @media (max-width: 480px) {
   .inv-ticket { padding: 1.25rem; }
   .inv-ticket-head h3 { font-size: 1.2rem; }
-  .inv-map { gap: 1.25rem; }
-  .inv-map-legend-desc { font-size: 0.85rem; }
+  .evmap-label { font-size: 19px; }
   .inv-sponsor-list { gap: 1.25rem; }
   .inv-sponsor span { font-size: 1.1rem; }
 }

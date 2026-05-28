@@ -1,4 +1,4 @@
-import mapPlaceholder from '../../../assets/invitational/map-placeholder.svg'
+import facilityMap from '../../../assets/invitational/facility_map.jpg'
 
 // ── FILL-IN CHECKLIST (real Vol. 2 values) ───────────────────────────────
 // [ ] Spectator pricing tiers
@@ -35,14 +35,6 @@ export interface Faq {
   answer: string
 }
 
-export interface MapZone {
-  id: string
-  label: string
-  description: string
-  /** Percentage coordinates over the map art (0–100). */
-  hotspot: { x: number; y: number; w: number; h: number }
-}
-
 export interface InvitationalData {
   /** When true, a featured card linking to /invitational appears at the top of
    *  /schedule's Upcoming list. Keep false until the invitational is open/announced. */
@@ -60,7 +52,7 @@ export interface InvitationalData {
   sponsors: Sponsor[]
   faqs: Faq[]
   directions: { byCar?: string; byTrain?: string; parking?: string }
-  map: { image?: string; alt: string; zones: MapZone[] }
+  map: { image?: string; alt: string }
 }
 
 export const invitationalData: InvitationalData = {
@@ -130,13 +122,9 @@ export const invitationalData: InvitationalData = {
     parking: 'TODO(content): parking details.',
   },
   map: {
-    image: mapPlaceholder,
-    alt: 'Love & Lob Invitational facility map',
-    zones: [
-      // TODO(content): real zones + hotspot coords once final art arrives
-      { id: 'courts', label: 'Courts 1–10', description: 'Main match courts', hotspot: { x: 20, y: 30, w: 30, h: 30 } },
-      { id: 'food', label: 'Food & Drinks', description: 'Light bites + bar', hotspot: { x: 60, y: 20, w: 20, h: 15 } },
-      { id: 'checkin', label: 'Check-In', description: 'Registration & welcome', hotspot: { x: 10, y: 70, w: 18, h: 12 } },
-    ],
+    // The interactive map is recreated as SVG in FacilityMap.tsx; this image is the
+    // original illustrated artwork, kept on the page alongside the interactive version.
+    image: facilityMap,
+    alt: 'Love & Lob Invitational illustrated facility map',
   },
 }
