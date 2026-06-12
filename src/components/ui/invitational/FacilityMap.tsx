@@ -145,7 +145,7 @@ export function FacilityMap() {
           strokeLinecap="round"
           opacity="0.85"
         />
-        <text className="evmap-walk" x="216" y="380">walking path</text>
+        <text className="evmap-walk" x="648" y="378">walking path</text>
 
         {/* ── walking paths flanking the courts (solid blue, per club diagram):
               verticals down both sides of courts 7–9 / 4–6, crossbar through
