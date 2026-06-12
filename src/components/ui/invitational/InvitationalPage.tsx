@@ -63,9 +63,27 @@ export function InvitationalPage() {
 
         <h2 className="inv-h2">Directions</h2>
         <div className="inv-directions">
-          {d.directions.byCar && <p><strong>By Car:</strong> {d.directions.byCar}</p>}
-          {d.directions.byTrain && <p><strong>By Train:</strong> {d.directions.byTrain}</p>}
-          {d.directions.parking && <p><strong>Parking:</strong> {d.directions.parking}</p>}
+          {d.directions.map((block) => (
+            <div key={block.title} className="inv-directions-block">
+              <h3>{block.title}</h3>
+              {block.paragraphs?.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+              {block.bullets && (
+                <ul>
+                  {block.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+              {block.link && (
+                <a className="inv-directions-link" href={block.link.href} target="_blank" rel="noreferrer">
+                  {block.link.label} ↗
+                </a>
+              )}
+              {block.image && <img className="inv-parking-map" src={block.image.src} alt={block.image.alt} loading="lazy" />}
+            </div>
+          ))}
         </div>
       </section>
 

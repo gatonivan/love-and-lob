@@ -211,6 +211,40 @@
 .inv-faq a { color: #d8e84d; }
 .inv-directions p { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.85); line-height: 1.7; margin: 0.5rem 0; }
 .inv-directions strong { color: #d8e84d; }
+.inv-directions-block { margin-bottom: 2rem; }
+.inv-directions-block:last-child { margin-bottom: 0; }
+.inv-directions-block h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  color: #d8e84d;
+  margin-bottom: 0.5rem;
+}
+.inv-directions-block ul { list-style: none; padding: 0; margin: 0.5rem 0; }
+.inv-directions-block li {
+  font-family: 'Inter', sans-serif;
+  color: rgba(241, 240, 226, 0.85);
+  line-height: 1.6;
+  padding: 0.3rem 0 0.3rem 1.4rem;
+  position: relative;
+}
+.inv-directions-block li::before { content: '●'; position: absolute; left: 0; top: 0.4rem; font-size: 0.55rem; color: #d8e84d; }
+.inv-directions-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #d8e84d;
+}
+.inv-parking-map {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  margin: 1rem 0 0.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(241, 240, 226, 0.2);
+}
 
 /* ── Sponsors (text wall) ─────────────────────────────────────────────── */
 .inv-sponsor-title {

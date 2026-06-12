@@ -28,6 +28,7 @@ export function FaqList({ faqs }: FaqListProps) {
           {f.answer.map((p) => (
             <p key={p}>{withEmailLink(p)}</p>
           ))}
+          {f.image && <img className="inv-parking-map" src={f.image.src} alt={f.image.alt} loading="lazy" />}
         </details>
       ))}
     </div>

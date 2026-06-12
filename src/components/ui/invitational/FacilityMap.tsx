@@ -16,7 +16,7 @@ const ZONE_INFO: Record<string, ZoneMeta> = {
   courts79: { label: 'Courts 7–9', description: 'Clay courts — court assignments land Saturday morning via text/email.' },
   courts46: { label: 'Courts 4–6', description: 'Clay courts — 20-minute rotations, then you move to the next court.' },
   courts13: { label: 'Courts 1–3', description: 'Clay courts — closest to the pickleball courts.' },
-  stadium: { label: 'Stadium Court', description: 'Center stage for Love & Lob vs. Courtside Theory.' },
+  stadium: { label: 'Stadium Court', description: 'Center stage for Love & Lob vs. Courtside Theory — grab a spot in the stadium seating.' },
   grill: { label: 'Grill Area', description: 'Lunch by Taqueria Ramirez at the 4:15 PM break + Lo Secco champagne cocktails.' },
   pickleball: { label: 'Pickleball Courts', description: 'Red Ball Zone — free spectator beginner session 1:30–2:30 PM, then play as long as you like.' },
   beach: { label: 'Shores West & The Beach', description: 'Head south of the courts — wristband + $10 to enter, chairs $2, umbrellas $5. Opens 10 AM.' },
@@ -147,6 +147,15 @@ export function FacilityMap() {
         />
         <text className="evmap-walk" x="216" y="380">walking path</text>
 
+        {/* ── walking paths flanking the courts (solid blue, per club diagram):
+              verticals down both sides of courts 7–9 / 4–6, crossbar through
+              the 7–9 number badges, all joining the dashed path below ──────── */}
+        <g aria-hidden="true" fill="none" stroke="#5b9fd4" strokeWidth="7" strokeLinecap="round" opacity="0.9">
+          <path d="M 272 112 L 272 392" />
+          <path d="M 634 112 L 634 392" />
+          <path d="M 272 236 C 360 231, 540 241, 634 236" />
+        </g>
+
         {/* ── interactive zones ─────────────────────────────────────────── */}
 
         {/* Club parking lot — west strip, THE place to park (spotlit) */}
@@ -198,12 +207,19 @@ export function FacilityMap() {
           <text className="evmap-house" x="318" y="568">Grill Area</text>
         </g>
 
-        {/* Stadium Court — center stage */}
+        {/* Stadium Court — center stage, with stadium seating on the east side */}
         <g {...zoneProps('stadium')}>
           <title>{ZONE_INFO.stadium.label}</title>
           <rect className="evmap-fill" x="412" y="402" width="132" height="150" rx="10" fill="#b06642" />
           <ClayCourt x={430} y={414} w={96} h={126} />
           <text className="evmap-house" x="478" y="568">Stadium Court</text>
+          <g aria-hidden="true">
+            <rect x="552" y="408" width="54" height="138" rx="5" fill="#d9cca8" />
+            {[0, 1, 2, 3].map((i) => (
+              <rect key={i} x={558 + i * 12} y="415" width="7" height="124" rx="2.5" fill="#4a4a44" opacity={0.85 - i * 0.12} />
+            ))}
+          </g>
+          <text className="evmap-house" x="579" y="562">Seating</text>
         </g>
 
         {/* Courts 1–3 — lower row (numbered 3·2·1 left to right, like the lot) */}

@@ -1,4 +1,5 @@
 import flyerVol2 from '../../../assets/invitational/flyer_vol2.jpg'
+import parkingMap from '../../../assets/invitational/parking_map.png'
 
 export type TicketStatus = 'sold-out' | 'available'
 
@@ -26,6 +27,18 @@ export interface Faq {
   question: string
   /** Each entry renders as its own paragraph. */
   answer: string[]
+  /** Optional graphic rendered below the answer (e.g. the parking route map). */
+  image?: { src: string; alt: string }
+}
+
+export interface DirectionsBlock {
+  title: string
+  /** Each entry renders as its own paragraph. */
+  paragraphs?: string[]
+  bullets?: string[]
+  link?: { label: string; href: string }
+  /** Optional graphic rendered below the block (e.g. the parking route map). */
+  image?: { src: string; alt: string }
 }
 
 export interface NarrativeBlock {
@@ -51,7 +64,7 @@ export interface InvitationalData {
   narrative: { heading: string; lead: string; blocks: NarrativeBlock[] }
   sponsors: Sponsor[]
   faqs: Faq[]
-  directions: { byCar?: string; byTrain?: string; parking?: string }
+  directions: DirectionsBlock[]
 }
 
 const TICKETS_URL =
@@ -187,6 +200,10 @@ export const invitationalData: InvitationalData = {
         'Please don’t park anywhere else — there is no street parking without a permit, and the city is strict with ticketing.',
         'The other option is purchasing a $40 parking permit from the Shores West with your wristband.',
       ],
+      image: {
+        src: parkingMap,
+        alt: 'Map of the route to the club parking lot: off the Atlantic Beach Bridge onto Park St, right onto Albany Blvd, then right at Ocean Blvd into the lot',
+      },
     },
     {
       question: 'What should I bring?',
@@ -216,12 +233,43 @@ export const invitationalData: InvitationalData = {
       answer: ['Short answer: no — you need a ticket. Spectator tickets are the move while they last.'],
     },
   ],
-  directions: {
-    byCar:
-      'Come over the Atlantic Beach Bridge onto Park Street, then make a right onto Albany Blvd. Drive down Albany Blvd to the following intersection, make a right, then an immediate right into the Club parking lot — the entrance is marked on the facility map above. The entrance/clubhouse is on the east side, with a drop-off-only zone if someone is dropping you.',
-    byTrain:
-      'Take the LIRR (Far Rockaway branch) to Inwood Station, then hop the event shuttle to the Tennis Center. First shuttle leaves Inwood at 10:30 AM — full shuttle schedule is in the FAQ.',
-    parking:
-      'Club parking lot ONLY — it’s free. Please don’t park anywhere else: no street parking without a permit, and the city is strict with ticketing. A $40 parking permit is also available at the Shores West with your wristband.',
-  },
+  directions: [
+    {
+      title: 'Ferry',
+      paragraphs: [
+        'For Wall St/Pier 11 and Sunset Park/BAT, there will be departures to and from Rockaway every 25 minutes on summer weekends.',
+        'Wall St/Pier 11 to Rockaway: Wall St/Pier 11 → Sunset Park/BAT → Rockaway.',
+      ],
+      bullets: ['Once you land in Rockaway, bike or Uber to the Atlantic Beach Tennis Center.'],
+      link: {
+        label: 'Reserve ferry tickets',
+        href: 'https://www.ferry.nyc/blog/rockaway-reserve-tickets-available-starting-5-23-2026/',
+      },
+    },
+    {
+      title: 'Subway',
+      paragraphs: ['Take the A train to the following locations:'],
+      bullets: [
+        'Take the A to Beach 36th St, then order an Uber (5-minute drive).',
+        'Take the A to Far Rockaway, take the LIRR one stop to Inwood, and wait for the shuttle.',
+      ],
+    },
+    {
+      title: 'Car',
+      paragraphs: [
+        'Address: 60 The Plz, Atlantic Beach, NY 11509.',
+        'Want to avoid the Atlantic Beach toll? Change your GPS settings to “avoid tolls”.',
+      ],
+    },
+    {
+      title: 'Parking',
+      paragraphs: [
+        'Club parking lot ONLY — it’s free. Please don’t park anywhere else: no street parking without a permit, and the city is strict with ticketing. A $40 parking permit is also available at the Shores West with your wristband.',
+      ],
+      image: {
+        src: parkingMap,
+        alt: 'Map of the route to the club parking lot: off the Atlantic Beach Bridge onto Park St, right onto Albany Blvd, then right at Ocean Blvd into the lot',
+      },
+    },
+  ],
 }
