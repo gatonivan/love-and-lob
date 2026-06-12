@@ -15,6 +15,15 @@ export function RouteSync() {
       pathname.startsWith('/shop') ? 'shop' :
       'game'
     setCameraMode(mode)
+
+    // Keep the boot-time background flag from index.html in sync so body/#root
+    // stay deep green on /invitational and revert to cream everywhere else.
+    if (pathname === '/invitational') {
+      document.documentElement.dataset.page = 'invitational'
+    } else {
+      delete document.documentElement.dataset.page
+      document.documentElement.style.removeProperty('background')
+    }
   }, [pathname, setCameraMode])
 
   return null

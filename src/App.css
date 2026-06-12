@@ -32,6 +32,15 @@ body,
   overflow: hidden;
 }
 
+/* Boot background for /invitational: index.html sets data-page before first
+   paint and RouteSync keeps it in sync, so body/#root never flash cream
+   between stylesheet apply and the overlay fade-in. */
+html[data-page='invitational'],
+html[data-page='invitational'] body,
+html[data-page='invitational'] #root {
+  background: #004225;
+}
+
 /* Allow scrolling only on pages that need it */
 .shop-page,
 .product-detail,
