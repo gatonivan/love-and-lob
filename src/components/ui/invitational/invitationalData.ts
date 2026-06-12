@@ -166,8 +166,8 @@ export const invitationalData: InvitationalData = {
       blurb: 'The governing body for tennis in the Northeast, championing access and competition at every level.',
       logo: logoUstaEastern,
     },
-    { name: 'HydraCourt', blurb: 'Cutting-edge court hydration technology keeping surfaces play-ready in any condition.', logo: logoHydracourt },
-    { name: 'Vacations, Inc.', blurb: 'Premium travel experiences designed for those who bring their racket everywhere they go.', logo: logoVacation },
+    { name: 'HydraCourt', blurb: 'Pro-level hydration made accessible for everyday players.', logo: logoHydracourt },
+    { name: 'Vacations, Inc.', blurb: 'A popular, retro-inspired suncare brand with nostalgic, 1980s-themed branding and award-winning summer scents.', logo: logoVacation },
     { name: 'LMNT', blurb: 'Science-backed electrolyte drink mix built for athletes who train hard and recover harder.', logo: logoLmnt },
     { name: 'Lo Secco Prosecco', blurb: 'A crisp, dry prosecco made for celebrating the moments between the points.', logo: logoLosecco },
     { name: 'Mezcla', blurb: 'Bold, Latin-inspired protein bars crafted for the athlete who moves between cultures and courts.', logo: logoMezcla },
@@ -177,7 +177,7 @@ export const invitationalData: InvitationalData = {
     { name: 'Barebells', blurb: "High-protein bars and shakes that prove healthy snacking doesn't have to taste like a sacrifice.", logo: logoBarebells },
     { name: 'Incrediwear', blurb: 'Circulation-enhancing performance wear that speeds recovery so you can get back on court faster.', logo: logoIncrediwear },
     { name: 'Second Serve Magazine', blurb: 'The culture-first tennis publication redefining what the sport looks, sounds, and feels like.', logo: logoSecondServe },
-    { name: 'The Shores', blurb: 'A beachside escape just outside the city where the energy of NYC meets the ease of the shoreline.' },
+    { name: 'The Shores', blurb: 'A beachside escape in Atlantic Beach, just outside the city where the energy of NYC meets the ease of the shoreline.' },
     { name: 'Broken Strings', blurb: 'The tennis lifestyle brand turning court culture into something you wear, rep, and live off the court.' },
     { name: 'Punto Grips', blurb: 'Premium performance grips engineered for players who demand feel, control, and consistency on every shot.' },
   ],
@@ -252,7 +252,11 @@ export const invitationalData: InvitationalData = {
         'For Wall St/Pier 11 and Sunset Park/BAT, there will be departures to and from Rockaway every 25 minutes on summer weekends.',
         'Wall St/Pier 11 to Rockaway: Wall St/Pier 11 → Sunset Park/BAT → Rockaway.',
       ],
-      bullets: ['Once you land in Rockaway, bike or Uber to the Atlantic Beach Tennis Center.'],
+      bullets: [
+        'Take the A train to Beach 36th St, then order an Uber (5-minute drive).',
+        'Take the A train to Far Rockaway, take the LIRR one stop to Inwood, and wait for the shuttle.',
+        'Bike or Uber to the Atlantic Beach Tennis Center.',
+      ],
       link: {
         label: 'Reserve ferry tickets',
         href: 'https://www.ferry.nyc/blog/rockaway-reserve-tickets-available-starting-5-23-2026/',
@@ -271,17 +275,19 @@ export const invitationalData: InvitationalData = {
       paragraphs: [
         'Depart from Penn Station, Grand Central, Atlantic Terminal, or any station that arrives at Jamaica/JFK Airport. YOU HAVE TO TRANSFER AT JAMAICA to take the Far Rockaway line to Inwood.',
         'The shuttle bus only runs between Inwood LIRR and Atlantic Beach Tennis Center. Trains run once per hour between Jamaica/JFK and Inwood.',
+        'Please use the TrainTime app from the App Store or mta.info to plan your commute and buy tickets.',
       ],
       bullets: [
         'Jamaica to Inwood: trains depart on the :58. Please time your commute so you have adequate time to catch the train to Inwood by 10:58, 11:58, etc.',
         'Inwood to Jamaica: trains depart on the :15. The shuttle departs at the top of the hour (3 PM, 4 PM, etc.) every hour until 7:45 PM.',
       ],
+      link: { label: 'Plan your trip on mta.info', href: 'https://www.mta.info' },
     },
     {
       title: 'Car',
       paragraphs: [
         'Address: 60 The Plz, Atlantic Beach, NY 11509.',
-        'Want to avoid the Atlantic Beach toll? Change your GPS settings to “avoid tolls”.',
+        'Want to avoid the Atlantic Beach Bridge toll? Change your GPS settings to “avoid tolls”.',
       ],
     },
     {
