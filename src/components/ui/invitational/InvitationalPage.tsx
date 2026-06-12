@@ -92,14 +92,24 @@ export function InvitationalPage() {
         {titleSponsor && (
           <div className="inv-sponsor-title">
             <p className="inv-sponsor-role">{titleSponsor.role}</p>
-            <p className="inv-sponsor-name">{titleSponsor.name}</p>
+            {titleSponsor.logo ? (
+              <img className="inv-sponsor-logo inv-sponsor-logo--title" src={titleSponsor.logo} alt={titleSponsor.name} />
+            ) : (
+              <p className="inv-sponsor-name">{titleSponsor.name}</p>
+            )}
             {titleSponsor.blurb && <p className="inv-sponsor-blurb">{titleSponsor.blurb}</p>}
           </div>
         )}
         <ul className="inv-sponsor-wall">
           {partners.map((s) => (
             <li key={s.name} className="inv-sponsor">
-              <p className="inv-sponsor-name">{s.name}</p>
+              <div className="inv-sponsor-slot">
+                {s.logo ? (
+                  <img className="inv-sponsor-logo" src={s.logo} alt={s.name} loading="lazy" />
+                ) : (
+                  <p className="inv-sponsor-name">{s.name}</p>
+                )}
+              </div>
               {s.blurb && <p className="inv-sponsor-blurb">{s.blurb}</p>}
             </li>
           ))}

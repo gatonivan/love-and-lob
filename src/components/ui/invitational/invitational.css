@@ -273,7 +273,34 @@
   font-family: 'Inter', sans-serif; font-size: 0.9rem; line-height: 1.55;
   color: rgba(241, 240, 226, 0.65); margin-top: 0.25rem;
 }
+/* Logos render as a uniform cream knockout wall on the dark green page —
+   brightness(0) flattens any brand color to black, invert flips it to white. */
+.inv-sponsor-logo {
+  display: block;
+  height: 44px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+.inv-sponsor-slot {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+.inv-sponsor-logo--title {
+  height: 96px;
+  max-width: 280px;
+  margin: 0.75rem auto 0;
+  opacity: 1;
+}
 @media (max-width: 768px) { .inv-sponsor-wall { grid-template-columns: 1fr; gap: 1.25rem; } }
+@media (max-width: 480px) {
+  .inv-sponsor-logo { height: 38px; max-width: 190px; }
+  .inv-sponsor-slot { min-height: 42px; }
+  .inv-sponsor-logo--title { height: 80px; }
+}
 
 /* ── Facility Map (interactive SVG recreation + kept artwork) ─────────── */
 .evmap-svg {

@@ -1,5 +1,16 @@
 import flyerVol2 from '../../../assets/invitational/flyer_vol2.jpg'
 import parkingMap from '../../../assets/invitational/parking_map.png'
+import logoUstaEastern from '../../../assets/invitational/sponsors/usta_eastern.png'
+import logoHydracourt from '../../../assets/invitational/sponsors/hydracourt.png'
+import logoVacation from '../../../assets/invitational/sponsors/vacation.svg'
+import logoLmnt from '../../../assets/invitational/sponsors/lmnt.png'
+import logoLosecco from '../../../assets/invitational/sponsors/losecco.png'
+import logoMezcla from '../../../assets/invitational/sponsors/mezcla.svg'
+import logoFlavcity from '../../../assets/invitational/sponsors/flavcity.png'
+import logoVitalProteins from '../../../assets/invitational/sponsors/vitalproteins.png'
+import logoBarebells from '../../../assets/invitational/sponsors/barebells.png'
+import logoIncrediwear from '../../../assets/invitational/sponsors/incrediwear.png'
+import logoSecondServe from '../../../assets/invitational/sponsors/secondserve.svg'
 
 export type TicketStatus = 'sold-out' | 'available'
 
@@ -153,21 +164,22 @@ export const invitationalData: InvitationalData = {
       name: 'USTA Eastern',
       role: 'Title Sponsor',
       blurb: 'The governing body for tennis in the Northeast, championing access and competition at every level.',
+      logo: logoUstaEastern,
     },
-    { name: 'HydraCourt', blurb: 'Cutting-edge court hydration technology keeping surfaces play-ready in any condition.' },
-    { name: 'Vacations, Inc.', blurb: 'Premium travel experiences designed for those who bring their racket everywhere they go.' },
-    { name: 'LMNT', blurb: 'Science-backed electrolyte drink mix built for athletes who train hard and recover harder.' },
-    { name: 'Lo Secco Prosecco', blurb: 'A crisp, dry prosecco made for celebrating the moments between the points.' },
-    { name: 'Mezcla', blurb: 'Bold, Latin-inspired protein bars crafted for the athlete who moves between cultures and courts.' },
-    { name: 'Flav City', blurb: 'Making clean, nutrient-dense eating accessible, delicious, and actually worth talking about.' },
+    { name: 'HydraCourt', blurb: 'Cutting-edge court hydration technology keeping surfaces play-ready in any condition.', logo: logoHydracourt },
+    { name: 'Vacations, Inc.', blurb: 'Premium travel experiences designed for those who bring their racket everywhere they go.', logo: logoVacation },
+    { name: 'LMNT', blurb: 'Science-backed electrolyte drink mix built for athletes who train hard and recover harder.', logo: logoLmnt },
+    { name: 'Lo Secco Prosecco', blurb: 'A crisp, dry prosecco made for celebrating the moments between the points.', logo: logoLosecco },
+    { name: 'Mezcla', blurb: 'Bold, Latin-inspired protein bars crafted for the athlete who moves between cultures and courts.', logo: logoMezcla },
+    { name: 'Flav City', blurb: 'Making clean, nutrient-dense eating accessible, delicious, and actually worth talking about.', logo: logoFlavcity },
     { name: 'Wip', blurb: "Next-gen recovery and performance gear engineered for the modern athlete's lifestyle." },
-    { name: 'Vital Proteins', blurb: 'Collagen-forward nutrition that fuels performance from the inside out.' },
-    { name: 'Barebells', blurb: "High-protein bars and shakes that prove healthy snacking doesn't have to taste like a sacrifice." },
-    { name: 'Incrediwear', blurb: 'Circulation-enhancing performance wear that speeds recovery so you can get back on court faster.' },
-    { name: 'Second Serve Magazine', blurb: 'The culture-first tennis publication redefining what the sport looks, sounds, and feels like.' },
+    { name: 'Vital Proteins', blurb: 'Collagen-forward nutrition that fuels performance from the inside out.', logo: logoVitalProteins },
+    { name: 'Barebells', blurb: "High-protein bars and shakes that prove healthy snacking doesn't have to taste like a sacrifice.", logo: logoBarebells },
+    { name: 'Incrediwear', blurb: 'Circulation-enhancing performance wear that speeds recovery so you can get back on court faster.', logo: logoIncrediwear },
+    { name: 'Second Serve Magazine', blurb: 'The culture-first tennis publication redefining what the sport looks, sounds, and feels like.', logo: logoSecondServe },
     { name: 'The Shores', blurb: 'A beachside escape just outside the city where the energy of NYC meets the ease of the shoreline.' },
-    { name: 'Broken Strings' },
-    { name: 'Punto Grips' },
+    { name: 'Broken Strings', blurb: 'The tennis lifestyle brand turning court culture into something you wear, rep, and live off the court.' },
+    { name: 'Punto Grips', blurb: 'Premium performance grips engineered for players who demand feel, control, and consistency on every shot.' },
   ],
   faqs: [
     {
