@@ -267,6 +267,17 @@ export const invitationalData: InvitationalData = {
       ],
     },
     {
+      title: 'Train / LIRR',
+      paragraphs: [
+        'Depart from Penn Station, Grand Central, Atlantic Terminal, or any station that arrives at Jamaica/JFK Airport. YOU HAVE TO TRANSFER AT JAMAICA to take the Far Rockaway line to Inwood.',
+        'The shuttle bus only runs between Inwood LIRR and Atlantic Beach Tennis Center. Trains run once per hour between Jamaica/JFK and Inwood.',
+      ],
+      bullets: [
+        'Jamaica to Inwood: trains depart on the :58. Please time your commute so you have adequate time to catch the train to Inwood by 10:58, 11:58, etc.',
+        'Inwood to Jamaica: trains depart on the :15. The shuttle departs at the top of the hour (3 PM, 4 PM, etc.) every hour until 7:45 PM.',
+      ],
+    },
+    {
       title: 'Car',
       paragraphs: [
         'Address: 60 The Plz, Atlantic Beach, NY 11509.',

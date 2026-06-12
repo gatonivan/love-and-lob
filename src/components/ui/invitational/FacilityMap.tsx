@@ -150,7 +150,7 @@ export function FacilityMap() {
         {/* ── walking paths flanking the courts (solid blue, per club diagram):
               verticals down both sides of courts 7–9 / 4–6, crossbar through
               the 7–9 number badges, all joining the dashed path below ──────── */}
-        <g aria-hidden="true" fill="none" stroke="#5b9fd4" strokeWidth="7" strokeLinecap="round" opacity="0.9">
+        <g aria-hidden="true" fill="none" stroke="#5b9fd4" strokeWidth="5.5" strokeDasharray="9 8" strokeLinecap="round" opacity="0.9">
           <path d="M 272 116 L 272 388" />
           <path d="M 634 116 L 634 390" />
           <path d="M 272 235 L 634 235" />
