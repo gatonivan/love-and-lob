@@ -5,6 +5,13 @@
     <link rel="icon" type="image/png" href="./favico.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Love & Lob — Tennis Club</title>
+    <!-- Paint before the bundle arrives: cream site-wide, deep green on /invitational
+         (prevents the white/cream flash on hard refresh). -->
+    <style>html { background: #F1F0E2; }</style>
+    <script>
+      if (location.pathname.replace(/\/+$/, '') === '/invitational')
+        document.documentElement.style.background = '#004225'
+    </script>
   </head>
   <body>
     <div id="root"></div>
