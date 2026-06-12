@@ -4,13 +4,30 @@ interface FaqListProps {
   faqs: Faq[]
 }
 
+const EMAIL = 'info@loveandlob.co'
+
+// Render a paragraph, turning the contact email into a mailto link.
+function withEmailLink(text: string) {
+  if (!text.includes(EMAIL)) return text
+  const [before, after] = text.split(EMAIL)
+  return (
+    <>
+      {before}
+      <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      {after}
+    </>
+  )
+}
+
 export function FaqList({ faqs }: FaqListProps) {
   return (
     <div className="inv-faqs">
       {faqs.map((f) => (
         <details key={f.question} className="inv-faq">
           <summary>{f.question}</summary>
-          <p>{f.answer}</p>
+          {f.answer.map((p) => (
+            <p key={p}>{withEmailLink(p)}</p>
+          ))}
         </details>
       ))}
     </div>

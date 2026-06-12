@@ -1,14 +1,4 @@
-import facilityMap from '../../../assets/invitational/facility_map.jpg'
-
-// ── FILL-IN CHECKLIST (real Vol. 2 values) ───────────────────────────────
-// [ ] Spectator pricing tiers
-// [ ] Tennis + Spectator inclusion lists
-// [ ] Schedule times within 12:30–6:30
-// [ ] Sponsor list (+ Courtside Theory treatment)
-// [ ] FAQ answers
-// [ ] Directions / parking for 60 The Plz, Atlantic Beach, NY
-// [ ] Final map art + per-zone hotspot coordinates
-// ─────────────────────────────────────────────────────────────────────────
+import flyerVol2 from '../../../assets/invitational/flyer_vol2.jpg'
 
 export type TicketStatus = 'sold-out' | 'available'
 
@@ -27,12 +17,20 @@ export interface ScheduleItem {
 
 export interface Sponsor {
   name: string
+  blurb?: string
+  role?: string
   logo?: string
 }
 
 export interface Faq {
   question: string
-  answer: string
+  /** Each entry renders as its own paragraph. */
+  answer: string[]
+}
+
+export interface NarrativeBlock {
+  title: string
+  bullets: string[]
 }
 
 export interface InvitationalData {
@@ -46,28 +44,35 @@ export interface InvitationalData {
   dateBadge: { weekday: string; month: string; day: string }
   timeLabel: string
   venue: { name?: string; address: string }
+  flyer: { image: string; alt: string }
   intro: string[]
   tickets: TicketTier[]
   schedule: ScheduleItem[]
+  narrative: { heading: string; lead: string; blocks: NarrativeBlock[] }
   sponsors: Sponsor[]
   faqs: Faq[]
   directions: { byCar?: string; byTrain?: string; parking?: string }
-  map: { image?: string; alt: string }
 }
 
+const TICKETS_URL =
+  'https://sweatpals.com/retreat/ll-invitational-vol-2-w-courtside-theory/2026-06-13/checkout?utm_source=host_e861336b-71dd-4e9b-b2d7-19f6da71f6b1&utm_medium=shared_link&utm_campaign=event_share_f6b241e8-b764-467e-9f3f-95949fec6dfa'
+
 export const invitationalData: InvitationalData = {
-  showOnSchedule: false, // flip to true to publish the featured card on /schedule
+  showOnSchedule: true,
   name: 'Love & Lob Invitational Vol. 2',
   feat: 'Courtside Theory',
   scriptLine: 'Tennis at the',
   dateLabel: 'Saturday, June 13, 2026',
   dateBadge: { weekday: 'SAT', month: 'JUNE', day: '13' },
   timeLabel: '12:30 – 6:30 PM',
-  venue: { address: '60 The Plz, Atlantic Beach, NY' },
+  venue: { name: 'Atlantic Beach Tennis Center', address: '60 The Plz, Atlantic Beach, NY' },
+  flyer: {
+    image: flyerVol2,
+    alt: 'Love & Lob Invitational Vol. 2 ft. Courtside Theory — Saturday June 13th 2026, Atlantic Beach Tennis Center',
+  },
   intro: [
-    // TODO(content): confirm/adjust intro copy for Vol. 2
-    "It's a day packed with non-stop tennis, food, & refreshing drinks. Whether you decide to hit the courts or simply relax courtside soaking up the sun, there's something for everyone to enjoy.",
-    'We have 8–10 courts running all day with dedicated pros leading drills & games, Love&Lob style. Come groove with us as we close out the spring season.',
+    "It's a day packed with non-stop tennis, food, & refreshing drinks. Whether you decide to hit the courts or simply relax courtside or at the beach, soaking up the sun, there's something for everyone to enjoy.",
+    "We'll have 10 courts running all day with dedicated pros leading drills & games, Love & Lob & Courtside Theory style. Come groove with us as we close out the spring season.",
   ],
   tickets: [
     {
@@ -75,56 +80,148 @@ export const invitationalData: InvitationalData = {
       status: 'sold-out',
       prices: [],
       includes: [
-        // TODO(content): confirm Vol. 2 tennis inclusions
-        'Full day of tennis',
-        'Goodie bag + T-shirt',
-        'Light bites',
-        'Drinks',
+        '5+ hours of tennis',
+        'Lunch provided by Taqueria Ramirez',
+        'Access to the beach club',
+        'Goodie bag with gifts from Vacation, LMNT, Mezcla & more',
+        'Tote bag from Love & Lob',
+        'Water bottle by Courtside Theory',
+        'Champagne cocktails from Lo Seco Prosecco',
+        'Automatic entry into a raffle for special prizes from Wilson, Bageled & more',
       ],
     },
     {
       title: 'Spectator Ticket',
       status: 'available',
-      prices: [
-        // TODO(content): real Vol. 2 spectator pricing
-        '$XX (Standard)',
-        'Free (Kids, 7 & under)',
-      ],
+      prices: [],
       includes: [
-        // TODO(content): confirm Vol. 2 spectator inclusions
-        'Entrance to the Invitational as a spectator',
-        'Light bites',
-        'Goodie bag',
-        'Drinks',
+        'Free 1-hour beginner session with USTA Red Ball',
+        'Lunch provided by Taqueria Ramirez',
+        'Access to the beach club',
+        'Champagne cocktails from Lo Seco Prosecco',
+        'Automatic entry into a raffle for special prizes',
       ],
-      cta: { label: "Let's Eat & Drink!", href: 'https://lu.ma' }, // TODO(content): real ticketing URL (must be an external http(s) link so SubPageWrapper passes it through)
+      cta: { label: 'Grab a Spectator Ticket', href: TICKETS_URL },
     },
   ],
   schedule: [
-    // TODO(content): confirm Vol. 2 schedule within 12:30–6:30
     { time: '12:30 PM', label: 'Registration & Welcome' },
-    { time: '1:00 PM', label: 'Non-Stop Tennis Begins' },
-    { time: '4:00 PM', label: 'Après-Tennis / Tasting' },
-    { time: '6:30 PM', label: "That's all, Folks!" },
+    { time: '1:25 PM', label: 'Warmup & Drills' },
+    { time: '2:15 PM', label: 'Games Start! Love & Lob vs. Courtside Theory' },
+    { time: '4:15 PM', label: 'Lunch Break' },
+    { time: '5:00 PM', label: 'Game On, Again!' },
+    { time: '6:30 PM', label: 'Tennis Ends — Winners Announced!' },
   ],
+  narrative: {
+    heading: 'How the Tennis Works',
+    lead: "Tennis is slated to start at 1:25 PM. We've divided everyone by skill level for the drills and games.",
+    blocks: [
+      {
+        title: 'Drills',
+        bullets: [
+          'Court assignments & groups will be sent out Saturday morning via text/email, and listed at the Tennis Center.',
+          "We'll warm up all shots from 1:25 PM to 2:00 PM before the games start.",
+        ],
+      },
+      {
+        title: 'Games',
+        bullets: [
+          'Teams will be announced at 2:00 PM.',
+          "Games start at 2:15 PM — each coach will explain the game you're playing on their court.",
+          '20-minute rotations for each session.',
+          'Once a session ends, you move to the next court and play the next game.',
+          'Games are mostly team, doubles-based games, with some singles.',
+        ],
+      },
+    ],
+  },
   sponsors: [
-    // TODO(content): real Vol. 2 sponsor list
-    { name: 'Courtside Theory' },
+    {
+      name: 'USTA Eastern',
+      role: 'Title Sponsor',
+      blurb: 'The governing body for tennis in the Northeast, championing access and competition at every level.',
+    },
+    { name: 'HydraCourt', blurb: 'Cutting-edge court hydration technology keeping surfaces play-ready in any condition.' },
+    { name: 'Vacations, Inc.', blurb: 'Premium travel experiences designed for those who bring their racket everywhere they go.' },
+    { name: 'LMNT', blurb: 'Science-backed electrolyte drink mix built for athletes who train hard and recover harder.' },
+    { name: 'Lo Seco Prosecco', blurb: 'A crisp, dry prosecco made for celebrating the moments between the points.' },
+    { name: 'Mezcla', blurb: 'Bold, Latin-inspired protein bars crafted for the athlete who moves between cultures and courts.' },
+    { name: 'Flav City', blurb: 'Making clean, nutrient-dense eating accessible, delicious, and actually worth talking about.' },
+    { name: 'Wip', blurb: "Next-gen recovery and performance gear engineered for the modern athlete's lifestyle." },
+    { name: 'Vital Proteins', blurb: 'Collagen-forward nutrition that fuels performance from the inside out.' },
+    { name: 'Barebells', blurb: "High-protein bars and shakes that prove healthy snacking doesn't have to taste like a sacrifice." },
+    { name: 'Incrediwear', blurb: 'Circulation-enhancing performance wear that speeds recovery so you can get back on court faster.' },
+    { name: 'Second Serve Magazine', blurb: 'The culture-first tennis publication redefining what the sport looks, sounds, and feels like.' },
+    { name: 'The Shores', blurb: 'A beachside escape just outside the city where the energy of NYC meets the ease of the shoreline.' },
+    { name: 'Broken Strings' },
+    { name: 'Punto Grips' },
   ],
   faqs: [
-    // TODO(content): real Vol. 2 FAQ answers
-    { question: 'Is the event sold out?', answer: 'Tennis registration is sold out. Spectator tickets are still available.' },
-    { question: 'What should I bring?', answer: 'TODO(content): bring details.' },
+    {
+      question: 'How do I access the beach?',
+      answer: [
+        'The beach club opens at 10 AM.',
+        'Check in and collect a wristband at the Atlantic Beach Tennis Center to attend Shores West Beach Club. With your ticket, beach access is an additional $10.',
+        'Beach chairs and umbrellas are available for $2 and $5, respectively — pay for those at the Beach Club.',
+      ],
+    },
+    {
+      question: 'I signed up for a half-day ticket — when do I need to arrive?',
+      answer: [
+        'If you signed up for a half-day ticket, your planned playing time is the First Half, 1:25 PM to 4:15 PM.',
+        'Want to come for the Second Half instead (5:00 PM to 6:30 PM)? Email us ASAP at info@loveandlob.co.',
+      ],
+    },
+    {
+      question: 'Does the facility have showers?',
+      answer: ['Yes — both the Atlantic Beach Tennis Center and Shores West Beach Club have showers.'],
+    },
+    {
+      question: 'What time does tennis start?',
+      answer: ['1:25 PM (First Half) and 5:00 PM (Second Half).'],
+    },
+    {
+      question: 'Where can I park?',
+      answer: [
+        'Your best option is the free parking lot attached to the Atlantic Beach Tennis Center — check the facility map above for how to access it.',
+        'There is no street parking without a permit, and ticketing is strict in Atlantic Beach.',
+        'The other option is purchasing a $40 parking permit from the Shores West with your wristband.',
+      ],
+    },
+    {
+      question: 'What should I bring?',
+      answer: [
+        "Tennis sneakers and a cute fit, plus whatever you need for the beach (maybe a towel)! We have racquets for you to use, sunscreen to keep you protected, and everything else.",
+      ],
+    },
+    {
+      question: 'How often does the shuttle run?',
+      answer: [
+        'From Inwood LIRR Station to Atlantic Beach Tennis Center: 10:30 AM · 11:30 AM · 12:30 PM · 1:30 PM · 2:30 PM (last bus).',
+        'From Atlantic Beach Tennis Center to Inwood LIRR Station: 4:00 PM · 5:00 PM · 6:00 PM · 7:00 PM · 7:45 PM (last bus).',
+      ],
+    },
+    {
+      question: 'Can I play tennis as a spectator?',
+      answer: [
+        'You can take a free 1-hour beginner lesson from 1:30 PM to 2:30 PM, and play red ball tennis on the pickleball courts as long as you like.',
+      ],
+    },
+    {
+      question: 'When will the food be served?',
+      answer: ['Lunch from Taqueria Ramirez is served at the 4:15 PM lunch break.'],
+    },
+    {
+      question: "I didn't register. Can I attend?",
+      answer: ['Short answer: no — you need a ticket. Spectator tickets are the move while they last.'],
+    },
   ],
   directions: {
-    // TODO(content): real directions/parking for Atlantic Beach
-    byCar: 'TODO(content): driving directions to 60 The Plz, Atlantic Beach, NY.',
-    parking: 'TODO(content): parking details.',
-  },
-  map: {
-    // The interactive map is recreated as SVG in FacilityMap.tsx; this image is the
-    // original illustrated artwork, kept on the page alongside the interactive version.
-    image: facilityMap,
-    alt: 'Love & Lob Invitational illustrated facility map',
+    byCar:
+      'Take the Atlantic Beach Bridge into Atlantic Beach and follow The Plaza to the Tennis Center at 60 The Plz. The free parking lot is attached to the facility — see the map above for the entrance.',
+    byTrain:
+      'Take the LIRR (Far Rockaway branch) to Inwood Station, then hop the event shuttle to the Tennis Center. First shuttle leaves Inwood at 10:30 AM — full shuttle schedule is in the FAQ.',
+    parking:
+      'Free in the lot attached to the Tennis Center. No street parking without a permit — ticketing is strict. A $40 parking permit is also available at the Shores West with your wristband.',
   },
 }

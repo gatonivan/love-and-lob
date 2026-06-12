@@ -111,6 +111,16 @@
 @media (max-width: 768px) { .inv-hero { padding: 0 2rem; } }
 @media (max-width: 480px) { .inv-hero { padding: 0 1.25rem; margin-bottom: 2rem; } }
 
+/* ── Flyer ────────────────────────────────────────────────────────────── */
+.inv-flyer { text-align: center; }
+.inv-flyer-img {
+  width: 100%;
+  max-width: 640px;
+  display: inline-block;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
 /* ── Welcome / intro ──────────────────────────────────────────────────── */
 .inv-venue { font-family: 'Inter', sans-serif; font-weight: 600; color: #d8e84d; margin-bottom: 0.25rem; }
 .inv-intro { font-family: 'Inter', sans-serif; font-size: 1.1rem; line-height: 1.7; color: rgba(241, 240, 226, 0.85); margin: 1rem 0; }
@@ -163,6 +173,33 @@
 .inv-schedule-label { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.9); }
 @media (max-width: 480px) { .inv-schedule-time { font-size: 1.05rem; min-width: 4.5rem; } }
 
+/* ── How the Tennis Works ─────────────────────────────────────────────── */
+.inv-narrative { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem; }
+.inv-narrative-block {
+  border: 1px solid rgba(216, 232, 77, 0.25);
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+  background: rgba(241, 240, 226, 0.03);
+}
+.inv-narrative-block h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  color: #d8e84d;
+  margin-bottom: 0.75rem;
+}
+.inv-narrative-block ul { list-style: none; padding: 0; margin: 0; }
+.inv-narrative-block li {
+  font-family: 'Inter', sans-serif;
+  color: rgba(241, 240, 226, 0.85);
+  line-height: 1.55;
+  padding: 0.35rem 0 0.35rem 1.4rem;
+  position: relative;
+}
+.inv-narrative-block li::before { content: '●'; position: absolute; left: 0; top: 0.45rem; font-size: 0.55rem; color: #d8e84d; }
+@media (max-width: 768px) { .inv-narrative { grid-template-columns: 1fr; gap: 1.25rem; } }
+
 /* ── FAQs ─────────────────────────────────────────────────────────────── */
 .inv-faqs { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2.5rem; }
 .inv-faq { border-bottom: 1px solid rgba(241, 240, 226, 0.15); padding: 0.75rem 0; }
@@ -171,19 +208,38 @@
 .inv-faq summary::after { content: '+'; float: right; color: #d8e84d; }
 .inv-faq[open] summary::after { content: '−'; }
 .inv-faq p { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.8); margin-top: 0.5rem; line-height: 1.6; }
+.inv-faq a { color: #d8e84d; }
 .inv-directions p { font-family: 'Inter', sans-serif; color: rgba(241, 240, 226, 0.85); line-height: 1.7; margin: 0.5rem 0; }
 .inv-directions strong { color: #d8e84d; }
 
-/* ── Sponsors ─────────────────────────────────────────────────────────── */
-.inv-sponsor-list {
+/* ── Sponsors (text wall) ─────────────────────────────────────────────── */
+.inv-sponsor-title {
+  text-align: center;
+  border: 1px solid rgba(216, 232, 77, 0.4);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2rem;
+  background: rgba(216, 232, 77, 0.05);
+}
+.inv-sponsor-role {
+  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #d8e84d; margin-bottom: 0.5rem;
+}
+.inv-sponsor-title .inv-sponsor-name { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+.inv-sponsor-title .inv-sponsor-blurb { max-width: 540px; margin: 0.6rem auto 0; }
+.inv-sponsor-wall {
   list-style: none; padding: 0; margin: 0;
-  display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem 2.5rem;
 }
-.inv-sponsor span {
-  font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 1.25rem;
-  color: rgba(241, 240, 226, 0.85); text-transform: uppercase; letter-spacing: 0.05em;
+.inv-sponsor-name {
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 1.2rem;
+  color: rgba(241, 240, 226, 0.92); text-transform: uppercase; letter-spacing: 0.05em;
 }
-.inv-sponsor img { max-height: 48px; width: auto; filter: brightness(0) invert(1); opacity: 0.85; }
+.inv-sponsor-blurb {
+  font-family: 'Inter', sans-serif; font-size: 0.9rem; line-height: 1.55;
+  color: rgba(241, 240, 226, 0.65); margin-top: 0.25rem;
+}
+@media (max-width: 768px) { .inv-sponsor-wall { grid-template-columns: 1fr; gap: 1.25rem; } }
 
 /* ── Facility Map (interactive SVG recreation + kept artwork) ─────────── */
 .evmap-svg {
@@ -209,6 +265,18 @@
   font-family: 'Inter', sans-serif; font-size: 11px; fill: rgba(8, 49, 30, 0.7);
   text-anchor: middle; text-transform: uppercase; letter-spacing: 0.04em;
 }
+.evmap-road {
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; fill: rgba(8, 49, 30, 0.55);
+  text-anchor: middle; text-transform: uppercase; letter-spacing: 0.22em;
+}
+.evmap-icon {
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 34px;
+  fill: rgba(8, 49, 30, 0.55); text-anchor: middle; dominant-baseline: middle; pointer-events: none;
+}
+.evmap-house {
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; fill: rgba(8, 49, 30, 0.75);
+  text-anchor: middle; text-transform: uppercase; letter-spacing: 0.08em; pointer-events: none;
+}
 
 .inv-map-caption {
   margin-top: 0.75rem; font-family: 'Inter', sans-serif; font-size: 0.9rem;
@@ -216,23 +284,11 @@
 }
 .inv-map-caption strong { color: #d8e84d; }
 
-.inv-map-artwork { margin: 1.75rem 0 0; text-align: center; }
-.inv-map-artwork-label {
-  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: rgba(241, 240, 226, 0.5); margin-bottom: 0.6rem;
-}
-.inv-map-img { width: 100%; display: block; border-radius: 10px; }
-.inv-map-enlarge {
-  display: inline-block; margin-top: 0.5rem; padding: 0; border: 0; background: none; cursor: pointer;
-  font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
-  text-transform: uppercase; color: #d8e84d;
-}
-.inv-map-enlarge:hover { opacity: 0.8; }
-
 @media (max-width: 480px) {
   .inv-ticket { padding: 1.25rem; }
   .inv-ticket-head h3 { font-size: 1.2rem; }
   .evmap-label { font-size: 19px; }
-  .inv-sponsor-list { gap: 1.25rem; }
-  .inv-sponsor span { font-size: 1.1rem; }
+  .inv-narrative-block { padding: 1.25rem; }
+  .inv-sponsor-title { padding: 1.5rem 1.25rem; }
+  .inv-sponsor-name { font-size: 1.05rem; }
 }
