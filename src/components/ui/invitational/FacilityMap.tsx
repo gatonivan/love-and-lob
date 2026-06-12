@@ -17,7 +17,7 @@ const ZONE_INFO: Record<string, ZoneMeta> = {
   courts46: { label: 'Courts 4–6', description: 'Clay courts — 20-minute rotations, then you move to the next court.' },
   courts13: { label: 'Courts 1–3', description: 'Clay courts — closest to the pickleball courts.' },
   stadium: { label: 'Stadium Court', description: 'Center stage for Love & Lob vs. Courtside Theory.' },
-  grill: { label: 'Grill Area', description: 'Lunch by Taqueria Ramirez at the 4:15 PM break + Lo Seco champagne cocktails.' },
+  grill: { label: 'Grill Area', description: 'Lunch by Taqueria Ramirez at the 4:15 PM break + Lo Secco champagne cocktails.' },
   pickleball: { label: 'Pickleball Courts', description: 'Red Ball Zone — free spectator beginner session 1:30–2:30 PM, then play as long as you like.' },
   beach: { label: 'Shores West & The Beach', description: 'Head south of the courts — wristband + $10 to enter, chairs $2, umbrellas $5. Opens 10 AM.' },
 }
