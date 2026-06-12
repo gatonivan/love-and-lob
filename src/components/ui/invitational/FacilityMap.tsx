@@ -32,7 +32,7 @@ function ClayCourt({ x, y, w = 82, h = 104, num }: { x: number; y: number; w?: n
       <line x1={x + 2} y1={y + h / 2} x2={x + w - 2} y2={y + h / 2} stroke="#f1f0e2" strokeWidth="1.6" />
       {num !== undefined && (
         <g aria-hidden="true">
-          <circle cx={x + w / 2} cy={y + h + 15} r="10.5" fill="#08311e" />
+          <circle cx={x + w / 2} cy={y + h + 15} r="10.5" fill="#08311e" stroke="#e8decb" strokeWidth="2" />
           <text className="evmap-num" x={x + w / 2} y={y + h + 15}>{num}</text>
         </g>
       )}
@@ -151,9 +151,9 @@ export function FacilityMap() {
               verticals down both sides of courts 7–9 / 4–6, crossbar through
               the 7–9 number badges, all joining the dashed path below ──────── */}
         <g aria-hidden="true" fill="none" stroke="#5b9fd4" strokeWidth="7" strokeLinecap="round" opacity="0.9">
-          <path d="M 272 112 L 272 392" />
-          <path d="M 634 112 L 634 392" />
-          <path d="M 272 236 C 360 231, 540 241, 634 236" />
+          <path d="M 272 116 L 272 388" />
+          <path d="M 634 116 L 634 390" />
+          <path d="M 272 235 L 634 235" />
         </g>
 
         {/* ── interactive zones ─────────────────────────────────────────── */}
