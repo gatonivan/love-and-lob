@@ -277,6 +277,26 @@
   font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; fill: rgba(8, 49, 30, 0.75);
   text-anchor: middle; text-transform: uppercase; letter-spacing: 0.08em; pointer-events: none;
 }
+.evmap-num {
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; fill: #f1f0e2;
+  text-anchor: middle; dominant-baseline: central; pointer-events: none;
+}
+.evmap-walk {
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; font-style: italic;
+  fill: #4f79ab; letter-spacing: 0.04em;
+}
+.evmap-beach {
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 19px;
+  fill: #08311e; text-anchor: middle; letter-spacing: 0.02em; pointer-events: none;
+}
+.evmap-spotlight {
+  stroke: #d8e84d; stroke-width: 4; stroke-dasharray: 12 8;
+  animation: evmap-pulse 2.2s ease-in-out infinite; pointer-events: none;
+}
+@keyframes evmap-pulse {
+  0%, 100% { stroke-opacity: 1; }
+  50% { stroke-opacity: 0.35; }
+}
 
 .inv-map-caption {
   margin-top: 0.75rem; font-family: 'Inter', sans-serif; font-size: 0.9rem;

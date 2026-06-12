@@ -183,8 +183,8 @@ export const invitationalData: InvitationalData = {
     {
       question: 'Where can I park?',
       answer: [
-        'Your best option is the free parking lot attached to the Atlantic Beach Tennis Center — check the facility map above for how to access it.',
-        'There is no street parking without a permit, and ticketing is strict in Atlantic Beach.',
+        'In the Club parking lot only — it’s free. Coming off the Atlantic Beach Bridge onto Park Street, make a right onto Albany Blvd, drive down to the following intersection, make a right, then an immediate right into the lot (entrance marked on the facility map above).',
+        'Please don’t park anywhere else — there is no street parking without a permit, and the city is strict with ticketing.',
         'The other option is purchasing a $40 parking permit from the Shores West with your wristband.',
       ],
     },
@@ -218,10 +218,10 @@ export const invitationalData: InvitationalData = {
   ],
   directions: {
     byCar:
-      'Take the Atlantic Beach Bridge into Atlantic Beach and follow The Plaza to the Tennis Center at 60 The Plz. The free parking lot is attached to the facility — see the map above for the entrance.',
+      'Come over the Atlantic Beach Bridge onto Park Street, then make a right onto Albany Blvd. Drive down Albany Blvd to the following intersection, make a right, then an immediate right into the Club parking lot — the entrance is marked on the facility map above. The entrance/clubhouse is on the east side, with a drop-off-only zone if someone is dropping you.',
     byTrain:
       'Take the LIRR (Far Rockaway branch) to Inwood Station, then hop the event shuttle to the Tennis Center. First shuttle leaves Inwood at 10:30 AM — full shuttle schedule is in the FAQ.',
     parking:
-      'Free in the lot attached to the Tennis Center. No street parking without a permit — ticketing is strict. A $40 parking permit is also available at the Shores West with your wristband.',
+      'Club parking lot ONLY — it’s free. Please don’t park anywhere else: no street parking without a permit, and the city is strict with ticketing. A $40 parking permit is also available at the Shores West with your wristband.',
   },
 }
