@@ -1,21 +1,12 @@
 [
   {
-    "id": "evt-uaZOseLMpoZxEC1",
-    "name": "Cardio Tennis",
-    "start_at": "2026-07-01T22:30:00.000Z",
-    "end_at": "2026-07-02T00:00:00.000Z",
-    "cover_url": "https://images.lumacdn.com/gallery-images/gt/ec286f73-a5fc-4819-8296-9c4a9dba392d",
-    "url": "https://luma.com/59foyhes",
-    "location": "Lehman College, CUNY"
-  },
-  {
     "id": "evt-pUPBqLoR71VBF2l",
     "name": "En Vivo Series: Wimbledon 3rd Round + World Cup",
     "start_at": "2026-07-03T16:00:00.000Z",
-    "end_at": "2026-07-04T00:00:00.000Z",
+    "end_at": "2026-07-03T21:00:00.000Z",
     "cover_url": "https://images.lumacdn.com/uploads/gx/16a20b3d-271c-4d98-8206-33befe355944.jpg",
     "url": "https://luma.com/4q6fffdz",
-    "location": "Cafe Bureau"
+    "location": "Layla"
   },
   {
     "id": "evt-T2vYGlHRvFcIpag",
