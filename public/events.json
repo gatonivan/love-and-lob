@@ -18,6 +18,15 @@
     "location": "Brooklyn College"
   },
   {
+    "id": "evt-TS8cQGSBLLVONvX",
+    "name": "The Social Open: Session 1",
+    "start_at": "2026-07-10T22:00:00.000Z",
+    "end_at": "2026-07-11T00:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/uploads/b7/41e358df-d52c-42d0-85e4-8655f345d598.jpg",
+    "url": "https://luma.com/sqo9q40m",
+    "location": "96th Street Clay Tennis Courts"
+  },
+  {
     "id": "evt-aHT6ACp18EEh8eG",
     "name": "L&L Monthly Classic Vol. 14",
     "start_at": "2026-07-11T15:00:00.000Z",
@@ -31,7 +40,7 @@
     "name": "Wimbledon Mens Final Watch Party",
     "start_at": "2026-07-12T15:00:00.000Z",
     "end_at": "2026-07-12T18:30:00.000Z",
-    "cover_url": "https://images.lumacdn.com/uploads/j4/f6b6f6a1-5803-43b1-8930-f39b9b94f21f.jpg",
+    "cover_url": "https://images.lumacdn.com/uploads/6c/ad72c528-73f7-43de-94c7-7b0b2d9deb05.jpg",
     "url": "https://luma.com/zkdjv7sa",
     "location": "one4one Sports Club & Lounge"
   }
