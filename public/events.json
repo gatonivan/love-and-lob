@@ -1,21 +1,12 @@
 [
   {
-    "id": "evt-pUPBqLoR71VBF2l",
-    "name": "En Vivo Series: Wimbledon 3rd Round + World Cup",
-    "start_at": "2026-07-03T16:00:00.000Z",
-    "end_at": "2026-07-03T21:00:00.000Z",
-    "cover_url": "https://images.lumacdn.com/uploads/gx/16a20b3d-271c-4d98-8206-33befe355944.jpg",
-    "url": "https://luma.com/4q6fffdz",
-    "location": "Layla"
-  },
-  {
-    "id": "evt-T2vYGlHRvFcIpag",
-    "name": "Liveball: Intermediate & Advanced",
-    "start_at": "2026-07-08T22:30:00.000Z",
-    "end_at": "2026-07-09T00:00:00.000Z",
-    "cover_url": "https://images.lumacdn.com/gallery-images/g7/626f4fb1-f399-46ca-b0a4-e80420d0cc44",
-    "url": "https://luma.com/vt64idhr",
-    "location": "Brooklyn College"
+    "id": "evt-g3DxfRJdse8WGje",
+    "name": "L&L Early Morning Sessions",
+    "start_at": "2026-07-10T10:30:00.000Z",
+    "end_at": "2026-07-10T12:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/3v/2335775c-b401-4796-8cab-fec08298d3e1.jpg",
+    "url": "https://luma.com/94fhihfb",
+    "location": "SPORTIME Randall’s Island / JMTA New York City"
   },
   {
     "id": "evt-TS8cQGSBLLVONvX",
@@ -27,21 +18,57 @@
     "location": "96th Street Clay Tennis Courts"
   },
   {
+    "id": "evt-D5g6ssLNujydDJH",
+    "name": "L&L Early Morning Sessions",
+    "start_at": "2026-07-17T10:30:00.000Z",
+    "end_at": "2026-07-17T12:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/3v/2335775c-b401-4796-8cab-fec08298d3e1.jpg",
+    "url": "https://luma.com/2s1vzhhh",
+    "location": "SPORTIME Randall’s Island / JMTA New York City"
+  },
+  {
+    "id": "evt-T2vYGlHRvFcIpag",
+    "name": "Liveball: Intermediate & Advanced",
+    "start_at": "2026-07-22T22:30:00.000Z",
+    "end_at": "2026-07-23T00:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/gallery-images/g7/626f4fb1-f399-46ca-b0a4-e80420d0cc44",
+    "url": "https://luma.com/vt64idhr",
+    "location": "Brooklyn College"
+  },
+  {
+    "id": "evt-7Z3kMxqo8Pa4ASG",
+    "name": "L&L Early Morning Sessions",
+    "start_at": "2026-07-24T10:30:00.000Z",
+    "end_at": "2026-07-24T12:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/3v/2335775c-b401-4796-8cab-fec08298d3e1.jpg",
+    "url": "https://luma.com/122kqy90",
+    "location": "SPORTIME Randall’s Island / JMTA New York City"
+  },
+  {
     "id": "evt-aHT6ACp18EEh8eG",
-    "name": "L&L Monthly Classic Vol. 14",
-    "start_at": "2026-07-11T15:00:00.000Z",
-    "end_at": "2026-07-11T17:00:00.000Z",
+    "name": "L&L Monthly Classic Vol. 13",
+    "start_at": "2026-07-26T15:00:00.000Z",
+    "end_at": "2026-07-26T17:00:00.000Z",
     "cover_url": "https://images.lumacdn.com/event-covers/ay/442e2737-ef5f-44e7-be5e-9a4dc6562724.jpg",
     "url": "https://luma.com/zmtfiyp3",
     "location": "Brooklyn College"
   },
   {
-    "id": "evt-wyROtln2g1Us1UF",
-    "name": "Wimbledon Mens Final Watch Party",
-    "start_at": "2026-07-12T15:00:00.000Z",
-    "end_at": "2026-07-12T18:30:00.000Z",
-    "cover_url": "https://images.lumacdn.com/uploads/6c/ad72c528-73f7-43de-94c7-7b0b2d9deb05.jpg",
-    "url": "https://luma.com/zkdjv7sa",
-    "location": "one4one Sports Club & Lounge"
+    "id": "evt-EEnErsWrCss5KO6",
+    "name": "L&L Early Morning Sessions",
+    "start_at": "2026-07-31T10:30:00.000Z",
+    "end_at": "2026-07-31T12:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/3v/2335775c-b401-4796-8cab-fec08298d3e1.jpg",
+    "url": "https://luma.com/brvgut7n",
+    "location": "SPORTIME Randall’s Island / JMTA New York City"
+  },
+  {
+    "id": "evt-a08LQQAMeD9cOrU",
+    "name": "L&L Early Morning Sessions",
+    "start_at": "2026-08-07T10:30:00.000Z",
+    "end_at": "2026-08-07T12:00:00.000Z",
+    "cover_url": "https://images.lumacdn.com/event-covers/3v/2335775c-b401-4796-8cab-fec08298d3e1.jpg",
+    "url": "https://luma.com/6a3odg8v",
+    "location": "SPORTIME Randall’s Island / JMTA New York City"
   }
 ]
