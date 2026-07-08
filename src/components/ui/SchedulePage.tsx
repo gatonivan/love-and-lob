@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router'
+import { useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import { useBottomScroll } from '../../hooks/useBottomScroll'
-import { invitationalData } from './invitational/invitationalData'
 import './SchedulePage.css'
 
 interface LumaEvent {
@@ -113,22 +112,19 @@ export function SchedulePage() {
         <section className="schedule-header">
           <h1 className="schedule-title">Schedule</h1>
 
-          {/* ── Featured Invitational (own section, above the seasons) ── */}
-          {invitationalData.showOnSchedule && (
-            <section className="schedule-invitational">
-              <Link to="/invitational" className="schedule-invitational-card">
-                <span className="schedule-invitational-tag">Featured Event</span>
-                <h2 className="schedule-invitational-name">
-                  {invitationalData.name}
-                  {invitationalData.feat ? ` ft. ${invitationalData.feat}` : ''}
-                </h2>
-                <p className="schedule-invitational-meta">
-                  {invitationalData.dateLabel} &middot; {invitationalData.timeLabel} &middot; {invitationalData.venue.address}
-                </p>
-                <span className="schedule-invitational-cta">View details &rarr;</span>
-              </Link>
-            </section>
-          )}
+          {/* ── Featured event (own section, above the seasons) ── */}
+          <section className="schedule-invitational">
+            <div className="schedule-invitational-card schedule-invitational-card--static">
+              <span className="schedule-invitational-tag">Featured Event</span>
+              <h2 className="schedule-invitational-name">
+                Love &amp; Lob Invitational Vol. 3
+              </h2>
+              <p className="schedule-invitational-meta">
+                Saturday, August 8 &middot; 1:00 &ndash; 6:00 PM &middot; Hastings-on-Hudson, NY
+              </p>
+              <span className="schedule-invitational-cta">Registration coming soon &mdash; stay tuned.</span>
+            </div>
+          </section>
 
           <div className="schedule-seasons">
             <div className="schedule-season">

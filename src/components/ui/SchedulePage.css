@@ -179,6 +179,15 @@
   transform: translateY(-2px);
 }
 
+.schedule-invitational-card--static {
+  cursor: default;
+}
+
+.schedule-invitational-card--static:hover {
+  background: rgba(216, 232, 77, 0.18);
+  transform: none;
+}
+
 .schedule-invitational-tag {
   display: inline-block;
   font-family: monospace;
