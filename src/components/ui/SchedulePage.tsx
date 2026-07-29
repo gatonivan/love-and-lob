@@ -5,7 +5,7 @@ import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import { useBottomScroll } from '../../hooks/useBottomScroll'
 import './SchedulePage.css'
 
-interface LumaEvent {
+interface ScheduleEvent {
   id: string
   name: string
   start_at: string
@@ -15,7 +15,18 @@ interface LumaEvent {
   location: string
 }
 
-async function fetchUpcomingEvents(): Promise<LumaEvent[]> {
+// Sweatpals host page — recurring weekly clinics live here.
+const SWEATPALS_HOST_URL = 'https://sweatpals.com/host/loveandlob'
+
+// Ultimate fallback for the featured card when the live fetch and the static
+// events.json both come up empty (e.g. Sweatpals is unreachable at load).
+const FEATURED_FALLBACK = {
+  name: 'Love & Lob Invitational Vol. 3',
+  meta: 'Saturday, August 8 · 12:00 – 6:00 PM · Hastings-on-Hudson, NY',
+  url: 'https://sweatpals.com/retreat/ll-invitational-vol-3',
+}
+
+async function fetchUpcomingEvents(): Promise<ScheduleEvent[]> {
   // Try live API first, fall back to static JSON
   try {
     const res = await fetch('/api/events')
@@ -23,9 +34,21 @@ async function fetchUpcomingEvents(): Promise<LumaEvent[]> {
   } catch { /* fall through */ }
   const res = await fetch(`${import.meta.env.BASE_URL}events.json`)
   if (!res.ok) return []
-  const events: LumaEvent[] = await res.json()
+  const events: ScheduleEvent[] = await res.json()
   const now = new Date()
   return events.filter((ev) => new Date(ev.start_at) >= now)
+}
+
+// "Saturday, August 8 · 12:00 – 6:00 PM · Hastings-on-Hudson"
+function formatFeaturedMeta(ev: ScheduleEvent): string {
+  const day = new Date(ev.start_at).toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  })
+  const parts = [`${day} · ${formatTime(ev.start_at)} – ${formatTime(ev.end_at)}`]
+  if (ev.location) parts.push(ev.location)
+  return parts.join(' · ')
 }
 
 function formatDate(dateStr: string): string {
@@ -85,7 +108,7 @@ const SKILL_LEVELS = [
 export function SchedulePage() {
   const pathname = useLocation().pathname
   const settled = useSceneStore((s) => s.cameraMode === 'birdseye' && s.cameraSettled)
-  const [events, setEvents] = useState<LumaEvent[]>([])
+  const [events, setEvents] = useState<ScheduleEvent[]>([])
   const [loading, setLoading] = useState(true)
   const overlayRef = useRef<HTMLDivElement>(null)
 
@@ -100,6 +123,10 @@ export function SchedulePage() {
   const [shouldRender, isVisible] = useDeferredUnmount(isSchedule)
   const show = isVisible && settled
 
+  // Soonest active special event is featured; any others fill the Upcoming list.
+  const featured = events[0]
+  const upcoming = events.slice(1)
+
   useBottomScroll(isSchedule, overlayRef)
 
   if (!shouldRender) return null
@@ -113,17 +140,34 @@ export function SchedulePage() {
           <h1 className="schedule-title">Schedule</h1>
 
           {/* ── Featured event (own section, above the seasons) ── */}
+          {/* Dynamic from the soonest active Sweatpals event; falls back to a
+              static card (still linking to Sweatpals) if the fetch is empty. */}
           <section className="schedule-invitational">
-            <div className="schedule-invitational-card schedule-invitational-card--static">
-              <span className="schedule-invitational-tag">Featured Event</span>
-              <h2 className="schedule-invitational-name">
-                Love &amp; Lob Invitational Vol. 3
-              </h2>
-              <p className="schedule-invitational-meta">
-                Saturday, August 8 &middot; 1:00 &ndash; 6:00 PM &middot; Hastings-on-Hudson, NY
-              </p>
-              <span className="schedule-invitational-cta">Registration coming soon &mdash; stay tuned.</span>
-            </div>
+            {featured ? (
+              <a
+                href={featured.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="schedule-invitational-card"
+              >
+                <span className="schedule-invitational-tag">Featured Event</span>
+                <h2 className="schedule-invitational-name">{featured.name}</h2>
+                <p className="schedule-invitational-meta">{formatFeaturedMeta(featured)}</p>
+                <span className="schedule-invitational-cta">Register on Sweatpals &rarr;</span>
+              </a>
+            ) : (
+              <a
+                href={FEATURED_FALLBACK.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="schedule-invitational-card"
+              >
+                <span className="schedule-invitational-tag">Featured Event</span>
+                <h2 className="schedule-invitational-name">{FEATURED_FALLBACK.name}</h2>
+                <p className="schedule-invitational-meta">{FEATURED_FALLBACK.meta}</p>
+                <span className="schedule-invitational-cta">Register on Sweatpals &rarr;</span>
+              </a>
+            )}
           </section>
 
           <div className="schedule-seasons">
@@ -134,12 +178,12 @@ export function SchedulePage() {
                 Indoor programming, such as our infamous Monthly Classic &amp; Uptown Special, to keep your game sharp through the cold months.
               </p>
               <a
-                href="https://lu.ma/loveandlob"
+                href={SWEATPALS_HOST_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="schedule-season-link"
               >
-                View on Luma &rarr;
+                View on Sweatpals &rarr;
               </a>
             </div>
 
@@ -147,17 +191,17 @@ export function SchedulePage() {
 
             <div className="schedule-season">
               <h2 className="schedule-season-name">Summer Season</h2>
-              <p className="schedule-season-dates">May &ndash; October</p>
+              <p className="schedule-season-dates">June &ndash; October</p>
               <p className="schedule-season-body">
-                Details coming soon.
+                Outdoor programming with a variety of classes such as Cardio, Liveball, dedicated 90-minute Beginner to Intermediate level sessions, &amp; special events such as our L&amp;L Invitationals, &amp; more.
               </p>
               <a
-                href="https://lu.ma/loveandlob"
+                href={SWEATPALS_HOST_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="schedule-season-link"
               >
-                View on Luma &rarr;
+                View on Sweatpals &rarr;
               </a>
             </div>
           </div>
@@ -172,11 +216,11 @@ export function SchedulePage() {
 
             {loading ? (
               <div className="schedule-loading">Loading schedule...</div>
-            ) : events.length === 0 ? (
-              <div className="schedule-empty">Nothing scheduled yet. Check back soon!</div>
+            ) : upcoming.length === 0 ? (
+              <div className="schedule-empty">Nothing else scheduled yet. Check back soon!</div>
             ) : (
               <div className="schedule-list">
-                {events.map((ev) => (
+                {upcoming.map((ev) => (
                   <a
                     key={ev.id}
                     href={ev.url}
@@ -207,12 +251,12 @@ export function SchedulePage() {
             )}
 
             <a
-              href="https://lu.ma/loveandlob"
+              href={SWEATPALS_HOST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="schedule-luma-link"
+              className="schedule-sweatpals-link"
             >
-              View all on Luma &rarr;
+              View all on Sweatpals &rarr;
             </a>
           </section>
 

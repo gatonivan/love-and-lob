@@ -179,15 +179,6 @@
   transform: translateY(-2px);
 }
 
-.schedule-invitational-card--static {
-  cursor: default;
-}
-
-.schedule-invitational-card--static:hover {
-  background: rgba(216, 232, 77, 0.18);
-  transform: none;
-}
-
 .schedule-invitational-tag {
   display: inline-block;
   font-family: monospace;
@@ -274,7 +265,7 @@
   white-space: nowrap;
 }
 
-.schedule-luma-link {
+.schedule-sweatpals-link {
   display: block;
   padding: 1.25rem 0 0;
   font-size: 0.75rem;
@@ -286,7 +277,7 @@
   transition: opacity 0.2s;
 }
 
-.schedule-luma-link:hover {
+.schedule-sweatpals-link:hover {
   opacity: 0.7;
 }
 
