@@ -26,17 +26,33 @@ const FEATURED_FALLBACK = {
   url: 'https://sweatpals.com/retreat/ll-invitational-vol-3',
 }
 
-async function fetchUpcomingEvents(): Promise<ScheduleEvent[]> {
-  // Try live API first, fall back to static JSON
+interface ScheduleData {
+  featured: ScheduleEvent | null
+  upcoming: ScheduleEvent[]
+}
+
+const EMPTY_SCHEDULE: ScheduleData = { featured: null, upcoming: [] }
+
+// Keep only events that haven't started yet (guards the frozen static file).
+function pruneUpcoming(data: ScheduleData): ScheduleData {
+  const now = new Date()
+  return {
+    featured: data.featured,
+    upcoming: (data.upcoming ?? []).filter((ev) => new Date(ev.start_at) >= now),
+  }
+}
+
+async function fetchSchedule(): Promise<ScheduleData> {
+  // Try live API first, fall back to the static JSON built at deploy time.
   try {
     const res = await fetch('/api/events')
-    if (res.ok) return await res.json()
+    if (res.ok) return pruneUpcoming(await res.json())
   } catch { /* fall through */ }
-  const res = await fetch(`${import.meta.env.BASE_URL}events.json`)
-  if (!res.ok) return []
-  const events: ScheduleEvent[] = await res.json()
-  const now = new Date()
-  return events.filter((ev) => new Date(ev.start_at) >= now)
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}events.json`)
+    if (res.ok) return pruneUpcoming(await res.json())
+  } catch { /* fall through */ }
+  return EMPTY_SCHEDULE
 }
 
 // "Saturday, August 8 · 12:00 – 6:00 PM · Hastings-on-Hudson"
@@ -108,13 +124,13 @@ const SKILL_LEVELS = [
 export function SchedulePage() {
   const pathname = useLocation().pathname
   const settled = useSceneStore((s) => s.cameraMode === 'birdseye' && s.cameraSettled)
-  const [events, setEvents] = useState<ScheduleEvent[]>([])
+  const [schedule, setSchedule] = useState<ScheduleData>(EMPTY_SCHEDULE)
   const [loading, setLoading] = useState(true)
   const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    fetchUpcomingEvents()
-      .then((evs) => setEvents(evs))
+    fetchSchedule()
+      .then((data) => setSchedule(data))
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
@@ -123,9 +139,8 @@ export function SchedulePage() {
   const [shouldRender, isVisible] = useDeferredUnmount(isSchedule)
   const show = isVisible && settled
 
-  // Soonest active special event is featured; any others fill the Upcoming list.
-  const featured = events[0]
-  const upcoming = events.slice(1)
+  // Featured = curated special event (Invitational); upcoming = weekly clinics.
+  const { featured, upcoming } = schedule
 
   useBottomScroll(isSchedule, overlayRef)
 
@@ -217,7 +232,7 @@ export function SchedulePage() {
             {loading ? (
               <div className="schedule-loading">Loading schedule...</div>
             ) : upcoming.length === 0 ? (
-              <div className="schedule-empty">Nothing else scheduled yet. Check back soon!</div>
+              <div className="schedule-empty">Nothing scheduled yet. Check back soon!</div>
             ) : (
               <div className="schedule-list">
                 {upcoming.map((ev) => (

@@ -77,3 +77,60 @@ export async function fetchScheduleEvents(slugs = SPECIAL_EVENT_SLUGS) {
     .map(normalizeEvent)
     .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
 }
+
+const HOST_PAGE = 'https://sweatpals.com/host/loveandlob'
+
+/**
+ * Fetch the host's recurring programming (weekly clinics/classes) for the
+ * "Upcoming" list. Sweatpals' public search endpoint ignores the host filter
+ * (returns a global feed), so the only reliable host-scoped source is the
+ * upcoming-events query embedded in the host page's server-rendered data.
+ * Returns normalized, active, soonest-first events (empty array on any failure).
+ */
+export async function fetchHostUpcoming(limit = 8) {
+  let html
+  try {
+    const res = await fetch(HOST_PAGE, {
+      headers: { 'user-agent': 'Mozilla/5.0 (compatible; LoveAndLobBot/1.0)' },
+    })
+    if (!res.ok) return []
+    html = await res.text()
+  } catch {
+    return []
+  }
+
+  const match = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/)
+  if (!match) return []
+  let data
+  try {
+    data = JSON.parse(match[1])
+  } catch {
+    return []
+  }
+
+  const queries = data?.props?.pageProps?.dehydratedState?.queries || []
+  const q = queries.find(
+    (query) => query.queryKey?.[0] === 'events' && query.queryKey?.[2] === 'upcoming-events',
+  )
+  const items = (q?.state?.data?.pages || []).flatMap((page) => page.data || [])
+
+  const now = new Date()
+  return items
+    .filter((ev) => isActive(ev, now))
+    .map(normalizeEvent)
+    .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
+    .slice(0, limit)
+}
+
+/**
+ * The full /schedule payload: the curated featured special event (or null) plus
+ * the recurring programming feed. Consumed by both the build script and the
+ * serverless function; written to public/events.json.
+ */
+export async function fetchScheduleData() {
+  const [special, upcoming] = await Promise.all([
+    fetchScheduleEvents(),
+    fetchHostUpcoming(),
+  ])
+  return { featured: special[0] || null, upcoming }
+}

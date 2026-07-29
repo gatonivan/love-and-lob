@@ -4,19 +4,22 @@
  * without CORS issues. Data source and mapping live in ../api/_sweatpals.js.
  */
 
-import { fetchScheduleEvents } from '../api/_sweatpals.js'
+import { fetchScheduleData } from '../api/_sweatpals.js'
 
 async function main() {
-  const events = await fetchScheduleEvents()
-  console.log(`[fetch-events] Fetched ${events.length} active special events`)
-  await writeEvents(events)
+  const data = await fetchScheduleData()
+  console.log(
+    `[fetch-events] Featured: ${data.featured ? data.featured.name : 'none'} | ` +
+      `${data.upcoming.length} upcoming clinics`,
+  )
+  await writeEvents(data)
 }
 
-async function writeEvents(events) {
+async function writeEvents(data) {
   const fs = await import('node:fs/promises')
   const path = await import('node:path')
   const outPath = path.join(import.meta.dirname, '..', 'public', 'events.json')
-  await fs.writeFile(outPath, JSON.stringify(events, null, 2))
+  await fs.writeFile(outPath, JSON.stringify(data, null, 2))
   console.log(`[fetch-events] Wrote ${outPath}`)
 }
 
