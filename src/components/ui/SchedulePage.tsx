@@ -220,8 +220,13 @@ export function SchedulePage() {
               <h2 className="schedule-season-name">Summer Season</h2>
               <p className="schedule-season-dates">June &ndash; October</p>
               <p className="schedule-season-body">
-                Outdoor programming with a variety of classes such as Cardio, Liveball, dedicated 90-minute Beginner to Intermediate level sessions, &amp; special events such as our L&amp;L Invitationals, &amp; more.
+                Outdoor programming with a variety of classes such as Cardio, Liveball, dedicated 90-minute Beginner to Intermediate level sessions, &amp; special events such as our L&amp;L Invitationals, &amp; more at the following locations:
               </p>
+              <ul className="schedule-season-locations">
+                <li>Lehman College (The Bronx)</li>
+                <li>Greenpoint (Brooklyn)</li>
+                <li>Brooklyn College (Brooklyn)</li>
+              </ul>
               <a
                 href={SWEATPALS_HOST_URL}
                 target="_blank"

@@ -91,6 +91,30 @@
   margin-bottom: 1rem;
 }
 
+.schedule-season-locations {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.schedule-season-locations li {
+  font-size: 0.85rem;
+  color: rgba(0, 66, 37, 0.65);
+  line-height: 1.4;
+  padding-left: 0.9rem;
+  position: relative;
+}
+
+.schedule-season-locations li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: rgba(0, 66, 37, 0.45);
+}
+
 .schedule-season-link {
   font-size: 0.75rem;
   font-weight: 600;

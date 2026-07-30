@@ -1,20 +1,46 @@
 /**
  * Shared Sweatpals data layer for the /schedule page.
  *
- * Special events (Invitationals and other one-offs) are curated by slug and
- * pulled from Sweatpals' public, no-auth event endpoint. This is intentionally
- * NOT driven by Sweatpals' host feed: that feed contains only the recurring
- * weekly clinics (CLASS type) and excludes RETREAT-type events, so the
- * Invitationals never appear there. Fetching curated slugs is the only reliable
- * way to surface the featured/special events.
+ * Everything is fetched by curated slug from Sweatpals' public, no-auth event
+ * endpoint (`/events/public/nearest/instance?alias=<slug>`). Slugs are STABLE
+ * per recurring series and the endpoint returns each series' next upcoming
+ * instance, so this list is self-updating week to week — you only edit it when
+ * a program is added or retired. We deliberately do NOT scrape the Sweatpals
+ * host page: its structure changes without notice and its public search
+ * endpoint ignores the host filter (returns a global feed), so scraping is
+ * unreliable. Slugs are the only stable, host-scoped source.
  *
  * Consumed by both scripts/fetch-events.js (build time) and api/events.ts
  * (Vercel serverless, live). Keep this the single source of truth.
+ *
+ * To add an event: open its Sweatpals page, copy the slug from the URL
+ * (`sweatpals.com/<type>/<slug>`), and add it below.
  */
 
-// Curated special-event slugs. Add a slug here to feature a new special event
-// on /schedule. Soonest-first ordering is derived at runtime from the dates.
+// Featured special event(s) — rendered as the big card at the top of the page.
+// The soonest active one is featured.
 export const SPECIAL_EVENT_SLUGS = ['ll-invitational-vol-3']
+
+// Recurring programming — rendered as the "Upcoming" list. Keep disjoint from
+// SPECIAL_EVENT_SLUGS so nothing shows twice.
+export const PROGRAM_SLUGS = [
+  'll-early-morning-sessions',
+  'll-x-rcta-mixed-doubles-tourney',
+  'absolute-beginner-clinic-b8cc',
+  'advanced-beginner-clinic-32e',
+  'advanced-beginner-clinic-0c7a5c',
+  'beginner-clinic-1e7f',
+  'beginner-clinic-ed6',
+  'intermediate-clinic-56',
+  'cardio-tennis-b3c8',
+  'kids-clinic-ages-58',
+  'liveball-intermediateadvanced-5eacce',
+  'liveball-bronx-intermediateadvanced',
+]
+
+// Max programs shown in the Upcoming list (soonest-first); the rest live behind
+// the "View all on Sweatpals" link.
+const UPCOMING_LIMIT = 8
 
 const EVENT_API = 'https://ilove.sweatpals.com/api/events/public/nearest/instance'
 const FILE_API = 'https://ilove.sweatpals.com/api/files'
@@ -33,8 +59,9 @@ function coverUrl(ev) {
 }
 
 /**
- * Fetch a single special event by slug from Sweatpals' public endpoint.
- * Returns the raw Sweatpals event object, or null if unavailable.
+ * Fetch a single event by slug from Sweatpals' public endpoint (returns the
+ * next upcoming instance for recurring series). Returns the raw Sweatpals event
+ * object, or null if unavailable.
  */
 export async function fetchEventBySlug(slug) {
   const res = await fetch(`${EVENT_API}?alias=${encodeURIComponent(slug)}`)
@@ -64,8 +91,8 @@ export function normalizeEvent(ev) {
 }
 
 /**
- * Fetch all curated special events, keep only active ones, and return them
- * normalized and sorted soonest-first. The first item is the "featured" event.
+ * Fetch a set of slugs, keep only active ones, and return them normalized and
+ * sorted soonest-first. Failed/unavailable slugs are dropped silently.
  */
 export async function fetchScheduleEvents(slugs = SPECIAL_EVENT_SLUGS) {
   const raw = await Promise.all(
@@ -78,72 +105,20 @@ export async function fetchScheduleEvents(slugs = SPECIAL_EVENT_SLUGS) {
     .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
 }
 
-const HOST_PAGE = 'https://sweatpals.com/host/loveandlob'
-
 /**
- * Fetch the host's recurring programming (weekly clinics/classes) for the
- * "Upcoming" list. Sweatpals' public search endpoint ignores the host filter
- * (returns a global feed), so the only reliable host-scoped source is the
- * upcoming-events query embedded in the host page's server-rendered data.
- * Returns normalized, active, soonest-first events (empty array on any failure).
- */
-export async function fetchHostUpcoming(limit = 8) {
-  let html
-  try {
-    const res = await fetch(HOST_PAGE, {
-      headers: { 'user-agent': 'Mozilla/5.0 (compatible; LoveAndLobBot/1.0)' },
-    })
-    if (!res.ok) return []
-    html = await res.text()
-  } catch {
-    return []
-  }
-
-  const match = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/)
-  if (!match) return []
-  let data
-  try {
-    data = JSON.parse(match[1])
-  } catch {
-    return []
-  }
-
-  const queries = data?.props?.pageProps?.dehydratedState?.queries || []
-
-  // Sweatpals groups the host's events into category queries whose key names
-  // change over time (it was one "upcoming-events" list; now it's separate
-  // classes/events/experiences/retreats keys). Merge every event-list query and
-  // dedupe by id rather than depending on one category name, so a future
-  // rename degrades gracefully instead of emptying the schedule.
-  const byId = new Map()
-  for (const query of queries) {
-    if (query.queryKey?.[0] !== 'events') continue
-    const items = (query.state?.data?.pages || []).flatMap((page) => page.data || [])
-    for (const ev of items) {
-      if (ev?.id && !byId.has(ev.id)) byId.set(ev.id, ev)
-    }
-  }
-
-  const now = new Date()
-  return [...byId.values()]
-    // Featured special events (Invitationals) render as their own card — keep
-    // them out of the programming list so they don't appear twice.
-    .filter((ev) => !SPECIAL_EVENT_SLUGS.includes(ev.alias))
-    .filter((ev) => isActive(ev, now))
-    .map(normalizeEvent)
-    .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
-    .slice(0, limit)
-}
-
-/**
- * The full /schedule payload: the curated featured special event (or null) plus
- * the recurring programming feed. Consumed by both the build script and the
+ * The full /schedule payload: the featured special event (or null) plus the
+ * recurring programming list. Consumed by both the build script and the
  * serverless function; written to public/events.json.
  */
 export async function fetchScheduleData() {
-  const [special, upcoming] = await Promise.all([
-    fetchScheduleEvents(),
-    fetchHostUpcoming(),
+  const [special, programs] = await Promise.all([
+    fetchScheduleEvents(SPECIAL_EVENT_SLUGS),
+    fetchScheduleEvents(PROGRAM_SLUGS),
   ])
-  return { featured: special[0] || null, upcoming }
+  const featured = special[0] || null
+  const featuredIds = new Set(special.map((ev) => ev.id))
+  const upcoming = programs
+    .filter((ev) => !featuredIds.has(ev.id))
+    .slice(0, UPCOMING_LIMIT)
+  return { featured, upcoming }
 }
