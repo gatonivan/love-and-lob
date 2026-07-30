@@ -42,17 +42,29 @@ function pruneUpcoming(data: ScheduleData): ScheduleData {
   }
 }
 
+async function fetchJson(url: string): Promise<ScheduleData | null> {
+  try {
+    const res = await fetch(url)
+    if (res.ok) return await res.json()
+  } catch { /* ignore */ }
+  return null
+}
+
 async function fetchSchedule(): Promise<ScheduleData> {
-  // Try live API first, fall back to the static JSON built at deploy time.
-  try {
-    const res = await fetch('/api/events')
-    if (res.ok) return pruneUpcoming(await res.json())
-  } catch { /* fall through */ }
-  try {
-    const res = await fetch(`${import.meta.env.BASE_URL}events.json`)
-    if (res.ok) return pruneUpcoming(await res.json())
-  } catch { /* fall through */ }
-  return EMPTY_SCHEDULE
+  // The static events.json is the reliable source for the recurring-clinic
+  // list — it's built where Sweatpals' host page is reachable. The live API
+  // only freshens the featured event; its clinic scrape returns empty from
+  // Vercel's datacenter, so we never let an empty live list shadow the static
+  // clinics.
+  const [staticData, live] = await Promise.all([
+    fetchJson(`${import.meta.env.BASE_URL}events.json`),
+    fetchJson('/api/events'),
+  ])
+  const base = staticData ?? EMPTY_SCHEDULE
+  return pruneUpcoming({
+    featured: live?.featured ?? base.featured,
+    upcoming: live?.upcoming?.length ? live.upcoming : base.upcoming,
+  })
 }
 
 // "Saturday, August 8 · 12:00 – 6:00 PM · Hastings-on-Hudson"

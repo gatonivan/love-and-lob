@@ -109,13 +109,26 @@ export async function fetchHostUpcoming(limit = 8) {
   }
 
   const queries = data?.props?.pageProps?.dehydratedState?.queries || []
-  const q = queries.find(
-    (query) => query.queryKey?.[0] === 'events' && query.queryKey?.[2] === 'upcoming-events',
-  )
-  const items = (q?.state?.data?.pages || []).flatMap((page) => page.data || [])
+
+  // Sweatpals groups the host's events into category queries whose key names
+  // change over time (it was one "upcoming-events" list; now it's separate
+  // classes/events/experiences/retreats keys). Merge every event-list query and
+  // dedupe by id rather than depending on one category name, so a future
+  // rename degrades gracefully instead of emptying the schedule.
+  const byId = new Map()
+  for (const query of queries) {
+    if (query.queryKey?.[0] !== 'events') continue
+    const items = (query.state?.data?.pages || []).flatMap((page) => page.data || [])
+    for (const ev of items) {
+      if (ev?.id && !byId.has(ev.id)) byId.set(ev.id, ev)
+    }
+  }
 
   const now = new Date()
-  return items
+  return [...byId.values()]
+    // Featured special events (Invitationals) render as their own card — keep
+    // them out of the programming list so they don't appear twice.
+    .filter((ev) => !SPECIAL_EVENT_SLUGS.includes(ev.alias))
     .filter((ev) => isActive(ev, now))
     .map(normalizeEvent)
     .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())

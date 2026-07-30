@@ -1,6 +1,6 @@
 {
   "featured": {
-    "id": "29c3fd4b-3753-43f0-a799-27d4d6c8bdef",
+    "id": "c755ea6d-0916-4101-a654-05c9fce6753c",
     "name": "L&L Invitational Vol. 3",
     "start_at": "2026-08-08T16:00:00.000Z",
     "end_at": "2026-08-08T22:00:00.000Z",
@@ -10,76 +10,22 @@
   },
   "upcoming": [
     {
-      "id": "18350bed-8b52-4439-ac04-b8f61ea3d60d",
-      "name": "Absolute Beginner Clinic",
-      "start_at": "2026-07-30T21:30:00.000Z",
-      "end_at": "2026-07-30T22:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/absolute-beginner-clinic-b8cc",
-      "location": "Brooklyn"
+      "id": "7cceed95-33fe-45cd-b441-74033162b992",
+      "name": "L&L x RCTA Mixed Doubles Tourney",
+      "start_at": "2026-08-06T19:00:00.000Z",
+      "end_at": "2026-08-07T00:00:00.000Z",
+      "cover_url": "https://ilove.sweatpals.com/api/files/528523a5-96bc-4239-acca-56c0e2b560cd?variant=l",
+      "url": "https://sweatpals.com/event/ll-x-rcta-mixed-doubles-tourney",
+      "location": "New York"
     },
     {
-      "id": "758a442f-1de2-4019-91d5-4e543413af00",
-      "name": "Advanced Beginner Clinic",
-      "start_at": "2026-07-30T22:30:00.000Z",
-      "end_at": "2026-07-31T00:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/advanced-beginner-clinic-32e",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "2b08ad5b-94fa-4961-b525-73d6c494e836",
-      "name": "Kids Clinic: Ages 6-9",
-      "start_at": "2026-08-01T13:00:00.000Z",
-      "end_at": "2026-08-01T14:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/kids-clinic-ages-58",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "ffce940d-dacc-4725-be08-aa69a5cb77e4",
-      "name": "Intermediate Clinic ",
-      "start_at": "2026-08-01T14:00:00.000Z",
-      "end_at": "2026-08-01T15:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/intermediate-clinic-56",
-      "location": "The Bronx"
-    },
-    {
-      "id": "6b6f8f18-7a10-4db1-853f-fd24caf8068b",
-      "name": "Cardio Tennis",
-      "start_at": "2026-08-01T14:00:00.000Z",
-      "end_at": "2026-08-01T15:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/cardio-tennis-b3c8",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "86c8198f-cb58-4730-8971-b9183818a5b3",
-      "name": "Advanced Beginner Clinic ",
-      "start_at": "2026-08-01T14:00:00.000Z",
-      "end_at": "2026-08-01T15:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/advanced-beginner-clinic-0c7a5c",
-      "location": "The Bronx"
-    },
-    {
-      "id": "a9947209-51e7-4e99-b865-fff7063f28b0",
-      "name": "Liveball: Intermediate/Advanced ",
-      "start_at": "2026-08-01T15:00:00.000Z",
-      "end_at": "2026-08-01T16:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/liveball-intermediateadvanced-5eacce",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "77d8f05b-7ed7-4c04-9576-29854a6c05e7",
-      "name": "Liveball (Bronx): Intermediate/Advanced ",
-      "start_at": "2026-08-01T15:30:00.000Z",
-      "end_at": "2026-08-01T17:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/liveball-bronx-intermediateadvanced",
-      "location": "The Bronx"
+      "id": "9fede737-49f7-4c30-b06f-e5d876f72d53",
+      "name": "L&L Early Morning Sessions",
+      "start_at": "2026-08-07T10:30:00.000Z",
+      "end_at": "2026-08-07T12:00:00.000Z",
+      "cover_url": "https://ilove.sweatpals.com/api/files/8eaf0254-5f5f-4c54-bf07-598640590d35?variant=l",
+      "url": "https://sweatpals.com/event/ll-early-morning-sessions",
+      "location": "New York"
     }
   ]
 }
