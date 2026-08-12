@@ -19,7 +19,7 @@
 
 // Featured special event(s) — rendered as the big card at the top of the page.
 // The soonest active one is featured.
-export const SPECIAL_EVENT_SLUGS = ['ll-invitational-vol-3']
+export const SPECIAL_EVENT_SLUGS = ['lob-at-the-rock-island-inn']
 
 // Recurring programming — rendered as the "Upcoming" list. Keep disjoint from
 // SPECIAL_EVENT_SLUGS so nothing shows twice.
@@ -34,7 +34,9 @@ export const PROGRAM_SLUGS = [
   'intermediate-clinic-56',
   'cardio-tennis-b3c8',
   'kids-clinic-ages-58',
+  'advanced-beginner-clinic-6f38',
   'liveball-intermediateadvanced-5eacce',
+  'liveball-intermediateadvanced-451',
   'liveball-bronx-intermediateadvanced',
 ]
 

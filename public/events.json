@@ -1,85 +1,58 @@
 {
   "featured": {
-    "id": "c755ea6d-0916-4101-a654-05c9fce6753c",
-    "name": "L&L Invitational Vol. 3",
-    "start_at": "2026-08-08T16:00:00.000Z",
-    "end_at": "2026-08-08T22:00:00.000Z",
-    "cover_url": "https://ilove.sweatpals.com/api/files/3ed10527-d250-4a7b-a10f-d47390a6343b?variant=l",
-    "url": "https://sweatpals.com/retreat/ll-invitational-vol-3",
-    "location": "Hastings-on-Hudson"
+    "id": "2d7829e0-c5a4-41b1-8ca4-d9fb9b7871b4",
+    "name": "Lob at The Rock: Island Inn",
+    "start_at": "2026-08-14T19:00:00.000Z",
+    "end_at": "2026-08-14T22:00:00.000Z",
+    "cover_url": "https://ilove.sweatpals.com/api/files/33c008c3-a5f6-467b-aaea-daf97b8472d4?variant=l",
+    "url": "https://sweatpals.com/event/lob-at-the-rock-island-inn",
+    "location": "Oak Bluffs"
   },
   "upcoming": [
     {
-      "id": "7653a8d4-7465-435f-9107-cc3708ca2527",
+      "id": "2987712f-f4ad-48a8-8dd6-8407e0995cbe",
+      "name": "Advanced Beginner Clinic (Brooklyn College)",
+      "start_at": "2026-08-12T22:30:00.000Z",
+      "end_at": null,
+      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
+      "url": "https://sweatpals.com/event/advanced-beginner-clinic-6f38",
+      "location": "Brooklyn"
+    },
+    {
+      "id": "81bfe61b-ed41-4c84-9a8e-5d612d1b06a6",
       "name": "Absolute Beginner Clinic (Greenpoint)",
-      "start_at": "2026-07-30T21:30:00.000Z",
-      "end_at": "2026-07-30T22:30:00.000Z",
+      "start_at": "2026-08-13T21:30:00.000Z",
+      "end_at": null,
       "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
       "url": "https://sweatpals.com/event/absolute-beginner-clinic-b8cc",
       "location": "Brooklyn"
     },
     {
-      "id": "adaf3f9a-db9e-4e56-a828-27f036dc1311",
+      "id": "3773fe8d-fcd6-4cdd-91e1-3b106ed3571f",
       "name": "Advanced Beginner Clinic (Greenpoint)",
-      "start_at": "2026-07-30T22:30:00.000Z",
-      "end_at": "2026-07-31T00:00:00.000Z",
+      "start_at": "2026-08-13T22:30:00.000Z",
+      "end_at": null,
       "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
       "url": "https://sweatpals.com/event/advanced-beginner-clinic-32e",
       "location": "Brooklyn"
     },
     {
-      "id": "8b673af6-695a-4bea-a234-416026f29843",
-      "name": "Kids Clinic: Ages 5-8 (Greenpoint)",
-      "start_at": "2026-08-01T13:00:00.000Z",
-      "end_at": "2026-08-01T14:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/kids-clinic-ages-58",
-      "location": "Brooklyn"
+      "id": "98dea443-982c-4b71-bde6-ee7e1e1e3ddb",
+      "name": "L&L Early Morning Sessions",
+      "start_at": "2026-08-14T10:30:00.000Z",
+      "end_at": null,
+      "cover_url": "https://ilove.sweatpals.com/api/files/8eaf0254-5f5f-4c54-bf07-598640590d35?variant=l",
+      "url": "https://sweatpals.com/event/ll-early-morning-sessions",
+      "location": "New York"
     },
     {
-      "id": "2d7ae4d9-1b53-4f72-903c-1123d78a539c",
-      "name": "Advanced Beginner Clinic (Lehman)",
-      "start_at": "2026-08-01T14:00:00.000Z",
-      "end_at": "2026-08-01T15:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/advanced-beginner-clinic-0c7a5c",
-      "location": "The Bronx"
-    },
-    {
-      "id": "d1096d8b-c727-4a70-8820-80d2303af82b",
-      "name": "Intermediate Clinic (Lehman)",
-      "start_at": "2026-08-01T14:00:00.000Z",
-      "end_at": "2026-08-01T15:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/intermediate-clinic-56",
-      "location": "The Bronx"
-    },
-    {
-      "id": "ef3c383f-6578-439c-abb4-3fe9c68bb3a2",
-      "name": "Cardio Tennis (Greenpoint)",
-      "start_at": "2026-08-01T14:00:00.000Z",
-      "end_at": "2026-08-01T15:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/cardio-tennis-b3c8",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "e38b9706-949a-4425-b6b5-a7cc459f0c47",
+      "id": "1e1b0ebf-8004-49c0-abb3-a615c009e409",
       "name": "Liveball (Greenpoint): Intermediate/Advanced ",
-      "start_at": "2026-08-01T15:00:00.000Z",
-      "end_at": "2026-08-01T16:00:00.000Z",
+      "start_at": "2026-08-15T15:00:00.000Z",
+      "end_at": null,
       "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
       "url": "https://sweatpals.com/event/liveball-intermediateadvanced-5eacce",
       "location": "Brooklyn"
-    },
-    {
-      "id": "2c8219e9-350d-48f9-8063-445603db7589",
-      "name": "Beginner Clinic (Lehman)",
-      "start_at": "2026-08-01T15:30:00.000Z",
-      "end_at": "2026-08-01T17:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/beginner-clinic-ed6",
-      "location": "The Bronx"
     }
   ]
 }

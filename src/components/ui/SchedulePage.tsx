@@ -18,14 +18,6 @@ interface ScheduleEvent {
 // Sweatpals host page — recurring weekly clinics live here.
 const SWEATPALS_HOST_URL = 'https://sweatpals.com/host/loveandlob'
 
-// Ultimate fallback for the featured card when the live fetch and the static
-// events.json both come up empty (e.g. Sweatpals is unreachable at load).
-const FEATURED_FALLBACK = {
-  name: 'Love & Lob Invitational Vol. 3',
-  meta: 'Saturday, August 8 · 12:00 – 6:00 PM · Hastings-on-Hudson, NY',
-  url: 'https://sweatpals.com/retreat/ll-invitational-vol-3',
-}
-
 interface ScheduleData {
   featured: ScheduleEvent | null
   upcoming: ScheduleEvent[]
@@ -33,11 +25,15 @@ interface ScheduleData {
 
 const EMPTY_SCHEDULE: ScheduleData = { featured: null, upcoming: [] }
 
-// Keep only events that haven't started yet (guards the frozen static file).
+// Drop anything already past (guards the frozen static file). Upcoming clinics
+// go once they've started; the featured event survives until it has ended, so
+// an in-progress special event still headlines the page.
 function pruneUpcoming(data: ScheduleData): ScheduleData {
   const now = new Date()
+  const featured = data.featured
+  const featuredEnd = featured && new Date(featured.end_at || featured.start_at)
   return {
-    featured: data.featured,
+    featured: featuredEnd && featuredEnd >= now ? featured : null,
     upcoming: (data.upcoming ?? []).filter((ev) => new Date(ev.start_at) >= now),
   }
 }
@@ -167,10 +163,12 @@ export function SchedulePage() {
           <h1 className="schedule-title">Schedule</h1>
 
           {/* ── Featured event (own section, above the seasons) ── */}
-          {/* Dynamic from the soonest active Sweatpals event; falls back to a
-              static card (still linking to Sweatpals) if the fetch is empty. */}
-          <section className="schedule-invitational">
-            {featured ? (
+          {/* Dynamic from the soonest active special event in SPECIAL_EVENT_SLUGS.
+              No static fallback on purpose: a hardcoded card outlives its event
+              and advertises a date that has already passed. Between special
+              events the section simply doesn't render. */}
+          {featured && (
+            <section className="schedule-invitational">
               <a
                 href={featured.url}
                 target="_blank"
@@ -182,20 +180,8 @@ export function SchedulePage() {
                 <p className="schedule-invitational-meta">{formatFeaturedMeta(featured)}</p>
                 <span className="schedule-invitational-cta">Register on Sweatpals &rarr;</span>
               </a>
-            ) : (
-              <a
-                href={FEATURED_FALLBACK.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="schedule-invitational-card"
-              >
-                <span className="schedule-invitational-tag">Featured Event</span>
-                <h2 className="schedule-invitational-name">{FEATURED_FALLBACK.name}</h2>
-                <p className="schedule-invitational-meta">{FEATURED_FALLBACK.meta}</p>
-                <span className="schedule-invitational-cta">Register on Sweatpals &rarr;</span>
-              </a>
-            )}
-          </section>
+            </section>
+          )}
 
           <div className="schedule-seasons">
             <div className="schedule-season">
