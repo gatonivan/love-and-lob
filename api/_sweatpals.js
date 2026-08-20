@@ -19,25 +19,26 @@
 
 // Featured special event(s) — rendered as the big card at the top of the page.
 // The soonest active one is featured.
-export const SPECIAL_EVENT_SLUGS = ['lob-at-the-rock-island-inn']
+export const SPECIAL_EVENT_SLUGS = [
+  'll-3v3-team-singles-tournament',
+  'll-mixed-doubles-tournament-us-open-edition',
+]
 
 // Recurring programming — rendered as the "Upcoming" list. Keep disjoint from
 // SPECIAL_EVENT_SLUGS so nothing shows twice.
+//
+// A slug is retired here once it is BOTH delisted from the host page AND out of
+// future instances (see nextStart below) — either condition alone is normal for
+// a series that is merely between publishes. The Lehman and Bronx programs, the
+// Greenpoint Kids Clinic, and the original Greenpoint/Brooklyn College Liveball
+// and Beginner series were retired on 2026-08-20 by that test.
 export const PROGRAM_SLUGS = [
   'll-early-morning-sessions',
-  'll-x-rcta-mixed-doubles-tourney',
   'absolute-beginner-clinic-b8cc',
   'advanced-beginner-clinic-32e',
-  'advanced-beginner-clinic-0c7a5c',
-  'beginner-clinic-1e7f',
-  'beginner-clinic-ed6',
-  'intermediate-clinic-56',
-  'cardio-tennis-b3c8',
-  'kids-clinic-ages-58',
   'advanced-beginner-clinic-6f38',
-  'liveball-intermediateadvanced-5eacce',
+  'cardio-tennis-b3c8',
   'liveball-intermediateadvanced-451',
-  'liveball-bronx-intermediateadvanced',
 ]
 
 // Max programs shown in the Upcoming list (soonest-first); the rest live behind
@@ -72,11 +73,26 @@ export async function fetchEventBySlug(slug) {
   return ev && ev.id ? ev : null
 }
 
+/**
+ * When a recurring series is returned, `startDate`/`endDate` describe the
+ * series' FIRST instance — which goes into the past and stays there — while
+ * `instance`/`instanceEndDate` carry the next upcoming occurrence. Reading the
+ * former silently ages every weekly clinic out of the schedule a week after the
+ * series was created. Always prefer the instance fields; one-off events set
+ * both to the same value, so this is safe across event types.
+ */
+export function nextStart(ev) {
+  return ev.instance || ev.startDate
+}
+
+export function nextEnd(ev) {
+  return ev.instanceEndDate || ev.endDate || nextStart(ev)
+}
+
 /** A raw Sweatpals event is "active" when it's published and not yet finished. */
 export function isActive(ev, now = new Date()) {
   if (ev.publishingState !== 'published') return false
-  const end = new Date(ev.endDate || ev.startDate)
-  return end >= now
+  return new Date(nextEnd(ev)) >= now
 }
 
 /** Map a raw Sweatpals event to the events.json schema the client consumes. */
@@ -84,8 +100,8 @@ export function normalizeEvent(ev) {
   return {
     id: ev.id,
     name: ev.name,
-    start_at: ev.startDate,
-    end_at: ev.endDate,
+    start_at: nextStart(ev),
+    end_at: nextEnd(ev),
     cover_url: coverUrl(ev),
     url: eventUrl(ev),
     location: ev.city?.name || ev.addressName || '',
@@ -118,9 +134,13 @@ export async function fetchScheduleData() {
     fetchScheduleEvents(PROGRAM_SLUGS),
   ])
   const featured = special[0] || null
-  const featuredIds = new Set(special.map((ev) => ev.id))
-  const upcoming = programs
-    .filter((ev) => !featuredIds.has(ev.id))
+  // Only the featured event is held out of the list. Any remaining special
+  // events merge into Upcoming alongside the clinics — dropping them would
+  // hide a scheduled tournament from the page entirely.
+  const rest = special.slice(1)
+  const upcoming = [...rest, ...programs]
+    .filter((ev) => !featured || ev.id !== featured.id)
+    .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
     .slice(0, UPCOMING_LIMIT)
   return { featured, upcoming }
 }

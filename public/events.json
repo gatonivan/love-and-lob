@@ -1,28 +1,19 @@
 {
   "featured": {
-    "id": "2d7829e0-c5a4-41b1-8ca4-d9fb9b7871b4",
-    "name": "Lob at The Rock: Island Inn",
-    "start_at": "2026-08-14T19:00:00.000Z",
-    "end_at": "2026-08-14T22:00:00.000Z",
-    "cover_url": "https://ilove.sweatpals.com/api/files/33c008c3-a5f6-467b-aaea-daf97b8472d4?variant=l",
-    "url": "https://sweatpals.com/event/lob-at-the-rock-island-inn",
-    "location": "Oak Bluffs"
+    "id": "03efc0f9-b27d-4f27-8ea6-9f615c3bb2eb",
+    "name": "L&L 3v3 Team Singles Tournament ",
+    "start_at": "2026-08-30T16:00:00.000Z",
+    "end_at": "2026-08-30T22:00:00.000Z",
+    "cover_url": "https://ilove.sweatpals.com/api/files/965a77ae-f24b-416b-9a75-283ead74cdf6?variant=l",
+    "url": "https://sweatpals.com/event/ll-3v3-team-singles-tournament",
+    "location": "The Bronx"
   },
   "upcoming": [
     {
-      "id": "2987712f-f4ad-48a8-8dd6-8407e0995cbe",
-      "name": "Advanced Beginner Clinic (Brooklyn College)",
-      "start_at": "2026-08-12T22:30:00.000Z",
-      "end_at": null,
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/advanced-beginner-clinic-6f38",
-      "location": "Brooklyn"
-    },
-    {
       "id": "81bfe61b-ed41-4c84-9a8e-5d612d1b06a6",
       "name": "Absolute Beginner Clinic (Greenpoint)",
-      "start_at": "2026-08-13T21:30:00.000Z",
-      "end_at": null,
+      "start_at": "2026-08-20T21:30:00.000Z",
+      "end_at": "2026-08-20T22:30:00.000Z",
       "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
       "url": "https://sweatpals.com/event/absolute-beginner-clinic-b8cc",
       "location": "Brooklyn"
@@ -30,29 +21,56 @@
     {
       "id": "3773fe8d-fcd6-4cdd-91e1-3b106ed3571f",
       "name": "Advanced Beginner Clinic (Greenpoint)",
-      "start_at": "2026-08-13T22:30:00.000Z",
-      "end_at": null,
+      "start_at": "2026-08-20T22:30:00.000Z",
+      "end_at": "2026-08-21T00:00:00.000Z",
       "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
       "url": "https://sweatpals.com/event/advanced-beginner-clinic-32e",
       "location": "Brooklyn"
     },
     {
-      "id": "98dea443-982c-4b71-bde6-ee7e1e1e3ddb",
+      "id": "4f760563-3b01-460d-87d1-549300069076",
       "name": "L&L Early Morning Sessions",
-      "start_at": "2026-08-14T10:30:00.000Z",
-      "end_at": null,
+      "start_at": "2026-08-21T10:30:00.000Z",
+      "end_at": "2026-08-21T12:00:00.000Z",
       "cover_url": "https://ilove.sweatpals.com/api/files/8eaf0254-5f5f-4c54-bf07-598640590d35?variant=l",
       "url": "https://sweatpals.com/event/ll-early-morning-sessions",
       "location": "New York"
     },
     {
-      "id": "1e1b0ebf-8004-49c0-abb3-a615c009e409",
-      "name": "Liveball (Greenpoint): Intermediate/Advanced ",
-      "start_at": "2026-08-15T15:00:00.000Z",
-      "end_at": null,
+      "id": "7dab18ae-05e0-4efe-b925-58c71c0ea9ac",
+      "name": "Cardio Tennis (Greenpoint)",
+      "start_at": "2026-08-22T14:00:00.000Z",
+      "end_at": "2026-08-22T15:00:00.000Z",
       "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/liveball-intermediateadvanced-5eacce",
+      "url": "https://sweatpals.com/event/cardio-tennis-b3c8",
       "location": "Brooklyn"
+    },
+    {
+      "id": "2987712f-f4ad-48a8-8dd6-8407e0995cbe",
+      "name": "Advanced Beginner Clinic (Brooklyn College)",
+      "start_at": "2026-08-23T15:30:00.000Z",
+      "end_at": "2026-08-23T17:00:00.000Z",
+      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
+      "url": "https://sweatpals.com/event/advanced-beginner-clinic-6f38",
+      "location": "Brooklyn"
+    },
+    {
+      "id": "db9ba039-92c4-4f98-a3a4-529339503f9b",
+      "name": "Liveball: (Brooklyn College) Intermediate/Advanced ",
+      "start_at": "2026-08-23T15:30:00.000Z",
+      "end_at": "2026-08-23T17:00:00.000Z",
+      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
+      "url": "https://sweatpals.com/event/liveball-intermediateadvanced-451",
+      "location": "Brooklyn"
+    },
+    {
+      "id": "67792484-3447-4846-b8e5-c76f6c5c7bb1",
+      "name": "L&L Mixed Doubles Tournament: US Open Edition",
+      "start_at": "2026-09-12T15:30:00.000Z",
+      "end_at": "2026-09-12T20:30:00.000Z",
+      "cover_url": "https://ilove.sweatpals.com/api/files/0f0dae2d-e3ed-4cb4-bfbf-4aa9923c3fa0?variant=l",
+      "url": "https://sweatpals.com/event/ll-mixed-doubles-tournament-us-open-edition",
+      "location": "New York"
     }
   ]
 }
