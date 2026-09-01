@@ -32,13 +32,21 @@ export const SPECIAL_EVENT_SLUGS = [
 // a series that is merely between publishes. The Lehman and Bronx programs, the
 // Greenpoint Kids Clinic, and the original Greenpoint/Brooklyn College Liveball
 // and Beginner series were retired on 2026-08-20 by that test.
+//
+// Refreshed 2026-08-31: Sweatpals had recreated four series under fresh slugs,
+// so Early Morning Sessions, Advanced Beginner (Greenpoint), Cardio Tennis
+// (Greenpoint) and Liveball Intermediate/Advanced were all silently aging out —
+// the list was rendering 2 programs instead of 6. Each failed both retirement
+// conditions (delisted from the host page, last instance in the past) and was
+// replaced by its current slug. Re-run the host scan when the list looks short:
+//   curl -sL https://sweatpals.com/loveandlob | grep -o '"alias":"[^"]*"' | sort -u
 export const PROGRAM_SLUGS = [
-  'll-early-morning-sessions',
   'absolute-beginner-clinic-b8cc',
-  'advanced-beginner-clinic-32e',
   'advanced-beginner-clinic-6f38',
-  'cardio-tennis-b3c8',
-  'liveball-intermediateadvanced-451',
+  'advanced-beginner-clinic-greenpoint',
+  'beginner-clinic-brooklyn-college',
+  'cardio-tennis-brooklyn-college',
+  'intermediate-clinic-greenpoint',
 ]
 
 // Max programs shown in the Upcoming list (soonest-first); the rest live behind
