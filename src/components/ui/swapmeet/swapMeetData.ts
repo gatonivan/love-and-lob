@@ -1,4 +1,5 @@
-import flyer from '../../../assets/swapmeet/flyer.jpg'
+import flyerSwapMeet from '../../../assets/swapmeet/flyer.jpg'
+import flyerParty from '../../../assets/swapmeet/flyer_party.jpg'
 import lillistar from '../../../assets/swapmeet/lillistar.png'
 
 /** One DJ slot on the launch-party bill. */
@@ -41,6 +42,14 @@ export interface RosterBrand {
   logo?: string
 }
 
+/** One poster in the hero's crossfading stack. */
+export interface Flyer {
+  image: string
+  /** Short name, shown as the caption and on the jump control. */
+  label: string
+  alt: string
+}
+
 /** A label/value pair in the hero's fact list. */
 export interface Fact {
   label: string
@@ -54,7 +63,7 @@ export interface SwapMeetData {
   dateLabel: string
   facts: Fact[]
   venue: { name: string; address: string; mapUrl: string }
-  flyer: { image: string; alt: string }
+  flyers: Flyer[]
   intro: string[]
   kicker: string
   days: DayCard[]
@@ -81,10 +90,18 @@ export const swapMeetData: SwapMeetData = {
     mapUrl: 'https://maps.google.com/?q=Moxy+Williamsburg+Brooklyn+NY+11211',
   },
 
-  flyer: {
-    image: flyer,
-    alt: 'Love & Lob Swap Meet flyer. September 3–4 2026, Moxy Williamsburg, Brooklyn NY 11211, starting at 2PM.',
-  },
+  flyers: [
+    {
+      image: flyerSwapMeet,
+      label: 'Swap Meet',
+      alt: 'Love & Lob Swap Meet flyer. September 3–4 2026, Moxy Williamsburg, Brooklyn NY 11211, starting at 2PM.',
+    },
+    {
+      image: flyerParty,
+      label: 'Launch Party',
+      alt: 'Love & Lob presents Andre Power and Doug. September 3 2026, 8PM to 12AM at Lillistar.',
+    },
+  ],
 
   // Slide 6 ("The Activation"), reframed from sponsor-facing to attendee-facing.
   intro: [

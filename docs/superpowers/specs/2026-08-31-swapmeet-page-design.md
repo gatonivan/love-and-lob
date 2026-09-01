@@ -258,3 +258,23 @@ verified from the brand's own site or press coverage:
 no blurb. `RosterBrand.blurb` is optional and the row renders as a wordmark
 alone, which is the correct failure mode: a missing sentence is recoverable,
 an invented one about a real business is not.
+
+
+## Poster stack (2026-08-31)
+
+The hero holds both posters — the Swap Meet flyer and the launch-party flyer —
+crossfading in place every 5.2s with a 900ms fade. Both are 1545×2000, so the
+stack sets that aspect ratio once and the images sit absolutely inside it; no
+layout shift between frames.
+
+Auto-motion carries the obligations from the design pass. WCAG 2.2.2 requires a
+pause mechanism for anything moving on its own past five seconds, so the cycle
+ships with a Pause/Play control (`aria-pressed`), and dots jump to either poster
+directly (pausing on click, since a jump is an explicit choice). When the viewer
+prefers reduced motion the cycle never starts, the fade is dropped, and the
+Pause control is not rendered at all — there is nothing to pause, and the dots
+become the only way it moves. Verified in both motion modes.
+
+Note when reading a mid-cycle DOM sample: the CSS fade lags state by 900ms, so
+the caption and `--current` class flip before opacity finishes. That is the
+transition, not a desync.

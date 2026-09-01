@@ -1,12 +1,13 @@
 import type { SwapMeetData } from './swapMeetData'
+import { FlyerStack } from './FlyerStack'
 
 interface HeroProps {
-  data: Pick<SwapMeetData, 'name' | 'lede' | 'eyebrow' | 'facts' | 'flyer'>
+  data: Pick<SwapMeetData, 'name' | 'lede' | 'eyebrow' | 'facts' | 'flyers'>
 }
 
 /**
- * Asymmetric poster lockup: type left, flyer right. Deliberately not centred —
- * the flyer is the artwork and the copy is the caption, so they get different
+ * Asymmetric poster lockup: type left, posters right. Deliberately not centred:
+ * the flyers are the artwork and the copy is the caption, so they get different
  * weights rather than a symmetric stack.
  */
 export function SwapMeetHero({ data }: HeroProps) {
@@ -25,7 +26,7 @@ export function SwapMeetHero({ data }: HeroProps) {
           ))}
         </dl>
       </div>
-      <img className="sm-hero-flyer" src={data.flyer.image} alt={data.flyer.alt} />
+      <FlyerStack flyers={data.flyers} />
     </section>
   )
 }
