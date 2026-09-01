@@ -3,7 +3,8 @@ import { useBottomScroll } from '../../../hooks/useBottomScroll'
 import { SubPageWrapper } from '../community/SubPageWrapper'
 import { swapMeetData } from './swapMeetData'
 import { SwapMeetHero } from './SwapMeetHero'
-import { DayCards } from './DayCards'
+import { LaunchParty } from './LaunchParty'
+import { Marketplace } from './Marketplace'
 import { ExpectGrid } from './ExpectGrid'
 import { BrandRoster } from './BrandRoster'
 import './swapmeet.css'
@@ -25,10 +26,8 @@ export function SwapMeetPage() {
         <p className="sm-kicker">{d.kicker}</p>
       </section>
 
-      <section className="sm-section">
-        <h2 className="sm-h2">Two nights, two rooms</h2>
-        <DayCards days={d.days} />
-      </section>
+      <LaunchParty day={d.launchParty} />
+      <Marketplace day={d.marketplace} />
 
       <section className="sm-section">
         <h2 className="sm-h2">What to expect</h2>

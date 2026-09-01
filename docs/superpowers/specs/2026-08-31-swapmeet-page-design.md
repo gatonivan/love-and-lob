@@ -278,3 +278,50 @@ become the only way it moves. Verified in both motion modes.
 Note when reading a mid-cycle DOM sample: the CSS fade lags state by 900ms, so
 the caption and `--current` class flip before opacity finishes. That is the
 transition, not a desync.
+
+## Restructure: real run of show (2026-09-01)
+
+"What to expect" read like a schedule while the actual schedule lived nowhere,
+so the two were separated:
+
+- **Friday's run of show** is now a timed list in its own right-hand column —
+  2PM doors, 5PM panel led by Racquet, 7PM tennis trivia ($200 winner plus
+  other prizes), 8PM live guitarist.
+- **"What to expect"** keeps only what is present all day (shops, embroidery,
+  video games, trading cards, music and drinks) and lost its 01–06 indices,
+  which were the thing making it read as a sequence. Panel and trivia moved to
+  the run of show.
+
+**Both flyers now have a home instead of sharing one.** The crossfading stack
+was replaced: the Swap Meet flyer stays in the hero, and the launch-party flyer
+sits in the Thursday section beside its own copy and DJ bill. `FlyerStack.tsx`
+and `DayCards.tsx` were deleted; `LaunchParty.tsx` and `Marketplace.tsx` replace
+the two-up card row with two full-width day sections.
+
+Music and Grey Goose drinks are called out in the marketplace copy, the
+all-day list, and Grey Goose's roster entry.
+
+### Vendor copy
+
+Two sentences per brand, each sourced. Seven of eight are done:
+
+| Brand | Source |
+|---|---|
+| Video Game Amateurs | NYC gaming agency; NYC Video Game Festival, 22-school collegiate circuit |
+| Sigrún | founded 2020 by David Caylor; ≥50% recycled/organic per style |
+| Grey Goose | pouring partner, both days |
+| Bageled NYC | Foronda + Burns, since 2022, Fort Greene scene, "Served Fresh Daily" |
+| Racquet | Thompson + Shaftel, 2016, $55k Kickstarter; leads Friday's panel |
+| Vibe Tennis | Richard Henry, Barbados international, Jackson State scholarship |
+| Players NYC | players.nyc — court-partner app, iOS beta, "the city's your court" |
+
+**EC is still unidentified** after brand, Instagram, roundup and logo searches.
+It renders as a wordmark with no copy.
+
+### Times: three public numbers exist
+
+The owner confirmed **8PM–12AM** twice, and that is what ships. Note for
+whoever reads this next: the first party flyer said 9PM–12AM, the Instagram
+post still live says 9PM–12AM, and the Instagram weekly-schedule graphic says
+7:00pm (9/3). A plausible reconciliation is doors 7PM and music 8PM–12AM, but
+that is unconfirmed and was not written into the page.

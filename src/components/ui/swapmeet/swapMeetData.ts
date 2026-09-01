@@ -9,20 +9,14 @@ export interface DjSlot {
   blurb: string
 }
 
-export interface DayCard {
-  /** Short weekday + date, e.g. "Thu · Sept 3". */
-  when: string
-  title: string
-  room: string
-  /** Door/start time. Always rendered so both cards share a baseline. */
+/** One timed entry in Friday's run of show. */
+export interface RunItem {
   time: string
-  body: string
-  /** DJ bill, where the night has one. */
-  lineup?: DjSlot[]
-  /** Mark shown with the bill (the room the DJs are playing). */
-  billMark?: { image: string; alt: string }
+  label: string
+  note?: string
 }
 
+/** Something present all day rather than scheduled. */
 export interface ExpectItem {
   title: string
   body: string
@@ -31,23 +25,12 @@ export interface ExpectItem {
 export interface RosterBrand {
   name: string
   /**
-   * One verified sentence. Left undefined when the brand could not be
+   * Two sourced sentences. Left undefined when the brand could not be
    * identified from a public source — a wordmark beats invented copy.
    */
   blurb?: string
-  /**
-   * Imported logo asset. Rendered as a cream knockout on the green page; brands
-   * without one fall back to their name set as a wordmark.
-   */
+  /** Cream-knockout logo, when we have one. Falls back to the name. */
   logo?: string
-}
-
-/** One poster in the hero's crossfading stack. */
-export interface Flyer {
-  image: string
-  /** Short name, shown as the caption and on the jump control. */
-  label: string
-  alt: string
 }
 
 /** A label/value pair in the hero's fact list. */
@@ -63,10 +46,27 @@ export interface SwapMeetData {
   dateLabel: string
   facts: Fact[]
   venue: { name: string; address: string; mapUrl: string }
-  flyers: Flyer[]
+  flyer: { image: string; alt: string }
   intro: string[]
   kicker: string
-  days: DayCard[]
+  launchParty: {
+    when: string
+    title: string
+    room: string
+    time: string
+    body: string[]
+    mark: { image: string; alt: string }
+    lineup: DjSlot[]
+    flyer: { image: string; alt: string }
+  }
+  marketplace: {
+    when: string
+    title: string
+    room: string
+    time: string
+    body: string[]
+    runOfShow: RunItem[]
+  }
   expect: ExpectItem[]
   roster: RosterBrand[]
   contact: { email: string; instagram: string; instagramUrl: string }
@@ -90,18 +90,10 @@ export const swapMeetData: SwapMeetData = {
     mapUrl: 'https://maps.google.com/?q=Moxy+Williamsburg+Brooklyn+NY+11211',
   },
 
-  flyers: [
-    {
-      image: flyerSwapMeet,
-      label: 'Swap Meet',
-      alt: 'Love & Lob Swap Meet flyer. September 3–4 2026, Moxy Williamsburg, Brooklyn NY 11211, starting at 2PM.',
-    },
-    {
-      image: flyerParty,
-      label: 'Launch Party',
-      alt: 'Love & Lob presents Andre Power and Doug. September 3 2026, 8PM to 12AM at Lillistar.',
-    },
-  ],
+  flyer: {
+    image: flyerSwapMeet,
+    alt: 'Love & Lob Swap Meet flyer. September 3–4 2026, Moxy Williamsburg, Brooklyn NY 11211, starting at 2PM.',
+  },
 
   // Slide 6 ("The Activation"), reframed from sponsor-facing to attendee-facing.
   intro: [
@@ -110,37 +102,53 @@ export const swapMeetData: SwapMeetData = {
   ],
   kicker: 'A marketplace that rewards design identity and community over mega-budget advertising.',
 
-  days: [
-    {
-      when: 'Thu · Sept 3',
-      title: 'The Launch Party',
-      room: 'Lillistar Rooftop',
-      time: '8PM to 12AM',
-      body: 'Indoor-outdoor rooftop with panoramic skyline views of the Williamsburg Bridge. Signature cocktails, and the whole room opening the weekend together.',
-      billMark: { image: lillistar, alt: 'Lillistar' },
-      lineup: [
-        {
-          time: '8 – 10PM',
-          name: 'Doug',
-          blurb: 'A regular on the LINK UP bill, most recently opening the series\u2019 Brooklyn rooftop edition alongside FS Green and Black Noi$e.',
-        },
-        {
-          time: '10PM – 12AM',
-          name: 'Andre Power',
-          blurb: 'Co-founder and creative director of Soulection, and the curator behind LINK UP, the party he has taken from Los Angeles to rooms in more than 25 countries.',
-        },
-      ],
+  launchParty: {
+    when: 'Thursday · September 3',
+    title: 'The Launch Party',
+    room: 'Lillistar Rooftop',
+    time: '8PM to 12AM',
+    body: [
+      'The weekend opens on the Lillistar rooftop. Indoor-outdoor, panoramic skyline views of the Williamsburg Bridge, and signature cocktails poured by Grey Goose.',
+      'Two DJs across four hours, and the whole room opening the weekend together before the doors go up on the marketplace.',
+    ],
+    mark: { image: lillistar, alt: 'Lillistar' },
+    lineup: [
+      {
+        time: '8 – 10PM',
+        name: 'Doug',
+        blurb: 'A regular on the LINK UP bill, most recently opening the series’ Brooklyn rooftop edition alongside FS Green and Black Noi$e.',
+      },
+      {
+        time: '10PM – 12AM',
+        name: 'Andre Power',
+        blurb: 'Co-founder and creative director of Soulection, and the curator behind LINK UP, the party he has taken from Los Angeles to rooms in more than 25 countries.',
+      },
+    ],
+    flyer: {
+      image: flyerParty,
+      alt: 'Love & Lob presents Andre Power and Doug. September 3 2026, 8PM to 12AM at Lillistar.',
     },
-    {
-      when: 'Fri · Sept 4',
-      title: 'The Marketplace',
-      room: 'The Garden / Courtyard',
-      time: '2PM to 8PM',
-      body: 'The full floor of vendors, browsable end to end. Come through, meet the people making the stuff, and buy straight from them.',
-    },
-  ],
+  },
 
-  // The six activity names off the flyer.
+  marketplace: {
+    when: 'Friday · September 4',
+    title: 'The Marketplace',
+    room: 'The Garden / Courtyard',
+    time: '2PM to 8PM',
+    body: [
+      'The full floor of vendors, browsable end to end. Come through, meet the people making the stuff, and buy straight from them.',
+      'Music all afternoon and drinks poured by Grey Goose, with three things worth showing up on time for.',
+    ],
+    runOfShow: [
+      { time: '2PM', label: 'Doors open' },
+      { time: '5PM', label: 'Panel discussion', note: 'Led by Racquet' },
+      { time: '7PM', label: 'Tennis trivia', note: '$200 for the winner, plus other prizes' },
+      { time: '8PM', label: 'Live guitarist' },
+    ],
+  },
+
+  // Present all day rather than scheduled — the timed items live in the run of
+  // show above, so nothing here should read like a sequence.
   expect: [
     {
       title: 'Shops',
@@ -159,46 +167,43 @@ export const swapMeetData: SwapMeetData = {
       body: 'Cards out on the tables all day. Browse, buy, trade, and dig for something you have been chasing.',
     },
     {
-      title: 'Panel',
-      body: 'A live conversation with the people building independent tennis culture in New York right now.',
-    },
-    {
-      title: 'Trivia',
-      body: 'Tennis trivia with the room playing along. Knowing the game is the only entry fee.',
+      title: 'Music and drinks',
+      body: 'Music running through the afternoon and a bar poured by Grey Goose, both days.',
     },
   ],
 
-  // Four from deck slide 8's featured roster, four more off the flyer's logo row.
-  // Blurbs are sourced from each brand's own site or press coverage. EC and
-  // Players NYC could not be identified from any public source and carry no
-  // blurb rather than an invented one.
+  // Blurbs sourced from each brand's own site or press coverage. EC could not be
+  // identified from any public source and carries no blurb rather than a guess.
   roster: [
     {
       name: 'Video Game Amateurs',
-      blurb: 'The NYC gaming agency behind livestreamed tournaments and in-person festivals, taking its name from am\u0101tor, the Latin for one who loves.',
+      blurb: 'A New York gaming agency blending esports, culture and community, from livestreamed tournaments to in-person festivals. They ran production for the first NYC Video Game Festival and the collegiate circuit spanning 22 schools across the state.',
     },
     {
       name: 'Sigrún',
-      blurb: 'New York tennis and racquet apparel named for the valkyrie, built on premium fabrics and ethical production.',
+      blurb: 'A New York racquet-sports label started in 2020 by David Caylor, who came back to tennis after a decade in finance and could not find kit he wanted to wear. Named for the valkyrie, and built to a standard of at least 50% recycled or organic material in every style.',
     },
     {
       name: 'Grey Goose',
-      blurb: 'The French vodka house, pouring the signature cocktails on the rooftop Thursday night.',
+      blurb: 'The French vodka house, pouring the signature cocktails on the Lillistar rooftop on Thursday night. They are behind the bar again through Friday afternoon in the courtyard.',
     },
     { name: 'EC' },
     {
       name: 'Bageled NYC',
-      blurb: 'Bagel-inspired tennis gear out of New York, named for the 6\u20130 set nobody wants to be handed.',
+      blurb: 'A two-man operation from Michael Foronda and Sam Burns, making small runs of bagel-inspired tennis gear since 2022 and worn all over the Fort Greene tennis scene. The name is the scoreline nobody wants handed to them; the house motto is Served Fresh Daily.',
     },
     {
       name: 'Racquet',
-      blurb: 'The quarterly magazine that covers tennis as culture: its art, style, history and ideas.',
+      blurb: 'The quarterly that covers tennis as culture: its art, style, history and ideas. Launched in 2016 by Caitlin Thompson and David Shaftel after a Kickstarter raised $55,000, and leading Friday’s panel at 5PM.',
     },
     {
       name: 'Vibe Tennis',
-      blurb: 'Founded by musician and player Richard Henry, an apparel brand built on the overlap of tennis, art and music.',
+      blurb: 'Founded by Richard Henry, a Barbadian musician and player who represented his country internationally before a scholarship to Jackson State. The brand runs on the overlap of tennis, art and music, with island vibrations throughout.',
     },
-    { name: 'Players NYC' },
+    {
+      name: 'Players NYC',
+      blurb: 'An app for finding a hitting partner at any court in any borough, currently in iOS beta. Their line is simple enough: the city is your court.',
+    },
   ],
 
   contact: {

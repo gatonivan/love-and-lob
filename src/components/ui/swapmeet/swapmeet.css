@@ -159,94 +159,12 @@
   color: var(--ink);
 }
 
-/* ── Poster stack: two flyers crossfading in place ────────────────────── */
-.sm-flyers {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  min-width: 0;
-}
-.sm-flyer-stack {
-  position: relative;
+.sm-hero-flyer {
+  display: block;
   width: 100%;
-  aspect-ratio: 1545 / 2000;
+  height: auto;
   border-radius: 4px;
   box-shadow: 0 30px 70px rgba(0, 20, 10, 0.5);
-}
-.sm-flyer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 4px;
-  opacity: 0;
-  transition: opacity 900ms ease;
-}
-.sm-flyer--current { opacity: 1; }
-
-.sm-flyer-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.sm-flyer-label {
-  font-family: 'Inter', sans-serif;
-  font-size: var(--t-100);
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--lime);
-  margin: 0;
-}
-.sm-flyer-buttons { display: flex; align-items: center; gap: 1rem; }
-.sm-flyer-dots {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.sm-flyer-dot {
-  display: block;
-  width: 9px;
-  height: 9px;
-  padding: 0;
-  border: 1px solid var(--ink-faint);
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-}
-.sm-flyer-dot:hover { border-color: var(--lime); }
-.sm-flyer-dot[aria-current='true'] { background: var(--lime); border-color: var(--lime); }
-.sm-flyer-toggle {
-  font-family: 'Inter', sans-serif;
-  font-size: var(--t-100);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.sm-flyer-toggle:hover { color: var(--lime); }
-
-/* Reachable by screen reader, invisible on screen. */
-.sm-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 
 /* ── Lead copy: a real measure, offset from the grid edge ─────────────── */
@@ -282,26 +200,14 @@
   margin: 0 0 2rem;
 }
 
-/* ── Two nights, two rooms ────────────────────────────────────────────── */
-.sm-days {
+/* ── Day sections: copy left, poster or run of show right ────────────── */
+.sm-day-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto auto auto auto;
-  gap: 0 4rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 4rem;
+  align-items: start;
 }
-/* Subgrid keeps every line of both days on one baseline. Browsers without it
-   fall back to normal block flow inside the card, which still reads fine. */
-.sm-day {
-  display: grid;
-  grid-row: span 6;
-  grid-template-rows: subgrid;
-  align-content: start;
-  padding-top: 1.5rem;
-  border-top: 2px solid var(--lime);
-}
+.sm-day-body-col { min-width: 0; }
 .sm-day-when {
   font-family: 'Inter', sans-serif;
   font-size: var(--t-100);
@@ -309,16 +215,9 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--lime);
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.9rem;
 }
-.sm-day-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 900;
-  font-size: var(--t-500);
-  line-height: 1.05;
-  text-transform: uppercase;
-  margin: 0 0 0.6rem;
-}
+.sm-day-section .sm-h2 { margin-bottom: 0.75rem; }
 .sm-day-room {
   font-family: 'Inter', sans-serif;
   font-size: var(--t-200);
@@ -330,17 +229,65 @@
   font-family: 'Inter', sans-serif;
   font-size: var(--t-100);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-faint);
+  margin: 0 0 1.5rem;
+}
+.sm-day-flyer {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 24px 60px rgba(0, 20, 10, 0.45);
+}
+
+/* ── Run of show ──────────────────────────────────────────────────────── */
+.sm-run { min-width: 0; }
+.sm-run-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-100);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lime);
   margin: 0 0 1.25rem;
 }
-.sm-day-body {
-  font-family: 'Inter', sans-serif;
-  font-size: var(--t-200);
-  line-height: 1.65;
-  color: var(--ink-soft);
+.sm-run-list {
+  list-style: none;
+  padding: 0;
   margin: 0;
+  border-top: 2px solid var(--lime);
+}
+.sm-run-item {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.sm-run-time {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-300);
+  color: var(--lime);
+  margin: 0;
+}
+.sm-run-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-300);
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin: 0;
+}
+.sm-run-note {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-100);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0.25rem 0 0;
 }
 
 /* ── The DJ bill ──────────────────────────────────────────────────────── */
@@ -387,27 +334,18 @@
   margin: 0;
 }
 
-/* ── What to expect: indexed run sheet, not a card grid ───────────────── */
+/* ── What to expect: things simply present, no sequence implied ───────── */
 .sm-expect {
-  list-style: none;
-  padding: 0;
   margin: 0;
   border-top: 1px solid var(--rule);
 }
 .sm-expect-item {
   display: grid;
-  grid-template-columns: 4.5rem minmax(0, 14rem) minmax(0, 1fr);
-  gap: 0 2.5rem;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: 0 3rem;
   align-items: baseline;
-  padding: 1.6rem 0;
+  padding: 1.5rem 0;
   border-bottom: 1px solid var(--rule);
-}
-.sm-expect-index {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 900;
-  font-size: var(--t-300);
-  color: var(--lime);
-  opacity: 0.7;
 }
 .sm-expect-title {
   font-family: 'Playfair Display', Georgia, serif;
@@ -517,16 +455,15 @@
     gap: 3rem;
     align-items: start;
   }
-  .sm-flyers { max-width: 420px; }
+  .sm-hero-flyer { max-width: 420px; }
   .sm-close { grid-template-columns: 1fr; gap: 3.5rem; }
-  .sm-expect-item { grid-template-columns: 3rem minmax(0, 1fr); gap: 0 1.5rem; }
-  .sm-expect-body { grid-column: 2; margin-top: 0.4rem; }
+  .sm-day-section { grid-template-columns: 1fr; gap: 2.5rem; }
+  .sm-day-flyer { max-width: 420px; }
+  .sm-expect-item { grid-template-columns: 1fr; gap: 0.35rem; }
 }
 
 @media (max-width: 768px) {
   .sm-page { --gutter: 2rem; }
-  .sm-days { grid-template-columns: 1fr; grid-template-rows: none; gap: 3rem; }
-  .sm-day { grid-row: auto; grid-template-rows: none; display: block; }
   .sm-roster { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 
@@ -537,7 +474,7 @@
   .sm-fact { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.75rem 0; }
   .sm-roster { grid-template-columns: 1fr; gap: 1.5rem; }
   .sm-roster-name { font-size: var(--t-300); }
-  .sm-expect-item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 0 1rem; padding: 1.25rem 0; }
+  .sm-run-item { grid-template-columns: 4rem minmax(0, 1fr); gap: 1rem; }
 }
 
 /* ── Reduced motion ───────────────────────────────────────────────────── */
@@ -551,5 +488,4 @@
   .sm-page * {
     transition-duration: 0.01ms !important;
   }
-  .sm-flyer { transition: none; }
 }
