@@ -286,7 +286,8 @@ so the two were separated:
 
 - **Friday's run of show** is now a timed list in its own right-hand column —
   2PM doors, 5PM panel led by Racquet, 7PM tennis trivia ($200 winner plus
-  other prizes), 8PM live guitarist.
+  other prizes), 8–9PM live guitarist. Friday's hours run 2–9PM to cover the
+  set, resolving the earlier 8PM-ends-at-8PM overlap.
 - **"What to expect"** keeps only what is present all day (shops, embroidery,
   video games, trading cards, music and drinks) and lost its 01–06 indices,
   which were the thing making it read as a sequence. Panel and trivia moved to

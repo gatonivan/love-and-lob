@@ -81,7 +81,7 @@ export const swapMeetData: SwapMeetData = {
   facts: [
     { label: 'When', value: 'Thu Sept 3 to Fri Sept 4, 2026' },
     { label: 'Where', value: 'Moxy Williamsburg, Brooklyn NY 11211' },
-    { label: 'Hours', value: 'Thu 8PM to 12AM · Fri 2 to 8PM' },
+    { label: 'Hours', value: 'Thu 8PM to 12AM · Fri 2 to 9PM' },
   ],
 
   venue: {
@@ -134,7 +134,7 @@ export const swapMeetData: SwapMeetData = {
     when: 'Friday · September 4',
     title: 'The Marketplace',
     room: 'The Garden / Courtyard',
-    time: '2PM to 8PM',
+    time: '2PM to 9PM',
     body: [
       'The full floor of vendors, browsable end to end. Come through, meet the people making the stuff, and buy straight from them.',
       'Music all afternoon and drinks poured by Grey Goose, with three things worth showing up on time for.',
@@ -143,7 +143,7 @@ export const swapMeetData: SwapMeetData = {
       { time: '2PM', label: 'Doors open' },
       { time: '5PM', label: 'Panel discussion', note: 'Led by Racquet' },
       { time: '7PM', label: 'Tennis trivia', note: '$200 for the winner, plus other prizes' },
-      { time: '8PM', label: 'Live guitarist' },
+      { time: '8 – 9PM', label: 'Live guitarist' },
     ],
   },
 

@@ -261,7 +261,7 @@
 }
 .sm-run-item {
   display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
+  grid-template-columns: 7.5rem minmax(0, 1fr);
   gap: 1.5rem;
   align-items: baseline;
   padding: 1.15rem 0;
@@ -474,7 +474,7 @@
   .sm-fact { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.75rem 0; }
   .sm-roster { grid-template-columns: 1fr; gap: 1.5rem; }
   .sm-roster-name { font-size: var(--t-300); }
-  .sm-run-item { grid-template-columns: 4rem minmax(0, 1fr); gap: 1rem; }
+  .sm-run-item { grid-template-columns: 5.5rem minmax(0, 1fr); gap: 1rem; }
 }
 
 /* ── Reduced motion ───────────────────────────────────────────────────── */
