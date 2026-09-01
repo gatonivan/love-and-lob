@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import { useBottomScroll } from '../../hooks/useBottomScroll'
@@ -17,6 +17,24 @@ interface ScheduleEvent {
 
 // Sweatpals host page — recurring weekly clinics live here.
 const SWEATPALS_HOST_URL = 'https://sweatpals.com/host/loveandlob'
+
+/**
+ * A featured event we host ourselves, so there is no Sweatpals slug to curate.
+ * It outranks the Sweatpals special event while it runs, then retires itself.
+ *
+ * The hazard the section comment below warns about is a static card with no end
+ * date, which keeps advertising a date that has passed. This one carries
+ * `endsAt` and disappears on its own, at which point the Sweatpals special
+ * event takes the slot back with no code change.
+ */
+const LOCAL_FEATURED = {
+  name: 'Love & Lob Swap Meet',
+  meta: 'Thursday, September 3 – Friday, September 4 · Moxy Williamsburg, Brooklyn',
+  to: '/swapmeet',
+  cta: 'See the lineup',
+  // ~11:59PM ET on Friday Sept 4, when the marketplace closes.
+  endsAt: '2026-09-05T03:59:00.000Z',
+}
 
 interface ScheduleData {
   featured: ScheduleEvent | null
@@ -147,8 +165,21 @@ export function SchedulePage() {
   const [shouldRender, isVisible] = useDeferredUnmount(isSchedule)
   const show = isVisible && settled
 
-  // Featured = curated special event (Invitational); upcoming = weekly clinics.
+  // Featured = curated special event; upcoming = weekly clinics.
   const { featured, upcoming } = schedule
+
+  // The self-hosted card wins the featured slot while it is still live.
+  const localFeatured =
+    new Date(LOCAL_FEATURED.endsAt) >= new Date() ? LOCAL_FEATURED : null
+
+  // Demote rather than drop: without this the Sweatpals special event would
+  // vanish from the page entirely while the local card holds the slot.
+  const upcomingList =
+    localFeatured && featured
+      ? [...upcoming, featured].sort(
+          (a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime(),
+        )
+      : upcoming
 
   useBottomScroll(isSchedule, overlayRef)
 
@@ -167,7 +198,16 @@ export function SchedulePage() {
               No static fallback on purpose: a hardcoded card outlives its event
               and advertises a date that has already passed. Between special
               events the section simply doesn't render. */}
-          {featured && (
+          {localFeatured ? (
+            <section className="schedule-invitational">
+              <Link to={localFeatured.to} className="schedule-invitational-card">
+                <span className="schedule-invitational-tag">Featured Event</span>
+                <h2 className="schedule-invitational-name">{localFeatured.name}</h2>
+                <p className="schedule-invitational-meta">{localFeatured.meta}</p>
+                <span className="schedule-invitational-cta">{localFeatured.cta} &rarr;</span>
+              </Link>
+            </section>
+          ) : featured ? (
             <section className="schedule-invitational">
               <a
                 href={featured.url}
@@ -181,7 +221,7 @@ export function SchedulePage() {
                 <span className="schedule-invitational-cta">Register on Sweatpals &rarr;</span>
               </a>
             </section>
-          )}
+          ) : null}
 
           <div className="schedule-seasons">
             <div className="schedule-season">
@@ -234,11 +274,11 @@ export function SchedulePage() {
 
             {loading ? (
               <div className="schedule-loading">Loading schedule...</div>
-            ) : upcoming.length === 0 ? (
+            ) : upcomingList.length === 0 ? (
               <div className="schedule-empty">Nothing scheduled yet. Check back soon!</div>
             ) : (
               <div className="schedule-list">
-                {upcoming.map((ev) => (
+                {upcomingList.map((ev) => (
                   <a
                     key={ev.id}
                     href={ev.url}
