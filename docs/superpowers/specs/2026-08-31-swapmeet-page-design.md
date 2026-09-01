@@ -226,3 +226,28 @@ contrast the article endorses; changing it on one page would isolate
 
 **Bug found during the pass:** at one column `.sm-days` still declared five
 explicit grid rows, leaving ~7.5rem of dead space below the cards on mobile.
+
+## Lineup and roster copy (2026-08-31)
+
+Thursday's launch party is 8PM–12AM, with a two-slot DJ bill rendered inside
+the Thursday card: **Doug** 8–10PM, **Andre Power** 10PM–12AM. The bill is a
+sixth subgrid row, so Friday leaves it empty and both days stay aligned.
+
+Brand blurbs are back, this time sourced rather than inferred. Six of eight are
+verified from the brand's own site or press coverage:
+
+| | Source of the claim |
+|---|---|
+| Video Game Amateurs | NYC gaming agency; "amateur" from Latin *amātor* |
+| Sigrún | sigruntennis.com — NY racquet apparel, named for the valkyrie |
+| Grey Goose | pouring partner per deck slide 9 |
+| Bageled NYC | bageled.nyc — bagel/6–0 wordplay; PIX11 coverage of the US Open design dispute |
+| Racquet | racquetmag.com — quarterly, tennis as culture |
+| Vibe Tennis | vibetennis.com — founder Richard Henry, tennis/art/music |
+| Andre Power | Soulection co-founder and creative director; curates LINK UP |
+| Doug | on the LINK UP: Brooklyn bill (Sept 1) with FS Green, Black Noi$e, Planet B |
+
+**EC and Players NYC could not be identified from any public source** and carry
+no blurb. `RosterBrand.blurb` is optional and the row renders as a wordmark
+alone, which is the correct failure mode: a missing sentence is recoverable,
+an invented one about a real business is not.

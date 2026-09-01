@@ -5,8 +5,8 @@ interface DayCardsProps {
 }
 
 /**
- * Both cards render every slot, so the two bodies sit on one baseline instead
- * of drifting when one day has a door time and the other does not.
+ * Both days render every slot, so the two bodies sit on one baseline instead
+ * of drifting when one has a bill and the other does not.
  */
 export function DayCards({ days }: DayCardsProps) {
   return (
@@ -18,6 +18,17 @@ export function DayCards({ days }: DayCardsProps) {
           <p className="sm-day-room">{d.room}</p>
           <p className="sm-day-time">{d.time}</p>
           <p className="sm-day-body">{d.body}</p>
+          {d.lineup && (
+            <ol className="sm-bill">
+              {d.lineup.map((slot) => (
+                <li key={slot.name} className="sm-bill-slot">
+                  <p className="sm-bill-time">{slot.time}</p>
+                  <h4 className="sm-bill-name">{slot.name}</h4>
+                  <p className="sm-bill-blurb">{slot.blurb}</p>
+                </li>
+              ))}
+            </ol>
+          )}
         </li>
       ))}
     </ul>

@@ -4,10 +4,6 @@ interface BrandRosterProps {
   brands: RosterBrand[]
 }
 
-/**
- * A flowing wordmark strip rather than an even grid — reads like the credit
- * line on a poster, and absorbs an odd brand count without leaving a hole.
- */
 export function BrandRoster({ brands }: BrandRosterProps) {
   return (
     <ul className="sm-roster">
@@ -16,8 +12,9 @@ export function BrandRoster({ brands }: BrandRosterProps) {
           {b.logo ? (
             <img className="sm-roster-logo" src={b.logo} alt={b.name} loading="lazy" />
           ) : (
-            <span className="sm-roster-name">{b.name}</span>
+            <h3 className="sm-roster-name">{b.name}</h3>
           )}
+          {b.blurb && <p className="sm-roster-blurb">{b.blurb}</p>}
         </li>
       ))}
     </ul>

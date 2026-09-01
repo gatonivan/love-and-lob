@@ -1,5 +1,12 @@
 import flyer from '../../../assets/swapmeet/flyer.jpg'
 
+/** One DJ slot on the launch-party bill. */
+export interface DjSlot {
+  time: string
+  name: string
+  blurb: string
+}
+
 export interface DayCard {
   /** Short weekday + date, e.g. "Thu · Sept 3". */
   when: string
@@ -8,6 +15,8 @@ export interface DayCard {
   /** Door/start time. Always rendered so both cards share a baseline. */
   time: string
   body: string
+  /** DJ bill, where the night has one. */
+  lineup?: DjSlot[]
 }
 
 export interface ExpectItem {
@@ -17,6 +26,11 @@ export interface ExpectItem {
 
 export interface RosterBrand {
   name: string
+  /**
+   * One verified sentence. Left undefined when the brand could not be
+   * identified from a public source — a wordmark beats invented copy.
+   */
+  blurb?: string
   /**
    * Imported logo asset. Rendered as a cream knockout on the green page; brands
    * without one fall back to their name set as a wordmark.
@@ -55,7 +69,7 @@ export const swapMeetData: SwapMeetData = {
   facts: [
     { label: 'When', value: 'Thu Sept 3 to Fri Sept 4, 2026' },
     { label: 'Where', value: 'Moxy Williamsburg, Brooklyn NY 11211' },
-    { label: 'Doors', value: 'Friday from 2PM' },
+    { label: 'Doors', value: 'Thursday 8PM · Friday 2PM' },
   ],
 
   venue: {
@@ -81,8 +95,20 @@ export const swapMeetData: SwapMeetData = {
       when: 'Thu · Sept 3',
       title: 'The Launch Party',
       room: 'Lillistar Rooftop',
-      time: 'Time to be announced',
-      body: 'Indoor-outdoor rooftop with panoramic skyline views of the Williamsburg Bridge. Live DJ sets, signature cocktails, and the whole room opening the weekend together.',
+      time: '8PM to 12AM',
+      body: 'Indoor-outdoor rooftop with panoramic skyline views of the Williamsburg Bridge. Signature cocktails, and the whole room opening the weekend together.',
+      lineup: [
+        {
+          time: '8 – 10PM',
+          name: 'Doug',
+          blurb: 'A regular on the LINK UP bill, most recently opening the series\u2019 Brooklyn rooftop edition alongside FS Green and Black Noi$e.',
+        },
+        {
+          time: '10PM – 12AM',
+          name: 'Andre Power',
+          blurb: 'Co-founder and creative director of Soulection, and the curator behind LINK UP, the party he has taken from Los Angeles to rooms in more than 25 countries.',
+        },
+      ],
     },
     {
       when: 'Fri · Sept 4',
@@ -122,15 +148,35 @@ export const swapMeetData: SwapMeetData = {
   ],
 
   // Four from deck slide 8's featured roster, four more off the flyer's logo row.
-  // Names only until logo files land in src/assets/swapmeet/brands/.
+  // Blurbs are sourced from each brand's own site or press coverage. EC and
+  // Players NYC could not be identified from any public source and carry no
+  // blurb rather than an invented one.
   roster: [
-    { name: 'Video Game Amateurs' },
-    { name: 'Sigrún' },
-    { name: 'Grey Goose' },
+    {
+      name: 'Video Game Amateurs',
+      blurb: 'The NYC gaming agency behind livestreamed tournaments and in-person festivals, taking its name from am\u0101tor, the Latin for one who loves.',
+    },
+    {
+      name: 'Sigrún',
+      blurb: 'New York tennis and racquet apparel named for the valkyrie, built on premium fabrics and ethical production.',
+    },
+    {
+      name: 'Grey Goose',
+      blurb: 'The French vodka house, pouring the signature cocktails on the rooftop Thursday night.',
+    },
     { name: 'EC' },
-    { name: 'Bageled NYC' },
-    { name: 'Racquet' },
-    { name: 'Vibe Tennis' },
+    {
+      name: 'Bageled NYC',
+      blurb: 'Bagel-inspired tennis gear out of New York, named for the 6\u20130 set nobody wants to be handed.',
+    },
+    {
+      name: 'Racquet',
+      blurb: 'The quarterly magazine that covers tennis as culture: its art, style, history and ideas.',
+    },
+    {
+      name: 'Vibe Tennis',
+      blurb: 'Founded by musician and player Richard Henry, an apparel brand built on the overlap of tennis, art and music.',
+    },
     { name: 'Players NYC' },
   ],
 
