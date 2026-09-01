@@ -37,7 +37,8 @@ body,
    between stylesheet apply and the overlay fade-in. */
 html[data-page='invitational'],
 html[data-page='invitational'] body,
-html[data-page='invitational'] #root {
+html[data-page='invitational'] #root,
+html[data-page='swapmeet'] #root {
   background: #004225;
 }
 
@@ -46,7 +47,8 @@ html[data-page='invitational'] #root {
 .product-detail,
 .community-sub-page,
 .manifesto-page,
-.inv-page {
+.inv-page,
+.sm-page {
   overflow-y: auto;
   height: 100vh;
   height: 100dvh;
@@ -78,7 +80,8 @@ a, button, [role="button"], input[type="submit"],
 .product-detail,
 .community-sub-page,
 .manifesto-page,
-.inv-page {
+.inv-page,
+.sm-page {
   position: relative;
   z-index: 1;
 }

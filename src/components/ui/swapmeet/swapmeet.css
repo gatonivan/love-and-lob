@@ -1,0 +1,418 @@
+/* Swap Meet page.
+   Palette is the site's own (deep green / cream / lime) and is deliberately
+   unchanged here. Everything else is tuned against the generic-frontend tells:
+   one type scale rather than ad-hoc sizes, grain instead of gradient for depth,
+   asymmetric layout instead of centred symmetry, and real focus states. */
+
+.sm-page {
+  /* One type scale. Every size below comes from here, nothing off-scale. */
+  --t-100: 0.8rem;
+  --t-200: 1rem;
+  --t-300: 1.25rem;
+  --t-400: 1.5rem;
+  --t-500: 1.95rem;
+  --t-600: 2.45rem;
+  --t-700: clamp(2.45rem, 6vw, 3.8rem);
+  --t-800: clamp(2.75rem, 6.5vw, 4.4rem);
+
+  --ink: #F1F0E2;
+  --ink-soft: rgba(241, 240, 226, 0.78);
+  --ink-faint: rgba(241, 240, 226, 0.55);
+  --lime: #d8e84d;
+  --rule: rgba(241, 240, 226, 0.16);
+
+  --gutter: 4rem;
+  --measure: 62ch;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 8rem 0 6rem;
+  color: var(--ink);
+  background: rgba(0, 66, 37, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: sm-bg-in 0.6s ease forwards;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Depth without a gradient: film grain over the flat green, matching the
+   distressed print texture of the flyer itself. */
+.sm-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.14;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.sm-page--exiting {
+  opacity: 0;
+  background: rgba(0, 66, 37, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+}
+
+@keyframes sm-bg-in {
+  from { background: rgba(0, 66, 37, 0); backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+  to   { background: rgba(0, 66, 37, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+}
+
+.sm-section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 5.5rem;
+  animation: sm-content-in 0.5s ease 0.25s both;
+}
+
+@keyframes sm-content-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Balanced headings, no orphan on the last line; pretty body wrapping. */
+.sm-page h1,
+.sm-page h2,
+.sm-page h3 { text-wrap: balance; }
+.sm-page p { text-wrap: pretty; }
+
+.sm-back {
+  display: inline-block;
+  margin: 0 var(--gutter) 3rem;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-100);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.sm-back:hover { color: var(--lime); }
+
+/* ── Hero: type left, artwork right. Not centred. ─────────────────────── */
+.sm-hero {
+  max-width: 1180px;
+  margin: 0 auto 1rem;
+  padding: 0 var(--gutter) 5.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 4rem;
+  align-items: end;
+  animation: sm-content-in 0.5s ease 0.25s both;
+}
+.sm-hero-type { min-width: 0; }
+
+.sm-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-100);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin: 0 0 1.25rem;
+}
+.sm-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-800);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.sm-hero-lede {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: var(--t-400);
+  line-height: 1.3;
+  color: var(--lime);
+  margin: 1.25rem 0 0;
+}
+
+/* Facts as a label/value list: real hierarchy, no card needed. */
+.sm-facts {
+  margin: 2.5rem 0 0;
+  border-top: 1px solid var(--rule);
+}
+.sm-fact {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1.5rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.sm-fact dt {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-100);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.sm-fact dd {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-200);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.sm-hero-flyer {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(0, 20, 10, 0.5);
+}
+
+/* ── Lead copy: a real measure, offset from the grid edge ─────────────── */
+.sm-lead { max-width: 1180px; }
+.sm-intro {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-200);
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: var(--measure);
+  margin: 0 0 1.25rem;
+}
+.sm-kicker {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-500);
+  line-height: 1.2;
+  color: var(--lime);
+  max-width: 24ch;
+  margin: 3rem 0 0;
+  padding-top: 2rem;
+  border-top: 2px solid var(--lime);
+}
+
+/* ── Shared heading ───────────────────────────────────────────────────── */
+.sm-h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-600);
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 2rem;
+}
+
+/* ── Two nights, two rooms ────────────────────────────────────────────── */
+.sm-days {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto auto auto;
+  gap: 0 4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* Subgrid keeps every line of both days on one baseline. Browsers without it
+   fall back to normal block flow inside the card, which still reads fine. */
+.sm-day {
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+  align-content: start;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--lime);
+}
+.sm-day-when {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-100);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin: 0 0 0.75rem;
+}
+.sm-day-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-500);
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin: 0 0 0.6rem;
+}
+.sm-day-room {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-200);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.2rem;
+}
+.sm-day-time {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-100);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 1.25rem;
+}
+.sm-day-body {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-200);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ── What to expect: indexed run sheet, not a card grid ───────────────── */
+.sm-expect {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+.sm-expect-item {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 14rem) minmax(0, 1fr);
+  gap: 0 2.5rem;
+  align-items: baseline;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.sm-expect-index {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-300);
+  color: var(--lime);
+  opacity: 0.7;
+}
+.sm-expect-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-400);
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0;
+}
+.sm-expect-body {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-200);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ── Roster: flowing wordmark strip ───────────────────────────────────── */
+.sm-roster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 2.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sm-roster-item { display: flex; align-items: center; }
+/* Logos knock out to cream on the green: brightness(0) flattens any brand
+   colour to black, invert flips it to white. */
+.sm-roster-logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+.sm-roster-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-400);
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+/* ── Closing pair: getting there + vend ───────────────────────────────── */
+.sm-close {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4rem;
+  align-items: start;
+}
+.sm-close .sm-h2 { font-size: var(--t-500); }
+.sm-venue-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: var(--t-400);
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem;
+}
+.sm-venue-line {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-200);
+  color: var(--ink-soft);
+  margin: 0 0 0.2rem;
+}
+.sm-link {
+  display: block;
+  width: fit-content;
+  margin-top: 1.25rem;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-200);
+  font-weight: 600;
+  color: var(--lime);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(216, 232, 77, 0.45);
+  padding-bottom: 3px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.sm-link:hover { color: var(--ink); border-color: var(--ink); }
+
+/* ── Interaction states ───────────────────────────────────────────────── */
+.sm-page a:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sm-hero {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .sm-hero-flyer { max-width: 420px; }
+  .sm-close { grid-template-columns: 1fr; gap: 3.5rem; }
+  .sm-expect-item { grid-template-columns: 3rem minmax(0, 1fr); gap: 0 1.5rem; }
+  .sm-expect-body { grid-column: 2; margin-top: 0.4rem; }
+}
+
+@media (max-width: 768px) {
+  .sm-page { --gutter: 2rem; }
+  .sm-days { grid-template-columns: 1fr; grid-template-rows: none; gap: 2.5rem; }
+  .sm-day { grid-row: auto; grid-template-rows: none; display: block; }
+}
+
+@media (max-width: 480px) {
+  .sm-page { --gutter: 1.25rem; padding: 5.5rem 0 4rem; }
+  .sm-section, .sm-hero { padding-bottom: 3.5rem; }
+  .sm-back { margin-bottom: 2rem; }
+  .sm-fact { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.75rem 0; }
+  .sm-roster { gap: 1rem 1.75rem; }
+  .sm-roster-name { font-size: var(--t-300); }
+  .sm-expect-item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 0 1rem; padding: 1.25rem 0; }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .sm-page,
+  .sm-hero,
+  .sm-section {
+    animation: none;
+  }
+  .sm-page,
+  .sm-page * {
+    transition-duration: 0.01ms !important;
+  }
+}

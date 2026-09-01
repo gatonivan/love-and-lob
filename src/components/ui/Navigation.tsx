@@ -15,8 +15,8 @@ export function Navigation() {
   const cameraSettled = useSceneStore((s) => s.cameraSettled)
   const isHome = pathname === '/'
   const isCommunity = pathname === '/community'
-  const isDarkPage = isCommunity || pathname === '/invitational' // dark-bg pages use the light nav icon
-  const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/') || pathname === '/invitational'
+  const isDarkPage = isCommunity || pathname === '/invitational' || pathname === '/swapmeet' // dark-bg pages use the light nav icon
+  const isSubPage = pathname.startsWith('/community/') || pathname.startsWith('/shop/') || pathname === '/invitational' || pathname === '/swapmeet'
   const showIconMenu = !isHome && cameraSettled
 
   // Logo: visible on home only

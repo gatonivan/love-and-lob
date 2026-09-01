@@ -5,15 +5,17 @@
     <link rel="icon" type="image/png" href="./favico.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Love & Lob — Tennis Club</title>
-    <!-- Paint before the bundle arrives: cream site-wide, deep green on /invitational
-         (prevents the white/cream flash on hard refresh). The data-page flag also
-         keeps body/#root green once App.css applies — without it, their cream
-         background covers the green html until the overlay finishes fading in. -->
+    <!-- Paint before the bundle arrives: cream site-wide, deep green on the green
+         sub-pages (prevents the white/cream flash on hard refresh). The data-page
+         flag also keeps body/#root green once App.css applies — without it, their
+         cream background covers the green html until the overlay fades in. -->
     <style>html { background: #F1F0E2; }</style>
     <script>
-      if (location.pathname.replace(/\/+$/, '') === '/invitational') {
+      var greenPages = ['/invitational', '/swapmeet']
+      var path = location.pathname.replace(/\/+$/, '')
+      if (greenPages.indexOf(path) !== -1) {
         document.documentElement.style.background = '#004225'
-        document.documentElement.dataset.page = 'invitational'
+        document.documentElement.dataset.page = path.slice(1)
       }
     </script>
   </head>
