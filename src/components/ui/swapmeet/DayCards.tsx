@@ -19,15 +19,20 @@ export function DayCards({ days }: DayCardsProps) {
           <p className="sm-day-time">{d.time}</p>
           <p className="sm-day-body">{d.body}</p>
           {d.lineup && (
-            <ol className="sm-bill">
-              {d.lineup.map((slot) => (
-                <li key={slot.name} className="sm-bill-slot">
-                  <p className="sm-bill-time">{slot.time}</p>
-                  <h4 className="sm-bill-name">{slot.name}</h4>
-                  <p className="sm-bill-blurb">{slot.blurb}</p>
-                </li>
-              ))}
-            </ol>
+            <div className="sm-bill">
+              {d.billMark && (
+                <img className="sm-bill-mark" src={d.billMark.image} alt={d.billMark.alt} />
+              )}
+              <ol className="sm-bill-list">
+                {d.lineup.map((slot) => (
+                  <li key={slot.name} className="sm-bill-slot">
+                    <p className="sm-bill-time">{slot.time}</p>
+                    <h4 className="sm-bill-name">{slot.name}</h4>
+                    <p className="sm-bill-blurb">{slot.blurb}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
           )}
         </li>
       ))}

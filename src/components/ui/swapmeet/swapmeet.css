@@ -262,10 +262,18 @@
 }
 
 /* ── The DJ bill ──────────────────────────────────────────────────────── */
-.sm-bill {
+.sm-bill { margin: 1.75rem 0 0; }
+.sm-bill-mark {
+  display: block;
+  height: 52px;
+  width: auto;
+  margin-bottom: 0.9rem;
+  opacity: 0.95;
+}
+.sm-bill-list {
   list-style: none;
   padding: 0;
-  margin: 1.75rem 0 0;
+  margin: 0;
   border-top: 1px solid var(--rule);
 }
 .sm-bill-slot {

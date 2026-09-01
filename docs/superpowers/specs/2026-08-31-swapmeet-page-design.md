@@ -232,6 +232,13 @@ explicit grid rows, leaving ~7.5rem of dead space below the cards on mobile.
 Thursday's launch party is 8PM–12AM, with a two-slot DJ bill rendered inside
 the Thursday card: **Doug** 8–10PM, **Andre Power** 10PM–12AM. The bill is a
 sixth subgrid row, so Friday leaves it empty and both days stay aligned.
+Friday's marketplace runs 2–8PM.
+
+The Lillistar mark heads the bill. It was cut from the launch-party flyer and
+knocked out to cream with a luminance-derived alpha (`lillistar.png`), so it
+needs no CSS filter and keeps the hand-drawn edges. Lillistar is the rooftop
+the DJs are playing, per deck slide 7, so it sits with the bill as a whole
+rather than repeating beside each name.
 
 Brand blurbs are back, this time sourced rather than inferred. Six of eight are
 verified from the brand's own site or press coverage:

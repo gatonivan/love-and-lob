@@ -1,4 +1,5 @@
 import flyer from '../../../assets/swapmeet/flyer.jpg'
+import lillistar from '../../../assets/swapmeet/lillistar.png'
 
 /** One DJ slot on the launch-party bill. */
 export interface DjSlot {
@@ -17,6 +18,8 @@ export interface DayCard {
   body: string
   /** DJ bill, where the night has one. */
   lineup?: DjSlot[]
+  /** Mark shown with the bill (the room the DJs are playing). */
+  billMark?: { image: string; alt: string }
 }
 
 export interface ExpectItem {
@@ -69,7 +72,7 @@ export const swapMeetData: SwapMeetData = {
   facts: [
     { label: 'When', value: 'Thu Sept 3 to Fri Sept 4, 2026' },
     { label: 'Where', value: 'Moxy Williamsburg, Brooklyn NY 11211' },
-    { label: 'Doors', value: 'Thursday 8PM · Friday 2PM' },
+    { label: 'Hours', value: 'Thu 8PM to 12AM · Fri 2 to 8PM' },
   ],
 
   venue: {
@@ -97,6 +100,7 @@ export const swapMeetData: SwapMeetData = {
       room: 'Lillistar Rooftop',
       time: '8PM to 12AM',
       body: 'Indoor-outdoor rooftop with panoramic skyline views of the Williamsburg Bridge. Signature cocktails, and the whole room opening the weekend together.',
+      billMark: { image: lillistar, alt: 'Lillistar' },
       lineup: [
         {
           time: '8 – 10PM',
@@ -114,7 +118,7 @@ export const swapMeetData: SwapMeetData = {
       when: 'Fri · Sept 4',
       title: 'The Marketplace',
       room: 'The Garden / Courtyard',
-      time: 'Doors 2PM',
+      time: '2PM to 8PM',
       body: 'The full floor of vendors, browsable end to end. Come through, meet the people making the stuff, and buy straight from them.',
     },
   ],
