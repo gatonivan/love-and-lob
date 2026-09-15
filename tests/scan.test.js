@@ -53,8 +53,13 @@ describe('scanHostAliases', () => {
   })
 
   it('ignores aliases containing characters a slug cannot have', () => {
+    // Suppressed: this input deliberately trips the charset-rejection warn
+    // (see the dedicated test for that below) and shouldn't spam stderr on
+    // every `pnpm test` run.
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const html = `{"alias":"good-one"} {"alias":"bad one!"} {"alias":""}`
     expect(scanHostAliases(html)).toEqual(['good-one'])
+    warn.mockRestore()
   })
 
   it('warns when a charset-rejected alias makes the raw and accepted counts diverge', () => {
@@ -96,17 +101,24 @@ function buildHostPage(aliases, { filler = 20000 } = {}) {
 // migrate to a new component with renamed keys ("alias" -> "slug",
 // "eventType" -> "kind", "publishingState" -> "status"), so BOTH the alias
 // AND its markers vanish from the page together for every event except
-// `keepAlias`. Operates on the real fixture, splitting at each raw alias
-// occurrence (the same boundary scanHostAliases's matches fall on) so the
-// rename only touches the event block it belongs to.
+// `keepAlias`. Operates on the real fixture. Boundaries are anchored on each
+// event's `"eventType":` occurrence rather than its `"alias":"..."`
+// occurrence: in the real fixture (and on the live page) each event's
+// eventType/publishingState fields sit BEFORE its own alias field in
+// document order, so anchoring on alias would bundle event N's alias with
+// event (N+1)'s markers instead of its own — confirmed by measuring the
+// fixture directly. eventType and alias occurrences are 1:1 and in the same
+// per-event order, so zipping them by index correctly pairs each alias with
+// its own markers.
 function degradeMarkupExcept(html, keepAlias) {
-  const matches = [...html.matchAll(/"alias":"([a-z0-9-]+)"/g)]
+  const aliasMatches = [...html.matchAll(/"alias":"([a-z0-9-]+)"/g)]
+  const boundaries = [...html.matchAll(/"eventType":/g)].map((m) => m.index)
   let result = ''
   let cursor = 0
-  for (let i = 0; i < matches.length; i++) {
-    const segEnd = i + 1 < matches.length ? matches[i + 1].index : html.length
+  for (let i = 0; i < boundaries.length; i++) {
+    const segEnd = i + 1 < boundaries.length ? boundaries[i + 1] : html.length
     let segment = html.slice(cursor, segEnd)
-    if (matches[i][1] !== keepAlias) {
+    if (aliasMatches[i][1] !== keepAlias) {
       segment = segment
         .replaceAll('"alias":', '"slug":')
         .replaceAll('"eventType":', '"kind":')
@@ -116,6 +128,19 @@ function degradeMarkupExcept(html, keepAlias) {
     cursor = segEnd
   }
   return result
+}
+
+// Corrupts the VALUE of every raw occurrence (both the SSR and hydration
+// copy) of each alias in `targetAliases`, so ALIAS_RE can no longer match it
+// — simulating an alias value that contains a character the slug charset
+// rejects, while leaving that event's surrounding JSON (including its
+// eventType/publishingState markers) completely untouched. This is exactly
+// scanLooksHealthy's secondary check's motivating case, distinct from
+// degradeMarkupExcept above (which removes markers too).
+function corruptAliasValues(html, targetAliases) {
+  return html.replace(/"alias":"([a-z0-9-]+)"/g, (match, alias) =>
+    targetAliases.includes(alias) ? `"alias":"${alias}!"` : match,
+  )
 }
 
 describe('scanLooksHealthy', () => {
@@ -187,6 +212,60 @@ describe('scanLooksHealthy', () => {
     expect(scanLooksHealthy(html, aliases, 6)).toBe(false)
   })
 
+  it('flags 1 charset-rejected alias out of 6 as unhealthy via the marker check, isolated from expectedCount', () => {
+    const html = corruptAliasValues(REAL_HTML, ['absolute-beginner-clinic-greenpoint'])
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const aliases = scanHostAliases(html)
+    warn.mockRestore()
+    expect(aliases).toHaveLength(5)
+    // expectedCount = 6 (the real curated size): the primary check's
+    // threshold is aliases.length < 3, and 5 doesn't cross it — so if this
+    // is false, it's the marker check (MARKER_TO_ALIAS_RATIO = 4) firing:
+    // markers stay at 24 (unaffected by a value-only corruption) against 5
+    // aliases, and 24 > 5 * 4.
+    expect(scanLooksHealthy(html, aliases, 6)).toBe(false)
+  })
+
+  it('flags 2 charset-rejected aliases out of 6 as unhealthy via the marker check, isolated from expectedCount', () => {
+    const html = corruptAliasValues(REAL_HTML, [
+      'absolute-beginner-clinic-greenpoint',
+      'drill-play-greenpoint',
+    ])
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const aliases = scanHostAliases(html)
+    warn.mockRestore()
+    expect(aliases).toHaveLength(4)
+    // Same isolation: 4 is still not < 3, so this failing proves the marker
+    // check (24 markers > 4 * 4) caught it, not expectedCount.
+    expect(scanLooksHealthy(html, aliases, 6)).toBe(false)
+  })
+
+  it('does NOT flag a healthy page with proportionate markers and no rejection (no false positive at ratio 4)', () => {
+    // Sanity check alongside the two tests above: the real, uncorrupted
+    // fixture sits exactly AT the ratio-4 boundary (24 markers / 6 aliases)
+    // and must still read healthy — MARKER_TO_ALIAS_RATIO has zero headroom
+    // by design, so this is the test that would catch an off-by-one.
+    expect(scanLooksHealthy(REAL_HTML, REAL_ALIASES, 6)).toBe(true)
+  })
+
+  it('still catches a badly degraded first-run parse when expectedCount is 0 (Fix 3)', () => {
+    // expectedCount = 0 disables the primary count check entirely (a first
+    // run has no curated list to compare against) — this must still be
+    // caught, or a first run against a badly broken parse silently ships a
+    // near-empty schedule instead of blocking for review.
+    const html = corruptAliasValues(REAL_HTML, [
+      'absolute-beginner-clinic-greenpoint',
+      'll-early-morning-sessions-5d58d2',
+      'kids-clinic-ages-58-greenpoint',
+      'drill-play-greenpoint',
+    ])
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const aliases = scanHostAliases(html)
+    warn.mockRestore()
+    expect(aliases).toHaveLength(2)
+    expect(scanLooksHealthy(html, aliases, 0)).toBe(false)
+  })
+
   it('stays healthy for a wholesale alias migration (new identities, same count)', () => {
     // All-new slugs, none overlapping the curated list — must not be
     // penalized. scanLooksHealthy never compares identities, only counts.
@@ -226,6 +305,23 @@ describe('fetchHostScan', () => {
   it('returns the scan and a true health verdict for a healthy page', async () => {
     globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => REAL_HTML })
     const result = await fetchHostScan(REAL_ALIASES.length)
+    expect(result).toEqual({ aliases: REAL_ALIASES, healthy: true })
+  })
+
+  it('Fix 2: does not silently disable the primary guard when called with no argument', async () => {
+    // A 1-event page must NOT read as healthy just because the caller
+    // forgot to pass expectedCount. Before Fix 2, an omitted argument
+    // defaulted scanLooksHealthy's expectedCount to 0, which skips the
+    // primary check entirely.
+    const html = buildHostPage(['only-one-event'])
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => html })
+    const result = await fetchHostScan()
+    expect(result.healthy).toBe(false)
+  })
+
+  it('Fix 2: defaults to the real curated count and is healthy for the real fixture', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => REAL_HTML })
+    const result = await fetchHostScan()
     expect(result).toEqual({ aliases: REAL_ALIASES, healthy: true })
   })
 })

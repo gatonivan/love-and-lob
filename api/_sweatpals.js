@@ -158,19 +158,41 @@ export function scanHostAliases(html) {
 // every event's JSON is embedded twice, once for SSR and once for
 // hydration), i.e. ~4 combined marker hits per unique alias. This is a
 // SECONDARY, narrower check than scanLooksHealthy's primary expectedCount
-// comparison below: it catches the case where an alias value is rejected by
-// ALIAS_RE's charset (see the warning in scanHostAliases) while the
-// surrounding event JSON — including its eventType/publishingState fields —
-// still parses fine, so markers stay at their expected level even though the
-// alias count dips. It is NOT relied on to catch a structural markup change,
-// because a change that drops an event's entire JSON representation drops
-// its markers along with its alias — both sides of this ratio shrink
-// together and it reads as "healthy". That structural case is exactly what
-// the expectedCount check exists to catch, independent of page shape.
-// Headroom here is generous (3x the observed ~4, i.e. 12) so a legitimately
-// tiny listing is never mistaken for a charset rejection.
+// comparison below: it exists to catch the one failure the count check
+// structurally cannot — an alias value rejected by ALIAS_RE's charset (see
+// the warning in scanHostAliases) while the surrounding event JSON,
+// including its eventType/publishingState fields, still parses fine. A
+// rejected alias never shrinks expectedCount's comparison (the curated
+// count doesn't move), so only a page-shape signal can catch it.
+//
+// It is NOT relied on to catch a structural markup change, because a change
+// that drops an event's entire JSON representation drops its markers along
+// with its alias — both sides of this ratio shrink together and it reads
+// as "healthy". That structural case is what the expectedCount check exists
+// to catch instead.
+//
+// MARKER_TO_ALIAS_RATIO is set to 4 — the EXACT combined marker-per-alias
+// ratio measured on the live host page on 2026-09-15 (24 combined
+// eventType/publishingState hits / 6 unique aliases), with NO headroom.
+// That is deliberate, not an oversight: a ratio of 6 (the original value)
+// left 1.5x headroom over the true ratio of 4 and never fired in practice;
+// a ratio of 12 (the "corrected" value from the following review round)
+// gave 3x headroom and became unreachable — every case it could catch, the
+// expectedCount check already caught first. Reaching down to 1–2
+// charset-rejected slugs out of 6 requires cutting headroom to exactly the
+// observed ratio (proven with tests: `markerCount > aliases.length * R`
+// only flags 1-of-6 rejected when R < 4.8, i.e. R <= 4 for an integer).
+// The accepted tradeoff: this check has ZERO slack against future
+// structural drift. If Sweatpals' rendering ever changes how many times
+// each event's JSON is embedded (currently 2x: SSR + hydration), this
+// constant will need recalibrating against a fresh live fetch, or a
+// perfectly healthy page will start reading as unhealthy. That is
+// considered acceptable because (a) the primary expectedCount check does
+// not depend on this ratio at all and keeps working regardless, and (b) a
+// false "unhealthy" here fails closed — a blocked run needing review, never
+// a wrong deletion.
 const EVENT_MARKER_RE = /"eventType":|"publishingState":/g
-const MAX_MARKER_TO_ALIAS_RATIO = 12
+const MARKER_TO_ALIAS_RATIO = 4
 
 /**
  * Sanity-check a scan's own result: does the page look like it was actually
@@ -199,7 +221,33 @@ const MAX_MARKER_TO_ALIAS_RATIO = 12
  * "more than half missing is a red flag" threshold `classify()`'s own
  * net-shrink guard uses, so the two guards agree on what "drastic" means.
  * `expectedCount === 0` (a first run, or an empty curated list) can't mean
- * "everything is suspect", so the check is skipped in that case.
+ * "everything is suspect", so the check is skipped in that case (the marker
+ * check below still runs and can independently catch a badly degraded
+ * first-run parse).
+ *
+ * ACCEPTED RESIDUAL, decided deliberately rather than fixed: a parse that
+ * recovers 3, 4, or 5 of 6 curated events (i.e. loses 1–3 to a partial
+ * markup change, without hitting the charset-rejection case the marker
+ * check below covers) still reports healthy, because it doesn't cross the
+ * expectedCount/2 line. This is NOT a coverage gap someone forgot to close
+ * — it was measured and accepted because the blast radius is small and
+ * self-healing:
+ *   - A curated slug that fails to parse can only be *deleted* if it is
+ *     BOTH unparsed AND `quiet` (no future instance) in `classify()`. An
+ *     unparsed slug with a future date classifies `orphan` and is kept
+ *     unconditionally (`classify()` guard 4).
+ *   - `fetchScheduleEvents()` filters everything through `isActive()`,
+ *     which requires `nextEnd >= now` — so a `quiet` program already
+ *     renders nothing on the live site today. Losing it deletes an
+ *     already-invisible curated entry, not something a visitor can see.
+ *   - When that program's series next publishes a future instance, it
+ *     reappears in `discovered` and is re-added as `new`. The list
+ *     self-heals on the next healthy scan.
+ * The alternative considered and rejected — requiring `probe.ok === false`
+ * before ever retiring a slug — was checked against real September 2026
+ * retirements: most genuinely-retired series still resolve `ok: true` with
+ * a past date (only one actually 404'd), so that rule would retire almost
+ * nothing and the curated list would grow without bound.
  */
 export function scanLooksHealthy(html, aliases, expectedCount = 0) {
   if (!html) return false
@@ -212,7 +260,7 @@ export function scanLooksHealthy(html, aliases, expectedCount = 0) {
   if (expectedCount > 0 && aliases.length < expectedCount / 2) return false
 
   const markerCount = (String(html).match(EVENT_MARKER_RE) || []).length
-  if (markerCount > aliases.length * MAX_MARKER_TO_ALIAS_RATIO) return false
+  if (markerCount > aliases.length * MARKER_TO_ALIAS_RATIO) return false
 
   return true
 }
@@ -244,8 +292,19 @@ export async function probeSlug(slug) {
  * }` rather than throwing: an unreachable host and a broken parse both need
  * to fail closed the same way, which is the entire point of
  * `scanLooksHealthy` existing.
+ *
+ * `expectedCount` defaults to the size of the current curated lists — every
+ * real caller wants that value anyway, and this guard has already failed
+ * open three times over the course of review. An omitted argument must not
+ * silently disable the primary health check (it would, if this defaulted to
+ * 0: `scanLooksHealthy` reads `expectedCount === 0` as "skip the count
+ * check," meaning a call with no argument would report a 1-event page as
+ * healthy). Pass an explicit `expectedCount` only to deliberately bypass the
+ * count check (e.g. a genuine first run with nothing curated yet).
  */
-export async function fetchHostScan(expectedCount) {
+export async function fetchHostScan(
+  expectedCount = SPECIAL_EVENT_SLUGS.length + PROGRAM_SLUGS.length,
+) {
   try {
     const res = await fetch(HOST_PAGE_URL)
     if (!res.ok) return { aliases: [], healthy: false }

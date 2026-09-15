@@ -192,6 +192,27 @@ programs. This is what cleanly separated the tournaments from the clinics.
    charset-driven undercount — is treated as *scan failure*, never as "remove
    everything." Without this, a Sweatpals outage or a markup change wipes the
    schedule.
+
+   **Accepted residual, not full coverage.** A parse that recovers 3, 4, or 5
+   of 6 curated events still reports healthy — the count check's threshold is
+   "fewer than half," so losing 1-3 events doesn't cross it, and unless the
+   lost events also happen to be charset-rejected (the one case the secondary
+   marker check catches independently) nothing else in `scanLooksHealthy`
+   flags it either. This was measured and accepted deliberately rather than
+   closed, because the failure mode it allows is small and self-healing: a
+   curated slug can only be *deleted* by `classify()` if it is BOTH unparsed
+   AND `quiet` (no future instance) - an unparsed slug with a future date
+   classifies `orphan` and guard 4 keeps it unconditionally. And
+   `fetchScheduleEvents()` filters every event through `isActive()`, which
+   requires a future `nextEnd` - so a `quiet` program already renders nothing
+   on the live site before it's ever at risk. Losing it deletes an
+   already-invisible curated entry, and when that program's series next
+   publishes a future instance it reappears in `discovered` and is re-added
+   as `new` on the next healthy scan. The alternative - retire a slug only
+   when its probe resolves `ok: false` - was checked against real September
+   2026 retirements and rejected: most genuinely-retired series still
+   resolve `ok: true` with a past date, so that rule would retire almost
+   nothing and the curated list would grow without bound.
 2. **The list would shrink by more than half.** Guards *net* size, not gross
    removals — because the common real event is a **rotation**, not a deletion.
    On 2026-09-15 five of six programs died *and* five new ones appeared: net
