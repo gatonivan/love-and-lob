@@ -18,9 +18,10 @@
  */
 
 // The curated lists live in their own module so the reconcile job can rewrite
-// them wholesale without touching this file's logic. See schedule-slugs.js.
-export { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS, UPDATED_AT } from './schedule-slugs.js'
-import { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS } from './schedule-slugs.js'
+// them wholesale without touching this file's logic. See _schedule-slugs.js.
+export { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS, UPDATED_AT } from './_schedule-slugs.js'
+import { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS } from './_schedule-slugs.js'
+import { MIN_LIST_FOR_RATIO_GUARD } from './_reconcile.js'
 
 // Max programs shown in the Upcoming list (soonest-first); the rest live behind
 // the "View all on Sweatpals" link, which deep-links to the host calendar view.
@@ -114,13 +115,54 @@ export async function fetchScheduleEvents(slugs = SPECIAL_EVENT_SLUGS) {
 
 export const HOST_PAGE_URL = 'https://sweatpals.com/loveandlob'
 
+// The last path segment of HOST_PAGE_URL — this venue's slug on Sweatpals
+// ('loveandlob'). Used by fetchHostScan to tell "Sweatpals restructured its
+// own URL scheme around this same venue" (fine — e.g. sweatpals.com/loveandlob
+// redirecting to sweatpals.com/host/loveandlob, observed in production) apart
+// from "the request left this venue's page entirely" (not fine — see there).
+const HOST_SLUG = new URL(HOST_PAGE_URL).pathname.split('/').filter(Boolean).pop()
+
 // Slugs are lowercase alphanumerics and hyphens. Anything else in an `alias`
 // field is not a slug we can fetch, so it is ignored rather than trusted.
 const ALIAS_RE = /"alias":"([a-z0-9-]+)"/g
 
-// Same key, no charset restriction — used only to detect when ALIAS_RE
-// silently dropped a value (see the warning below).
-const ALIAS_ANY_RE = /"alias":"[^"]*"/g
+// Same key, captures any NON-EMPTY value — used only to detect when ALIAS_RE
+// silently dropped a value (see the warning below). An `"alias":""` value is
+// deliberately NOT drift: there is no character in it for the charset to have
+// rejected, so it says nothing about a charset problem and must not count as
+// one (see scanAliasValues).
+const ALIAS_ANY_RE = /"alias":"([^"]+)"/g
+
+const SLUG_CHARSET_RE = /^[a-z0-9-]+$/
+
+/**
+ * Split every `"alias":"..."` occurrence in `str` into `accepted` (charset-
+ * valid slugs, de-duplicated, first-seen order) and `rejected` (de-duplicated
+ * non-empty values the slug charset does not accept). Shared by
+ * scanHostAliases and scanLooksHealthy so the two never disagree about what
+ * counts as a rejection.
+ */
+function scanAliasValues(str) {
+  const accepted = []
+  const seenAccepted = new Set()
+  for (const m of str.matchAll(ALIAS_RE)) {
+    if (seenAccepted.has(m[1])) continue
+    seenAccepted.add(m[1])
+    accepted.push(m[1])
+  }
+
+  const rejected = []
+  const seenRejected = new Set()
+  for (const m of str.matchAll(ALIAS_ANY_RE)) {
+    const raw = m[1]
+    if (SLUG_CHARSET_RE.test(raw)) continue
+    if (seenRejected.has(raw)) continue
+    seenRejected.add(raw)
+    rejected.push(raw)
+  }
+
+  return { accepted, rejected }
+}
 
 /**
  * Extract event aliases from the host page's embedded JSON.
@@ -132,25 +174,33 @@ const ALIAS_ANY_RE = /"alias":"[^"]*"/g
  */
 export function scanHostAliases(html) {
   if (!html) return []
-  const str = String(html)
-  const seen = new Set()
-  for (const m of str.matchAll(ALIAS_RE)) seen.add(m[1])
+  const { accepted, rejected } = scanAliasValues(String(html))
 
-  // If the permissive pattern found more raw `"alias":"..."` occurrences than
-  // the charset-restricted one matched, at least one alias value contained a
-  // character outside [a-z0-9-] and was silently excluded rather than
-  // trusted. That should be rare — log it so a slow charset drift doesn't go
-  // unnoticed. (scanLooksHealthy recomputes this exact comparison as its
-  // secondary health check, so a drop here can also fail a scan closed.)
-  const rawCount = (str.match(ALIAS_ANY_RE) || []).length
-  const acceptedCount = [...str.matchAll(ALIAS_RE)].length
-  if (rawCount > acceptedCount) {
+  // At least one non-empty alias value contained a character outside
+  // [a-z0-9-] and was silently excluded rather than trusted. That should be
+  // rare — log it, and name the values, so a slow charset drift doesn't go
+  // unnoticed and isn't undiagnosable when it happens. (scanLooksHealthy
+  // recomputes this exact split as its secondary health check, so a
+  // rejection here can also fail a scan closed.)
+  if (rejected.length > 0) {
     console.warn(
-      `scanHostAliases: ${rawCount - acceptedCount} alias value(s) rejected by the slug charset`,
+      `scanHostAliases: ${rejected.length} alias value(s) rejected by the slug charset: ` +
+        rejected.map((v) => JSON.stringify(v)).join(', '),
     )
   }
 
-  return [...seen]
+  return accepted
+}
+
+/**
+ * The non-empty alias values rejected by the slug charset — the exact signal
+ * scanHostAliases's own warning is built from, exposed separately so
+ * fetchHostScan can hand the actual values to the failure email. A human
+ * needs to see WHAT tripped the check, not just that something did.
+ */
+export function rejectedAliasValues(html) {
+  if (!html) return []
+  return scanAliasValues(String(html)).rejected
 }
 
 /**
@@ -184,20 +234,35 @@ export function scanHostAliases(html) {
  * charset-drop check below still runs and can independently catch a badly
  * degraded first-run parse).
  *
+ * The anchor is floored at `MIN_LIST_FOR_RATIO_GUARD`, not used as
+ * `expectedCount` raw. `expectedCount` is drawn from the CURRENTLY CURATED
+ * list, and the curated list is exactly what a persistently degraded scan
+ * keeps shrinking (each unhealthy-but-not-quite-caught run that still
+ * commits walks it down — 6 → 3 → 2 → 1) — so an un-floored anchor lets the
+ * guard tune itself into irrelevance by its own output: at expectedCount=1
+ * the threshold is "fewer than 0.5", which `aliases.length === 0` already
+ * fails on its own above, making the count check permanently unable to fire.
+ * Flooring the anchor at the same "a ratio below this many is meaningless"
+ * constant `classify()`'s own shrink guard uses keeps the check meaningful
+ * no matter how far a degraded parse has already dragged the curated count
+ * down.
+ *
  * SECONDARY check: did the slug charset silently drop an alias value? Reuses
- * the exact signal `scanHostAliases` already computes for its `console.warn`
- * — the raw, permissive `"alias":"..."` occurrence count vs. the
- * charset-restricted `ALIAS_RE` occurrence count. If raw exceeds accepted,
- * at least one alias value contained a character outside [a-z0-9-] and was
- * silently excluded while its surrounding event JSON parsed fine, which the
- * expectedCount comparison above cannot see (the curated count doesn't
- * move). Any drop at all fails the check — no margin, no tuning constant.
- * That's deliberate: this signal is exact (a raw/accepted mismatch IS a
- * charset rejection, not a proxy for one, unlike a marker-count ratio would
- * be), so there is no calibration to get wrong, and the asymmetry favors
- * failing loud — the cost of a false alarm is one email to a human, while
- * the cost of missing a real one is a silently wrong schedule. (An earlier
- * version of this check compared alias counts against
+ * the exact `accepted`/`rejected` split `scanHostAliases` already computes
+ * for its `console.warn` (see `scanAliasValues`). If any non-empty alias
+ * value was rejected, at least one alias contained a character outside
+ * [a-z0-9-] and was silently excluded while its surrounding event JSON
+ * parsed fine, which the expectedCount comparison above cannot see (the
+ * curated count doesn't move). An `"alias":""` value is explicitly NOT a
+ * rejection — there is no character in it for the charset to have rejected,
+ * so it cannot be evidence of charset drift and must not trip this check on
+ * its own. Any genuine (non-empty) rejection fails the check — no margin,
+ * no tuning constant. That's deliberate: this signal is exact (a rejected
+ * value IS a charset rejection, not a proxy for one, unlike a marker-count
+ * ratio would be), so there is no calibration to get wrong, and the
+ * asymmetry favors failing loud — the cost of a false alarm is one email to
+ * a human, while the cost of missing a real one is a silently wrong
+ * schedule. (An earlier version of this check compared alias counts against
  * `eventType`/`publishingState` marker counts using a tuned ratio. That was
  * replaced: a ratio is a proxy that depends on how many times the page
  * happens to embed each event's JSON today, so tightening it enough to
@@ -237,12 +302,12 @@ export function scanLooksHealthy(html, aliases, expectedCount = 0) {
   // this case; agreeing here keeps the two guards consistent.)
   if (!Array.isArray(aliases) || aliases.length === 0) return false
 
-  if (expectedCount > 0 && aliases.length < expectedCount / 2) return false
+  if (expectedCount > 0) {
+    const anchor = Math.max(expectedCount, MIN_LIST_FOR_RATIO_GUARD)
+    if (aliases.length < anchor / 2) return false
+  }
 
-  const str = String(html)
-  const rawCount = (str.match(ALIAS_ANY_RE) || []).length
-  const acceptedCount = [...str.matchAll(ALIAS_RE)].length
-  if (rawCount > acceptedCount) return false
+  if (rejectedAliasValues(html).length > 0) return false
 
   return true
 }
@@ -270,10 +335,28 @@ export async function probeSlug(slug) {
 /**
  * Fetch the host page, scan it, and judge whether the scan looks trustworthy
  * — the single call the reconcile job (later tasks) needs. Any failure
- * (network error, non-OK response) reports as `{ aliases: [], healthy: false
- * }` rather than throwing: an unreachable host and a broken parse both need
- * to fail closed the same way, which is the entire point of
- * `scanLooksHealthy` existing.
+ * (network error, non-OK response, or a redirect away from the host page —
+ * see below) reports as `{ aliases: [], healthy: false, rejected: [] }`
+ * rather than throwing: an unreachable host and a broken parse both need to
+ * fail closed the same way, which is the entire point of `scanLooksHealthy`
+ * existing.
+ *
+ * `res.url` (the FINAL url after redirects) is checked against this venue's
+ * slug because `fetch` follows redirects transparently: if Sweatpals ever
+ * 301s this path to a global feed (account change, soft-404, routing
+ * change), `res.ok` is still true and the page still "looks" healthy — a
+ * global feed typically has *more* aliases than expected, not fewer, so the
+ * count guard above would not catch it. Scanning past a redirect like that
+ * would mix other venues' events into this one's schedule.
+ *
+ * The check is deliberately not an exact/prefix match on `HOST_PAGE_URL`:
+ * Sweatpals is observed, in production, 308-redirecting
+ * `sweatpals.com/loveandlob` to `sweatpals.com/host/loveandlob` — a
+ * same-venue URL-scheme change, not a hijack. `staysOnHostPage` instead
+ * requires the final URL to be on `sweatpals.com` AND to still carry
+ * `HOST_SLUG` as one of its path segments, which accepts that kind of
+ * restructuring while still rejecting a redirect to an unrelated path (a
+ * global feed, another venue's page, or a different domain entirely).
  *
  * `expectedCount` defaults to the size of the current curated lists — every
  * real caller wants that value anyway, and this guard has already failed
@@ -284,17 +367,30 @@ export async function probeSlug(slug) {
  * healthy). Pass an explicit `expectedCount` only to deliberately bypass the
  * count check (e.g. a genuine first run with nothing curated yet).
  */
+function staysOnHostPage(finalUrl) {
+  try {
+    const u = new URL(finalUrl)
+    if (u.hostname !== 'sweatpals.com') return false
+    return u.pathname.split('/').filter(Boolean).includes(HOST_SLUG)
+  } catch {
+    return false
+  }
+}
+
 export async function fetchHostScan(
   expectedCount = SPECIAL_EVENT_SLUGS.length + PROGRAM_SLUGS.length,
 ) {
   try {
     const res = await fetch(HOST_PAGE_URL)
-    if (!res.ok) return { aliases: [], healthy: false }
+    if (!res.ok || !staysOnHostPage(res.url)) {
+      return { aliases: [], healthy: false, rejected: [] }
+    }
     const html = await res.text()
     const aliases = scanHostAliases(html)
-    return { aliases, healthy: scanLooksHealthy(html, aliases, expectedCount) }
+    const rejected = rejectedAliasValues(html)
+    return { aliases, healthy: scanLooksHealthy(html, aliases, expectedCount), rejected }
   } catch {
-    return { aliases: [], healthy: false }
+    return { aliases: [], healthy: false, rejected: [] }
   }
 }
 

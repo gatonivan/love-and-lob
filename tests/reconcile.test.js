@@ -345,4 +345,73 @@ describe('classify — guards', () => {
     expect(res.blocked?.guard).toBe('empty-scan')
     expect(res.next).toBeNull()
   })
+
+  it('Fix 1: blocks when the list would more than double — e.g. a redirect onto a foreign feed', () => {
+    // The 6 curated programs are all still healthy (on-page, future), so
+    // nothing about them looks wrong — the only signal is that the scan also
+    // discovered far more brand-new aliases than were ever curated, exactly
+    // what scanning a stranger's global feed would look like.
+    const curatedSlugs = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
+    const newSlugs = Array.from({ length: 10 }, (_, i) => `foreign-${i}`)
+    const probes = {}
+    for (const s of curatedSlugs) probes[s] = { ...future, name: s, eventType: 'CLASS' }
+    for (const s of newSlugs) probes[s] = { ...future, name: s, eventType: 'CLASS' }
+
+    const res = classify({
+      curated: { special: [], programs: curatedSlugs },
+      discovered: [...curatedSlugs, ...newSlugs],
+      probes,
+      now: NOW,
+    })
+    expect(res.blocked?.guard).toBe('net-growth')
+    expect(res.next).toBeNull()
+  })
+
+  it('Fix 1: does not block ordinary bounded growth (before=6, after=8)', () => {
+    const curatedSlugs = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
+    const newSlugs = ['n1', 'n2']
+    const probes = {}
+    for (const s of curatedSlugs) probes[s] = { ...future, name: s, eventType: 'CLASS' }
+    for (const s of newSlugs) probes[s] = { ...future, name: s, eventType: 'CLASS' }
+
+    const res = classify({
+      curated: { special: [], programs: curatedSlugs },
+      discovered: [...curatedSlugs, ...newSlugs],
+      probes,
+      now: NOW,
+    })
+    expect(res.blocked).toBeNull()
+    expect(res.next.programs).toHaveLength(8)
+  })
+
+  it('Fix 1: does not block a legitimate first run that adds everything (before=0)', () => {
+    const newSlugs = Array.from({ length: 20 }, (_, i) => `first-run-${i}`)
+    const probes = {}
+    for (const s of newSlugs) probes[s] = { ...future, name: s, eventType: 'CLASS' }
+
+    const res = classify({
+      curated: { special: [], programs: [] },
+      discovered: newSlugs,
+      probes,
+      now: NOW,
+    })
+    expect(res.blocked).toBeNull()
+    expect(res.next.programs).toHaveLength(20)
+  })
+
+  it('Fix 1: a full rotation (net size unchanged) is not caught by the growth guard', () => {
+    // Guards against the growth guard accidentally re-blocking the exact
+    // rotation scenario guard 2 exists to allow through.
+    const curated = { special: [], programs: ['old1', 'old2', 'old3', 'old4', 'old5', 'keep'] }
+    const discovered = ['keep', 'new1', 'new2', 'new3', 'new4', 'new5']
+    const probes = { keep: { ...future, name: 'Keep', eventType: 'CLASS' } }
+    for (const s of ['old1', 'old2', 'old3', 'old4', 'old5']) {
+      probes[s] = { ...past, name: s, eventType: 'CLASS' }
+    }
+    for (const s of ['new1', 'new2', 'new3', 'new4', 'new5']) {
+      probes[s] = { ...future, name: s, eventType: 'CLASS' }
+    }
+    const res = classify({ curated, discovered, probes, now: NOW })
+    expect(res.blocked).toBeNull()
+  })
 })

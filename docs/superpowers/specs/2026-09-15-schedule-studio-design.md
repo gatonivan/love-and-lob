@@ -121,7 +121,7 @@ rather than "done". Acceptable — the cron is the primary path; this is overrid
 
 ## 6. Components
 
-### 6.1 `api/schedule-slugs.js` *(new — generated data module)*
+### 6.1 `api/_schedule-slugs.js` *(new — generated data module)*
 
 The curated lists move out of `_sweatpals.js` into a file with nothing but data:
 

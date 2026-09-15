@@ -16,13 +16,13 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
 import { fetchHostScan, probeSlug } from '../api/_sweatpals.js'
-import { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS } from '../api/schedule-slugs.js'
+import { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS } from '../api/_schedule-slugs.js'
 import { classify } from '../api/_reconcile.js'
 import { renderSlugsFile } from '../api/_slugfile.js'
 import { formatReport, sendReport } from '../api/_notify.js'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
-const TARGET = join(ROOT, 'api', 'schedule-slugs.js')
+const TARGET = join(ROOT, 'api', '_schedule-slugs.js')
 const DRY = process.argv.includes('--dry-run')
 const ALLOW_ANY_BRANCH = process.argv.includes('--allow-any-branch')
 
@@ -31,7 +31,23 @@ const recipients = (process.env.RECONCILE_NOTIFY_TO || '')
 
 async function sendNotification(report) {
   console.log(`\n--- ${report.subject} ---\n${report.text}\n`)
-  if (!DRY) await sendReport(report, { apiKey: process.env.BREVO_API_KEY, to: recipients })
+  if (DRY) return
+  // sendReport() never throws — a missing key, empty recipients, a Brevo
+  // 401, rate limiting, or a network failure all come back as `false`
+  // rather than an exception, so a failed notification can never fail a run
+  // that already committed a good change. But that return value must not be
+  // discarded either: a self-healing job that goes quiet when it breaks is
+  // worse than no job. If the send failed, say so loudly and mark the run
+  // red so a human notices the notification path is broken, not just the
+  // one email that went missing.
+  const sent = await sendReport(report, { apiKey: process.env.BREVO_API_KEY, to: recipients })
+  if (!sent) {
+    console.error(
+      '[reconcile] notification failed to send (missing BREVO_API_KEY/RECONCILE_NOTIFY_TO, ' +
+        'an unauthorized/rate-limited Brevo response, or a network failure)',
+    )
+    process.exitCode = 1
+  }
 }
 
 async function notify(payload) {
@@ -42,12 +58,12 @@ async function main() {
   const curated = { special: SPECIAL_EVENT_SLUGS, programs: PROGRAM_SLUGS }
   const expectedCount = curated.special.length + curated.programs.length
 
-  const { aliases: discovered, healthy } = await fetchHostScan(expectedCount)
+  const { aliases: discovered, healthy, rejected } = await fetchHostScan(expectedCount)
   console.log(`[reconcile] host page lists ${discovered.length} aliases (healthy: ${healthy})`)
 
   if (!healthy) {
     console.error('[reconcile] scan unhealthy; skipping classification')
-    await notify({ added: [], removed: [], blocked: null, scanOk: false })
+    await notify({ added: [], removed: [], blocked: null, scanOk: false, rejected })
     process.exitCode = 1
     return
   }
@@ -72,7 +88,25 @@ async function main() {
   }
 
   if (!result.added.length && !result.removed.length) {
-    console.log('[reconcile] no changes')
+    // The curated list itself isn't changing, but a slug can still be
+    // `orphan` (delisted while it still has a future instance) — classify()
+    // keeps it unconditionally, so it never shows up as added/removed and
+    // would otherwise go completely unreported. That is the exact
+    // early-warning signal this project exists to surface, so it must not
+    // exit quietly just because nothing was written.
+    const orphans = result.verdicts.filter((v) => v.verdict === 'orphan')
+    if (orphans.length) {
+      console.log(`[reconcile] no list changes, but ${orphans.length} delisted-but-scheduled program(s) to flag`)
+      await notify({
+        added: [],
+        removed: [],
+        blocked: null,
+        scanOk: true,
+        verdicts: result.verdicts,
+      })
+    } else {
+      console.log('[reconcile] no changes')
+    }
     return
   }
 
@@ -127,7 +161,7 @@ async function main() {
   git(
     '-c', 'user.name=love-and-lob-bot',
     '-c', 'user.email=info@loveandlob.co',
-    'commit', '--only', 'api/schedule-slugs.js', '-m', subject, '-m', body,
+    'commit', '--only', 'api/_schedule-slugs.js', '-m', subject, '-m', body,
   )
 
   try {
@@ -157,7 +191,13 @@ async function main() {
     }
   }
 
-  await notify({ added: result.added, removed: result.removed, blocked: null, scanOk: true })
+  await notify({
+    added: result.added,
+    removed: result.removed,
+    blocked: null,
+    scanOk: true,
+    verdicts: result.verdicts,
+  })
 }
 
 main().catch((err) => {

@@ -4,9 +4,11 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 import {
   scanHostAliases,
   scanLooksHealthy,
+  rejectedAliasValues,
   fetchHostScan,
   HOST_PAGE_URL,
 } from '../api/_sweatpals.js'
+import { MIN_LIST_FOR_RATIO_GUARD } from '../api/_reconcile.js'
 
 // A trimmed, byte-for-byte slice of a real fetch of HOST_PAGE_URL
 // (2026-09-15) — see the comment at the top of the fixture file for what was
@@ -58,6 +60,14 @@ describe('scanHostAliases', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const html = `{"alias":"good-one"} {"alias":"bad one!"} {"alias":""}`
     expect(scanHostAliases(html)).toEqual(['good-one'])
+    warn.mockRestore()
+  })
+
+  it('Fix 4a: does not treat a lone empty alias value as charset drift', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const html = `{"alias":"good-one"} {"alias":""}`
+    expect(scanHostAliases(html)).toEqual(['good-one'])
+    expect(warn).not.toHaveBeenCalled()
     warn.mockRestore()
   })
 
@@ -249,6 +259,46 @@ describe('scanLooksHealthy', () => {
     const html = buildHostPage(migratedAliases)
     expect(scanLooksHealthy(html, scanHostAliases(html), 6)).toBe(true)
   })
+
+  it('Fix 4a: a stray empty alias value anywhere on the page does not fail the health check', () => {
+    // The literal repro from the bug report: a single "alias":"" sitting
+    // anywhere on the page must not trip the secondary (charset) check —
+    // an empty value carries no character for the charset to have rejected.
+    const html = `${REAL_HTML}<script>{"alias":""}</script>`
+    expect(rejectedAliasValues(html)).toEqual([])
+    expect(scanLooksHealthy(html, REAL_ALIASES, REAL_ALIASES.length)).toBe(true)
+  })
+
+  it('Fix 6: the guard still fires once expectedCount has been ratcheted down to 1', () => {
+    // Simulates the end state of a persistently degraded parse that walked
+    // the curated list down to a single slug over several runs. With an
+    // un-floored anchor, expectedCount=1 makes the threshold "fewer than
+    // 0.5", which no non-empty aliases array can ever be below — the guard
+    // would be permanently, structurally dead. Flooring the anchor at
+    // MIN_LIST_FOR_RATIO_GUARD keeps it able to fire.
+    const html = buildHostPage(['only-one-event'])
+    const aliases = scanHostAliases(html)
+    expect(aliases).toEqual(['only-one-event'])
+    expect(scanLooksHealthy(html, aliases, 1)).toBe(false)
+  })
+
+  it('Fix 6: the floor does not change behavior once expectedCount already meets it', () => {
+    expect(MIN_LIST_FOR_RATIO_GUARD).toBeLessThanOrEqual(REAL_ALIASES.length)
+    expect(scanLooksHealthy(REAL_HTML, REAL_ALIASES, REAL_ALIASES.length)).toBe(true)
+  })
+})
+
+describe('rejectedAliasValues', () => {
+  it('returns unique, non-empty charset-rejected values', () => {
+    const html = `{"alias":"good"} {"alias":"Bad!"} {"alias":"Bad!"} {"alias":""}`
+    expect(rejectedAliasValues(html)).toEqual(['Bad!'])
+  })
+
+  it('returns an empty array for empty or nullish input', () => {
+    expect(rejectedAliasValues('')).toEqual([])
+    expect(rejectedAliasValues(null)).toEqual([])
+    expect(rejectedAliasValues(undefined)).toEqual([])
+  })
 })
 
 describe('fetchHostScan', () => {
@@ -258,23 +308,70 @@ describe('fetchHostScan', () => {
     globalThis.fetch = originalFetch
   })
 
-  it('reports { aliases: [], healthy: false } when the fetch throws', async () => {
+  it('reports { aliases: [], healthy: false, rejected: [] } when the fetch throws', async () => {
     globalThis.fetch = vi.fn().mockRejectedValue(new Error('network down'))
     const result = await fetchHostScan(6)
-    expect(result).toEqual({ aliases: [], healthy: false })
+    expect(result).toEqual({ aliases: [], healthy: false, rejected: [] })
     expect(globalThis.fetch).toHaveBeenCalledWith(HOST_PAGE_URL)
   })
 
-  it('reports { aliases: [], healthy: false } on a non-OK response', async () => {
+  it('reports { aliases: [], healthy: false, rejected: [] } on a non-OK response', async () => {
     globalThis.fetch = vi.fn().mockResolvedValue({ ok: false, status: 503 })
     const result = await fetchHostScan(6)
-    expect(result).toEqual({ aliases: [], healthy: false })
+    expect(result).toEqual({ aliases: [], healthy: false, rejected: [] })
   })
 
   it('returns the scan and a true health verdict for a healthy page', async () => {
-    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => REAL_HTML })
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, url: HOST_PAGE_URL, text: async () => REAL_HTML })
     const result = await fetchHostScan(REAL_ALIASES.length)
-    expect(result).toEqual({ aliases: REAL_ALIASES, healthy: true })
+    expect(result).toEqual({ aliases: REAL_ALIASES, healthy: true, rejected: [] })
+  })
+
+  it('Fix 1: reports { aliases: [], healthy: false, rejected: [] } when the final URL left the host page (a redirect)', async () => {
+    // A 301 (account change, soft-404, routing change) can land on a
+    // global feed while still returning ok:true — a stranger's events
+    // must never be scanned as if they were this venue's. fetch() follows
+    // redirects transparently, so the only signal left is res.url.
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      url: 'https://sweatpals.com/discover/global-feed',
+      text: async () => REAL_HTML,
+    })
+    const result = await fetchHostScan(REAL_ALIASES.length)
+    expect(result).toEqual({ aliases: [], healthy: false, rejected: [] })
+  })
+
+  it('Fix 1: also blocks a redirect to a different Sweatpals venue entirely', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      url: 'https://sweatpals.com/some-other-venue',
+      text: async () => REAL_HTML,
+    })
+    const result = await fetchHostScan(REAL_ALIASES.length)
+    expect(result).toEqual({ aliases: [], healthy: false, rejected: [] })
+  })
+
+  it('Fix 1: does NOT block a same-venue redirect (Sweatpals restructuring its own URL scheme)', async () => {
+    // Observed in production: sweatpals.com/loveandlob 308-redirects to
+    // sweatpals.com/host/loveandlob. That is Sweatpals moving this exact
+    // venue's page, not a hijack, and must not be treated as one.
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      url: 'https://sweatpals.com/host/loveandlob',
+      text: async () => REAL_HTML,
+    })
+    const result = await fetchHostScan(REAL_ALIASES.length)
+    expect(result).toEqual({ aliases: REAL_ALIASES, healthy: true, rejected: [] })
+  })
+
+  it('Fix 1: blocks a redirect off the sweatpals.com domain entirely', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      url: 'https://evil.example.com/loveandlob',
+      text: async () => REAL_HTML,
+    })
+    const result = await fetchHostScan(REAL_ALIASES.length)
+    expect(result).toEqual({ aliases: [], healthy: false, rejected: [] })
   })
 
   it('Fix 2: does not silently disable the primary guard when called with no argument', async () => {
@@ -283,14 +380,14 @@ describe('fetchHostScan', () => {
     // defaulted scanLooksHealthy's expectedCount to 0, which skips the
     // primary check entirely.
     const html = buildHostPage(['only-one-event'])
-    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => html })
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, url: HOST_PAGE_URL, text: async () => html })
     const result = await fetchHostScan()
     expect(result.healthy).toBe(false)
   })
 
   it('Fix 2: defaults to the real curated count and is healthy for the real fixture', async () => {
-    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => REAL_HTML })
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, url: HOST_PAGE_URL, text: async () => REAL_HTML })
     const result = await fetchHostScan()
-    expect(result).toEqual({ aliases: REAL_ALIASES, healthy: true })
+    expect(result).toEqual({ aliases: REAL_ALIASES, healthy: true, rejected: [] })
   })
 })

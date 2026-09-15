@@ -14,7 +14,13 @@
 const SPECIAL_TYPES = new Set(['EVENT', 'RETREAT'])
 
 // Below this the shrink ratio is meaningless — losing 1 of 2 is not a signal.
-const MIN_LIST_FOR_RATIO_GUARD = 4
+// Also reused by _sweatpals.js's scanLooksHealthy as a floor on its own
+// count-based anchor — see the comment there for why.
+export const MIN_LIST_FOR_RATIO_GUARD = 4
+
+// Guard 3 (net-growth) blocks when the discovered list would more than
+// double the curated one — see the comment at that guard for why.
+const MAX_GROWTH_MULTIPLE = 2
 
 function hasFuture(probe, now) {
   if (!probe || !probe.ok || !probe.nextEnd) return false
@@ -118,6 +124,27 @@ export function classify({ curated, discovered, probes, now }) {
       blocked: {
         guard: 'net-shrink',
         reason: `List would shrink from ${before} to ${after}; refusing to apply without review.`,
+      },
+    }
+  }
+
+  // GUARD 3: net growth. A scan that discovers wildly more aliases than are
+  // curated is not "healthy churn" the way a rotation is — it is the shape a
+  // redirect to someone else's Sweatpals page produces (fetchHostScan's own
+  // final-URL check catches the redirect itself, but this guard is the
+  // backstop for any other route to the same symptom: a host-side change
+  // that starts returning a global/foreign feed under an OK response).
+  // Skipped when before === 0 — a genuine first run has nothing curated yet
+  // and is supposed to add everything discovered.
+  if (before > 0 && after > before * MAX_GROWTH_MULTIPLE) {
+    return {
+      verdicts,
+      added,
+      removed,
+      next: null,
+      blocked: {
+        guard: 'net-growth',
+        reason: `List would grow from ${before} to ${after}; refusing to apply without review.`,
       },
     }
   }

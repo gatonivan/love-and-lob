@@ -1,5 +1,5 @@
 /**
- * Renders the complete text of api/schedule-slugs.js.
+ * Renders the complete text of api/_schedule-slugs.js.
  *
  * The reconcile job replaces that file WHOLESALE with this output — it never
  * parses, patches or regexes the existing file. That is the property that

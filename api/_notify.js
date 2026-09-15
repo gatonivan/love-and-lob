@@ -4,20 +4,34 @@ const STUDIO_URL = 'https://www.loveandlob.co/studio'
  * Turn a reconcile outcome into an email a human wants to read. Event NAMES
  * only — the whole point of this system is that nobody has to think about
  * slugs.
+ *
+ * `rejected` (alias values the slug charset rejected, from `fetchHostScan`)
+ * and `verdicts` (the full per-slug verdict list from `classify()`) are both
+ * optional and default to empty — every call site that doesn't have them
+ * (e.g. a blocked run, which fails before a scan-failure or classify() call
+ * would produce them) still gets a valid report.
  */
-export function formatReport({ added, removed, blocked, scanOk }) {
+export function formatReport({ added, removed, blocked, scanOk, rejected = [], verdicts = [] }) {
   if (!scanOk) {
+    const lines = [
+      'The reconcile job could not read the Sweatpals host page.',
+      '',
+      'The site is still serving the last known-good program list, so nothing',
+      'is broken right now — but it will go stale if this keeps failing.',
+      'Most likely Sweatpals changed their page structure.',
+    ]
+    if (rejected.length) {
+      lines.push(
+        '',
+        'One likely cause: the page contained alias value(s) that could not be',
+        'read as slugs:',
+        ...rejected.map((v) => `  - ${v}`),
+      )
+    }
+    lines.push('', `Check ${STUDIO_URL}`)
     return {
       subject: 'Schedule: could not read Sweatpals',
-      text: [
-        'The reconcile job could not read the Sweatpals host page.',
-        '',
-        'The site is still serving the last known-good program list, so nothing',
-        'is broken right now — but it will go stale if this keeps failing.',
-        'Most likely Sweatpals changed their page structure.',
-        '',
-        `Check ${STUDIO_URL}`,
-      ].join('\n'),
+      text: lines.join('\n'),
     }
   }
 
@@ -35,7 +49,19 @@ export function formatReport({ added, removed, blocked, scanOk }) {
     }
   }
 
-  const lines = ['The schedule was updated automatically.', '']
+  // Delisted from Sweatpals but still carrying a future date — the
+  // early-warning state this whole project exists to catch. classify() keeps
+  // these on the curated list unconditionally (never auto-removed), so they
+  // never show up in `added`/`removed` — this is the only place they surface.
+  const orphans = verdicts.filter((v) => v.verdict === 'orphan')
+  const changed = added.length > 0 || removed.length > 0
+
+  const lines = [
+    changed
+      ? 'The schedule was updated automatically.'
+      : 'Nothing on the curated list changed, but a program needs a look.',
+    '',
+  ]
   if (added.length) {
     lines.push('Added:')
     for (const a of added) lines.push(`  + ${a.name}`)
@@ -46,9 +72,22 @@ export function formatReport({ added, removed, blocked, scanOk }) {
     for (const r of removed) lines.push(`  - ${r.name}`)
     lines.push('')
   }
-  lines.push('This is live on loveandlob.co/schedule within a couple of minutes.')
+  if (orphans.length) {
+    lines.push('Delisted but still scheduled (kept on the site — check Sweatpals for these):')
+    for (const o of orphans) lines.push(`  ! ${o.name}`)
+    lines.push('')
+  }
+  lines.push(
+    changed
+      ? 'This is live on loveandlob.co/schedule within a couple of minutes.'
+      : `Review at ${STUDIO_URL}`,
+  )
 
-  return { subject: 'Schedule updated automatically', text: lines.join('\n') }
+  const subject = changed
+    ? 'Schedule updated automatically'
+    : 'Schedule: a delisted program is still on the calendar'
+
+  return { subject, text: lines.join('\n') }
 }
 
 /**

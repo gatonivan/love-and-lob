@@ -63,6 +63,7 @@
 .studio-item--out span { color: #ff8a7a; }
 .studio-item--in span { color: #d8e84d; }
 .studio-item--ok span { color: #d8e84d; }
+.studio-item--warn span { color: #e8c34d; }
 
 .studio-note { opacity: 0.7; margin-top: 1.5rem; }
 .studio-error { color: #ff8a7a; margin-top: 1rem; }

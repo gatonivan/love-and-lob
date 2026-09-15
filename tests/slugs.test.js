@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import * as slugs from '../api/schedule-slugs.js'
+import * as slugs from '../api/_schedule-slugs.js'
 import * as sweatpals from '../api/_sweatpals.js'
 
 describe('schedule-slugs', () => {

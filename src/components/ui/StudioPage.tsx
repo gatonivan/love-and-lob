@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import './StudioPage.css'
 
-interface Item { slug: string; name: string; bucket: string }
 interface HumanItem { slug: string; name: string | null; bucket: string }
 interface ScanResult {
-  verdicts: Array<Item & { verdict: string }>
+  verdicts: Array<HumanItem & { verdict: string }>
   added: HumanItem[]
   removed: HumanItem[]
   blocked: { guard: string; reason: string } | null
@@ -16,6 +15,7 @@ type Status = 'idle' | 'loading' | 'applying' | 'done' | 'error'
 const KEY_STORAGE = 'll-studio-key'
 const NO_NAME_REMOVED = 'A program no longer listed on Sweatpals'
 const NO_NAME_ADDED = 'A new program not yet named on Sweatpals'
+const NO_NAME_ORPHAN = 'A program delisted on Sweatpals'
 
 async function callStudio(key: string, action: string) {
   const res = await fetch('/api/studio', {
@@ -119,6 +119,12 @@ export function StudioPage() {
 
   const changes = (scan?.added.length ?? 0) + (scan?.removed.length ?? 0)
   const healthy = scan?.verdicts.filter((v) => v.verdict === 'healthy' || v.verdict === 'quiet') ?? []
+  // Delisted from Sweatpals but still carrying a future date — classify()
+  // keeps these unconditionally, so they never appear in added/removed and
+  // this is the only place they're surfaced. Their presence must block the
+  // "✓ Everything matches" state below: a delisting is exactly the thing
+  // this page exists to flag, even when nothing was auto-applied.
+  const orphans = scan?.verdicts.filter((v) => v.verdict === 'orphan') ?? []
 
   return (
     <div className="studio-page">
@@ -158,7 +164,16 @@ export function StudioPage() {
                 <div><strong>{a.name ?? NO_NAME_ADDED}</strong><em>New on Sweatpals</em></div>
               </li>
             ))}
-            {changes === 0 && (
+            {orphans.map((o) => (
+              <li key={o.slug} className="studio-item studio-item--warn">
+                <span aria-hidden="true">!</span>
+                <div>
+                  <strong>{o.name ?? NO_NAME_ORPHAN}</strong>
+                  <em>Delisted on Sweatpals but still has an upcoming date — kept, check it</em>
+                </div>
+              </li>
+            ))}
+            {changes === 0 && orphans.length === 0 && (
               <li className="studio-item studio-item--ok">
                 <span aria-hidden="true">✓</span>
                 <div><strong>Everything matches</strong><em>{healthy.length} programs healthy</em></div>

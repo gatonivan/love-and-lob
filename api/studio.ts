@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { timingSafeEqual } from 'node:crypto'
 import { fetchHostScan, probeSlug } from './_sweatpals.js'
-import { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS } from './schedule-slugs.js'
+import { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS } from './_schedule-slugs.js'
 import { classify } from './_reconcile.js'
 
 const REPO = 'gatonivan/love-and-lob'
@@ -58,7 +58,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     )
     const result = classify({ curated, discovered, probes, now: new Date() })
     return res.status(200).json({
-      verdicts: result.verdicts,
+      // Human-mapped like added/removed: an `orphan` verdict is rendered in
+      // the page too (delisted but still scheduled), so its name needs the
+      // same slug-fallback boundary strip.
+      verdicts: result.verdicts.map(human),
       added: result.added.map(human),
       removed: result.removed.map(human),
       blocked: result.blocked,
