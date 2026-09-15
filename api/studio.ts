@@ -59,22 +59,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (action === 'apply') {
     const token = process.env.GH_DISPATCH_TOKEN
     if (!token) return res.status(500).json({ error: 'Server misconfigured' })
-    const r = await fetch(
-      `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,
-      {
-        method: 'POST',
-        headers: {
-          accept: 'application/vnd.github+json',
-          authorization: `Bearer ${token}`,
-          'content-type': 'application/json',
+    try {
+      const r = await fetch(
+        `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/vnd.github+json',
+            authorization: `Bearer ${token}`,
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({ ref: 'main' }),
         },
-        body: JSON.stringify({ ref: 'main' }),
-      },
-    )
-    if (!r.ok) {
-      return res.status(502).json({ error: 'Could not start the update', status: r.status })
+      )
+      if (!r.ok) {
+        return res.status(502).json({ error: 'Could not start the update', status: r.status })
+      }
+      return res.status(202).json({ dispatched: true })
+    } catch {
+      return res.status(502).json({ error: 'Could not start the update' })
     }
-    return res.status(202).json({ dispatched: true })
   }
 
   return res.status(400).json({ error: 'Unknown action' })

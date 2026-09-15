@@ -26,13 +26,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       body: JSON.stringify({ email, listIds: [18] }),
     })
 
-    const data = await response.json().catch(() => ({}))
+    const data: unknown = await response.json().catch(() => ({}))
+    const code = (data as { code?: unknown } | null)?.code
 
     if (response.status === 201) {
       return res.status(200).json({ success: true })
     }
 
-    if (response.status === 204 || data.code === 'duplicate_parameter') {
+    if (response.status === 204 || code === 'duplicate_parameter') {
       return res.status(200).json({ success: true })
     }
 
