@@ -112,16 +112,15 @@ export async function fetchScheduleEvents(slugs = SPECIAL_EVENT_SLUGS) {
     .sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime())
 }
 
-/**
- * The full /schedule payload: the featured special event (or null) plus the
- * recurring programming list. Consumed by both the build script and the
- * serverless function; written to public/events.json.
- */
 export const HOST_PAGE_URL = 'https://sweatpals.com/loveandlob'
 
 // Slugs are lowercase alphanumerics and hyphens. Anything else in an `alias`
 // field is not a slug we can fetch, so it is ignored rather than trusted.
 const ALIAS_RE = /"alias":"([a-z0-9-]+)"/g
+
+// Same key, no charset restriction — used only to detect when ALIAS_RE
+// silently dropped a value (see the warning below).
+const ALIAS_ANY_RE = /"alias":"[^"]*"/g
 
 /**
  * Extract event aliases from the host page's embedded JSON.
@@ -133,29 +132,45 @@ const ALIAS_RE = /"alias":"([a-z0-9-]+)"/g
  */
 export function scanHostAliases(html) {
   if (!html) return []
+  const str = String(html)
   const seen = new Set()
-  for (const m of String(html).matchAll(ALIAS_RE)) seen.add(m[1])
+  for (const m of str.matchAll(ALIAS_RE)) seen.add(m[1])
+
+  // If the permissive pattern found more raw `"alias":"..."` occurrences than
+  // the charset-restricted one matched, at least one alias value contained a
+  // character outside [a-z0-9-] and was silently excluded rather than
+  // trusted. That should be rare — log it so a slow charset drift doesn't go
+  // unnoticed. (scanLooksHealthy's marker check is the second line of
+  // defense if this undercounting gets bad enough to matter.)
+  const rawCount = (str.match(ALIAS_ANY_RE) || []).length
+  const acceptedCount = [...str.matchAll(ALIAS_RE)].length
+  if (rawCount > acceptedCount) {
+    console.warn(
+      `scanHostAliases: ${rawCount - acceptedCount} alias value(s) rejected by the slug charset`,
+    )
+  }
+
   return [...seen]
 }
 
-// Each event object on the host page carries an `eventType` and a
-// `publishingState` field right alongside its `alias` — confirmed against the
-// live page on 2026-09-15: 6 unique aliases, and `"eventType":` /
-// `"publishingState":` each occurred exactly 12 times (the page embeds every
-// event object twice — once in SSR data, once for hydration — so 2 marker
-// hits per alias-bearing event is the healthy ratio). Neither field name is
-// used to locate an `alias`, so if Sweatpals renames or drops the `alias`
-// key, or a parse only catches some events, these markers keep showing up at
-// their usual count while `scanHostAliases` comes back short. That gap is
-// exactly what tells us the page still talks about roughly N events but we
-// only understood a fraction of them.
+// Confirmed against the live host page on 2026-09-15: 6 unique aliases, and
+// `"eventType":` / `"publishingState":` together matched 24 times (12 each —
+// every event's JSON is embedded twice, once for SSR and once for
+// hydration), i.e. ~4 combined marker hits per unique alias. This is a
+// SECONDARY, narrower check than scanLooksHealthy's primary expectedCount
+// comparison below: it catches the case where an alias value is rejected by
+// ALIAS_RE's charset (see the warning in scanHostAliases) while the
+// surrounding event JSON — including its eventType/publishingState fields —
+// still parses fine, so markers stay at their expected level even though the
+// alias count dips. It is NOT relied on to catch a structural markup change,
+// because a change that drops an event's entire JSON representation drops
+// its markers along with its alias — both sides of this ratio shrink
+// together and it reads as "healthy". That structural case is exactly what
+// the expectedCount check exists to catch, independent of page shape.
+// Headroom here is generous (3x the observed ~4, i.e. 12) so a legitimately
+// tiny listing is never mistaken for a charset rejection.
 const EVENT_MARKER_RE = /"eventType":|"publishingState":/g
-
-// Observed live ratio is ~2 marker hits per unique alias. Six wins in generous
-// headroom over that (3x) so a legitimately tiny listing — 1 or 2 events in a
-// quiet week — never gets mistaken for a broken parse; it only trips when the
-// page's evidence of events wildly outstrips what we actually parsed.
-const MAX_MARKER_TO_ALIAS_RATIO = 6
+const MAX_MARKER_TO_ALIAS_RATIO = 12
 
 /**
  * Sanity-check a scan's own result: does the page look like it was actually
@@ -169,14 +184,32 @@ const MAX_MARKER_TO_ALIAS_RATIO = 6
  * reclassified as retired and removed from the live site, which is exactly
  * what the retirement rule says must never happen on absence alone. Only the
  * scanner has the raw HTML to tell the difference, so the check lives here.
+ *
+ * `expectedCount` is the size of the CURRENTLY CURATED list, passed in by the
+ * caller — never the discovered aliases' identities. Comparing identities
+ * would flag a legitimate wholesale alias migration (Sweatpals renames every
+ * slug at once) as broken, which is exactly the scenario this project exists
+ * to heal. Comparing *counts* sidesteps that: a migration that produces N
+ * brand-new aliases when N were curated stays healthy, while a parse that
+ * recovers far fewer aliases than we already know exist is suspect
+ * regardless of what the markup looks like — including the case a same-page
+ * marker check structurally cannot catch (an event's whole JSON block, alias
+ * and markers together, disappearing from the page). Threshold: unhealthy
+ * when discovered aliases are fewer than half of what's curated — the same
+ * "more than half missing is a red flag" threshold `classify()`'s own
+ * net-shrink guard uses, so the two guards agree on what "drastic" means.
+ * `expectedCount === 0` (a first run, or an empty curated list) can't mean
+ * "everything is suspect", so the check is skipped in that case.
  */
-export function scanLooksHealthy(html, aliases) {
+export function scanLooksHealthy(html, aliases, expectedCount = 0) {
   if (!html) return false
   // No aliases is never "healthy" on its own terms — there is nothing to
   // reconcile against, and an automated run should not treat a mysteriously
   // empty page as reality. (classify()'s own empty-scan guard also rejects
   // this case; agreeing here keeps the two guards consistent.)
   if (!Array.isArray(aliases) || aliases.length === 0) return false
+
+  if (expectedCount > 0 && aliases.length < expectedCount / 2) return false
 
   const markerCount = (String(html).match(EVENT_MARKER_RE) || []).length
   if (markerCount > aliases.length * MAX_MARKER_TO_ALIAS_RATIO) return false
@@ -204,6 +237,31 @@ export async function probeSlug(slug) {
   }
 }
 
+/**
+ * Fetch the host page, scan it, and judge whether the scan looks trustworthy
+ * — the single call the reconcile job (later tasks) needs. Any failure
+ * (network error, non-OK response) reports as `{ aliases: [], healthy: false
+ * }` rather than throwing: an unreachable host and a broken parse both need
+ * to fail closed the same way, which is the entire point of
+ * `scanLooksHealthy` existing.
+ */
+export async function fetchHostScan(expectedCount) {
+  try {
+    const res = await fetch(HOST_PAGE_URL)
+    if (!res.ok) return { aliases: [], healthy: false }
+    const html = await res.text()
+    const aliases = scanHostAliases(html)
+    return { aliases, healthy: scanLooksHealthy(html, aliases, expectedCount) }
+  } catch {
+    return { aliases: [], healthy: false }
+  }
+}
+
+/**
+ * The full /schedule payload: the featured special event (or null) plus the
+ * recurring programming list. Consumed by both the build script and the
+ * serverless function; written to public/events.json.
+ */
 export async function fetchScheduleData() {
   const [special, programs] = await Promise.all([
     fetchScheduleEvents(SPECIAL_EVENT_SLUGS),

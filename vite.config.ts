@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig, defaultExclude } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/',
@@ -17,5 +17,10 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['tests/**/*.test.js'],
+    // tests/live hits the real network (the current Sweatpals host page) and
+    // must never gate `pnpm test` — an outage, an offline machine, or a
+    // legitimately quiet week would turn a workflow that commits to main red
+    // for no real reason. Run it deliberately via `pnpm test:live`.
+    exclude: [...defaultExclude, 'tests/live/**'],
   },
 })

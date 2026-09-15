@@ -173,14 +173,25 @@ programs. This is what cleanly separated the tournaments from the clinics.
    *non-empty but degraded* scan — say markup drift means only 1 of 6 events
    still parses — looks fine to this check, and the 5 that silently failed to
    parse read as delisted, deleting any that are merely quiet. `_sweatpals.js`
-   closes that hole upstream of `classify()`: `scanLooksHealthy(html, aliases)`
-   cross-checks the alias count against other per-event markers embedded in
-   the same HTML (`eventType`/`publishingState`), so a parse that recovered
-   far fewer aliases than the page's own evidence implies is caught before
-   `discovered` ever reaches the classifier. Either failure mode — an
-   empty/malformed scan or an unhealthy one — is treated as *scan failure*,
-   never as "remove everything." Without this, a Sweatpals outage or a
-   markup change wipes the schedule.
+   closes that hole upstream of `classify()`, via `fetchHostScan(expectedCount)`
+   (wired into the reconcile job's call site): it fetches the host page,
+   scans it, and runs `scanLooksHealthy(html, aliases, expectedCount)` before
+   `discovered` is ever handed to the classifier. The primary signal is a
+   count comparison, not a page-shape one — `expectedCount` is the size of
+   the *currently curated* list, and a scan is unhealthy when it discovers
+   fewer than half that many aliases. Counting rather than intersecting
+   identities is what lets a wholesale alias migration (Sweatpals renames
+   every slug at once — the exact scenario this project exists to heal) stay
+   healthy, while a parse that silently drops most events reads as suspect
+   regardless of what the new markup looks like. A secondary, narrower check
+   cross-references the alias count against other per-event markers in the
+   same HTML (`eventType`/`publishingState`) to catch one thing the
+   count-based check can't: an alias value rejected by the slug charset while
+   its surrounding event JSON still parses fine. Either failure mode — an
+   empty/malformed scan, a drastic drop against the curated count, or a
+   charset-driven undercount — is treated as *scan failure*, never as "remove
+   everything." Without this, a Sweatpals outage or a markup change wipes the
+   schedule.
 2. **The list would shrink by more than half.** Guards *net* size, not gross
    removals — because the common real event is a **rotation**, not a deletion.
    On 2026-09-15 five of six programs died *and* five new ones appeared: net
