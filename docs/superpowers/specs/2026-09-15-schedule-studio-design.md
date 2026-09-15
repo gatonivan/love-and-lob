@@ -168,8 +168,19 @@ programs. This is what cleanly separated the tournaments from the clinics.
 
 `classify()` refuses to produce a changeset when:
 
-1. **The scan returned zero aliases.** Treated as *scan failure*, never as
-   "remove everything." Without this, a Sweatpals outage wipes the schedule.
+1. **The scan didn't come back clean.** `classify()` rejects a `discovered`
+   value that is not an array or is empty. That alone leaves a hole: a
+   *non-empty but degraded* scan — say markup drift means only 1 of 6 events
+   still parses — looks fine to this check, and the 5 that silently failed to
+   parse read as delisted, deleting any that are merely quiet. `_sweatpals.js`
+   closes that hole upstream of `classify()`: `scanLooksHealthy(html, aliases)`
+   cross-checks the alias count against other per-event markers embedded in
+   the same HTML (`eventType`/`publishingState`), so a parse that recovered
+   far fewer aliases than the page's own evidence implies is caught before
+   `discovered` ever reaches the classifier. Either failure mode — an
+   empty/malformed scan or an unhealthy one — is treated as *scan failure*,
+   never as "remove everything." Without this, a Sweatpals outage or a
+   markup change wipes the schedule.
 2. **The list would shrink by more than half.** Guards *net* size, not gross
    removals — because the common real event is a **rotation**, not a deletion.
    On 2026-09-15 five of six programs died *and* five new ones appeared: net

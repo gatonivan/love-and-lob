@@ -117,6 +117,93 @@ export async function fetchScheduleEvents(slugs = SPECIAL_EVENT_SLUGS) {
  * recurring programming list. Consumed by both the build script and the
  * serverless function; written to public/events.json.
  */
+export const HOST_PAGE_URL = 'https://sweatpals.com/loveandlob'
+
+// Slugs are lowercase alphanumerics and hyphens. Anything else in an `alias`
+// field is not a slug we can fetch, so it is ignored rather than trusted.
+const ALIAS_RE = /"alias":"([a-z0-9-]+)"/g
+
+/**
+ * Extract event aliases from the host page's embedded JSON.
+ *
+ * This is the one scrape in the codebase and it is deliberately confined to
+ * the reconcile job — never a pageload path. It only ever *proposes* changes
+ * that guards and a commit record keep honest, so when Sweatpals restructures
+ * their markup the result is a failure email, not a wrong schedule.
+ */
+export function scanHostAliases(html) {
+  if (!html) return []
+  const seen = new Set()
+  for (const m of String(html).matchAll(ALIAS_RE)) seen.add(m[1])
+  return [...seen]
+}
+
+// Each event object on the host page carries an `eventType` and a
+// `publishingState` field right alongside its `alias` — confirmed against the
+// live page on 2026-09-15: 6 unique aliases, and `"eventType":` /
+// `"publishingState":` each occurred exactly 12 times (the page embeds every
+// event object twice — once in SSR data, once for hydration — so 2 marker
+// hits per alias-bearing event is the healthy ratio). Neither field name is
+// used to locate an `alias`, so if Sweatpals renames or drops the `alias`
+// key, or a parse only catches some events, these markers keep showing up at
+// their usual count while `scanHostAliases` comes back short. That gap is
+// exactly what tells us the page still talks about roughly N events but we
+// only understood a fraction of them.
+const EVENT_MARKER_RE = /"eventType":|"publishingState":/g
+
+// Observed live ratio is ~2 marker hits per unique alias. Six wins in generous
+// headroom over that (3x) so a legitimately tiny listing — 1 or 2 events in a
+// quiet week — never gets mistaken for a broken parse; it only trips when the
+// page's evidence of events wildly outstrips what we actually parsed.
+const MAX_MARKER_TO_ALIAS_RATIO = 6
+
+/**
+ * Sanity-check a scan's own result: does the page look like it was actually
+ * understood, or does the evidence suggest a broken/partial parse?
+ *
+ * This exists because `classify()`'s empty-scan guard only catches a scan
+ * that found *zero* aliases. A scan that finds *some* — say the host changed
+ * markup so only 1 of 6 events still parses — looks non-empty to that guard,
+ * so the 5 that silently failed to parse read as "delisted." Any of those
+ * that are merely quiet (published, no upcoming instance right now) then get
+ * reclassified as retired and removed from the live site, which is exactly
+ * what the retirement rule says must never happen on absence alone. Only the
+ * scanner has the raw HTML to tell the difference, so the check lives here.
+ */
+export function scanLooksHealthy(html, aliases) {
+  if (!html) return false
+  // No aliases is never "healthy" on its own terms — there is nothing to
+  // reconcile against, and an automated run should not treat a mysteriously
+  // empty page as reality. (classify()'s own empty-scan guard also rejects
+  // this case; agreeing here keeps the two guards consistent.)
+  if (!Array.isArray(aliases) || aliases.length === 0) return false
+
+  const markerCount = (String(html).match(EVENT_MARKER_RE) || []).length
+  if (markerCount > aliases.length * MAX_MARKER_TO_ALIAS_RATIO) return false
+
+  return true
+}
+
+/**
+ * Fetch one slug and reduce it to just what the classifier needs. Any failure
+ * is reported as `{ ok: false }` rather than thrown — a dead slug is expected
+ * input, not an error.
+ */
+export async function probeSlug(slug) {
+  try {
+    const ev = await fetchEventBySlug(slug)
+    if (!ev) return { ok: false }
+    return {
+      ok: true,
+      name: (ev.name || '').trim() || slug,
+      eventType: ev.eventType,
+      nextEnd: nextEnd(ev),
+    }
+  } catch {
+    return { ok: false }
+  }
+}
+
 export async function fetchScheduleData() {
   const [special, programs] = await Promise.all([
     fetchScheduleEvents(SPECIAL_EVENT_SLUGS),
