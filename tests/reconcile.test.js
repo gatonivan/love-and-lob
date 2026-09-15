@@ -145,6 +145,33 @@ describe('classify — verdicts', () => {
     expect(overlap).toEqual([])
   })
 
+  it('keeps a curated slug in its own bucket even when eventType disagrees', () => {
+    const res = classify({
+      curated: { special: [], programs: ['alpha', 'tourney'] },
+      discovered: ['alpha', 'tourney'],
+      probes: {
+        alpha: { ...future, name: 'Alpha', eventType: 'CLASS' },
+        tourney: { ...future, name: 'Tourney', eventType: 'EVENT' },
+      },
+      now: NOW,
+    })
+    expect(res.next.programs).toContain('tourney')
+    expect(res.next.special).not.toContain('tourney')
+  })
+
+  it('treats an instance ending exactly at now as still future (orphan boundary)', () => {
+    const res = classify({
+      curated: { special: [], programs: ['alpha', 'boundary'] },
+      discovered: ['alpha'],
+      probes: {
+        alpha: { ...future, name: 'Alpha', eventType: 'CLASS' },
+        boundary: { ok: true, nextEnd: NOW.toISOString(), name: 'Boundary', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(verdictFor(res, 'boundary')).toBe('orphan')
+  })
+
   it('reports no change when everything is healthy', () => {
     const res = classify({
       curated: { special: [], programs: ['alpha'] },
