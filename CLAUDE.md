@@ -139,9 +139,13 @@ All main pages (Schedule, Community, Shop, Manifesto) are **persistent overlays*
 New pages MUST follow this pattern — never render a page as a route element that covers the canvas.
 
 **Exception — internal tools.** `/studio` is a back-office debug page, not a
-brand page: it renders as a plain route that covers the canvas. It should not
-wait on a camera transition or pull the Three.js bundle. Any future internal
-tool may follow it; brand pages may not.
+brand page: it renders as a plain route that covers the canvas, skipping the
+camera transition and overlay-gating pattern above so its one user is never
+waiting on either. Note this does *not* avoid the Three.js bundle — `<Canvas>`
+is mounted unconditionally outside `<Routes>` in `App.tsx`, so it still loads
+and runs behind the opaque page. Lazy-mounting the canvas per-route would fix
+that but touches core rendering and is deliberately out of scope here. Any
+future internal tool may follow this pattern; brand pages may not.
 
 ### Camera Modes
 | Mode | Direction | Route |

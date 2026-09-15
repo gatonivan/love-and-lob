@@ -7,6 +7,16 @@ import { classify } from './_reconcile.js'
 const REPO = 'gatonivan/love-and-lob'
 const WORKFLOW = 'reconcile-schedule.yml'
 
+// The studio page's audience is one non-technical person: a slug must never
+// render on screen. classify()/probeSlug() fall back to the slug (or leave
+// an empty string) when Sweatpals has no name for an event — most often on a
+// `removed` item, whose probe commonly failed entirely. Strip that fallback
+// at the wire boundary so the page can render a plain-English placeholder
+// instead. `api/_notify.js`'s email digest is a technical audience and keeps
+// the slug fallback — do not touch it.
+export const human = <T extends { slug: string; name: string }>(it: T) =>
+  ({ ...it, name: it.name === it.slug || !it.name ? null : it.name })
+
 function authorized(req: VercelRequest): boolean {
   const expected = process.env.STUDIO_PASSPHRASE
   const given = req.headers['x-studio-key']
@@ -49,8 +59,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const result = classify({ curated, discovered, probes, now: new Date() })
     return res.status(200).json({
       verdicts: result.verdicts,
-      added: result.added,
-      removed: result.removed,
+      added: result.added.map(human),
+      removed: result.removed.map(human),
       blocked: result.blocked,
       scanOk: true,
     })

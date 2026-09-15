@@ -1,16 +1,21 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import './StudioPage.css'
 
 interface Item { slug: string; name: string; bucket: string }
+interface HumanItem { slug: string; name: string | null; bucket: string }
 interface ScanResult {
   verdicts: Array<Item & { verdict: string }>
-  added: Item[]
-  removed: Item[]
+  added: HumanItem[]
+  removed: HumanItem[]
   blocked: { guard: string; reason: string } | null
   scanOk: boolean
 }
 
+type Status = 'idle' | 'loading' | 'applying' | 'done' | 'error'
+
 const KEY_STORAGE = 'll-studio-key'
+const NO_NAME_REMOVED = 'A program no longer listed on Sweatpals'
+const NO_NAME_ADDED = 'A new program not yet named on Sweatpals'
 
 async function callStudio(key: string, action: string) {
   const res = await fetch('/api/studio', {
@@ -27,41 +32,61 @@ export function StudioPage() {
   const [key, setKey] = useState(() => localStorage.getItem(KEY_STORAGE) || '')
   const [entry, setEntry] = useState('')
   const [scan, setScan] = useState<ScanResult | null>(null)
-  const [status, setStatus] = useState<'idle' | 'loading' | 'applying' | 'done' | 'error'>('idle')
+  const [status, setStatus] = useState<Status>(
+    () => (localStorage.getItem(KEY_STORAGE) ? 'loading' : 'idle'),
+  )
   const [error, setError] = useState('')
 
   useEffect(() => {
+    const previousTitle = document.title
     document.title = 'Studio · Love & Lob'
     const meta = document.createElement('meta')
     meta.name = 'robots'
     meta.content = 'noindex'
     document.head.appendChild(meta)
-    return () => { document.head.removeChild(meta) }
-  }, [])
-
-  const runScan = useCallback(async (k: string) => {
-    setStatus('loading'); setError('')
-    try {
-      setScan(await callStudio(k, 'scan'))
-      setStatus('idle')
-    } catch (err) {
-      if ((err as Error).message === 'unauthorized') {
-        localStorage.removeItem(KEY_STORAGE); setKey(''); setError('That passphrase did not work.')
-      } else {
-        setError('Could not reach the server. Try again in a minute.')
-      }
-      setStatus('error')
+    return () => {
+      document.title = previousTitle
+      document.head.removeChild(meta)
     }
   }, [])
 
+  // A 401 always means the stored passphrase is no longer good — for scan
+  // (on load) and for apply (rotated mid-session) alike — so both routes
+  // through this branch, back to the gate, rather than leaving a dead end.
+  const handleFailure = (err: unknown, genericMessage: string) => {
+    if ((err as Error).message === 'unauthorized') {
+      localStorage.removeItem(KEY_STORAGE)
+      setKey('')
+      setError('That passphrase did not work.')
+    } else {
+      setError(genericMessage)
+    }
+    setStatus('error')
+  }
+
   useEffect(() => {
     if (!key) return
-    queueMicrotask(() => runScan(key))
-  }, [key, runScan])
+    let cancelled = false
+    const run = async () => {
+      try {
+        const data = await callStudio(key, 'scan')
+        if (cancelled) return
+        setScan(data)
+        setStatus('idle')
+      } catch (err) {
+        if (cancelled) return
+        handleFailure(err, 'Could not reach the server. Try again in a minute.')
+      }
+    }
+    void run()
+    return () => { cancelled = true }
+  }, [key])
 
   const unlock = (e: React.FormEvent) => {
     e.preventDefault()
     localStorage.setItem(KEY_STORAGE, entry)
+    setError('')
+    setStatus('loading')
     setKey(entry)
   }
 
@@ -70,8 +95,8 @@ export function StudioPage() {
     try {
       await callStudio(key, 'apply')
       setStatus('done')
-    } catch {
-      setError('Could not start the update.'); setStatus('error')
+    } catch (err) {
+      handleFailure(err, 'Could not start the update.')
     }
   }
 
@@ -124,13 +149,13 @@ export function StudioPage() {
             {scan.removed.map((r) => (
               <li key={r.slug} className="studio-item studio-item--out">
                 <span aria-hidden="true">✕</span>
-                <div><strong>{r.name}</strong><em>Gone from Sweatpals and out of dates</em></div>
+                <div><strong>{r.name ?? NO_NAME_REMOVED}</strong><em>Gone from Sweatpals and out of dates</em></div>
               </li>
             ))}
             {scan.added.map((a) => (
               <li key={a.slug} className="studio-item studio-item--in">
                 <span aria-hidden="true">+</span>
-                <div><strong>{a.name}</strong><em>New on Sweatpals</em></div>
+                <div><strong>{a.name ?? NO_NAME_ADDED}</strong><em>New on Sweatpals</em></div>
               </li>
             ))}
             {changes === 0 && (
