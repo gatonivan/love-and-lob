@@ -183,11 +183,14 @@ programs. This is what cleanly separated the tournaments from the clinics.
    identities is what lets a wholesale alias migration (Sweatpals renames
    every slug at once — the exact scenario this project exists to heal) stay
    healthy, while a parse that silently drops most events reads as suspect
-   regardless of what the new markup looks like. A secondary, narrower check
-   cross-references the alias count against other per-event markers in the
-   same HTML (`eventType`/`publishingState`) to catch one thing the
-   count-based check can't: an alias value rejected by the slug charset while
-   its surrounding event JSON still parses fine. Either failure mode — an
+   regardless of what the new markup looks like. A secondary, exact check
+   catches one thing the count-based check can't: an alias value rejected by
+   the slug charset while its surrounding event JSON still parses fine. It
+   reuses the same raw-vs-accepted `"alias":"..."` occurrence comparison
+   `scanHostAliases` already computes for its own warning — no marker count,
+   no tuned ratio, no headroom to calibrate — and fails on any mismatch at
+   all, since the cost of a false alarm (one email) is far below the cost of
+   missing a real one (a silently wrong schedule). Either failure mode — an
    empty/malformed scan, a drastic drop against the curated count, or a
    charset-driven undercount — is treated as *scan failure*, never as "remove
    everything." Without this, a Sweatpals outage or a markup change wipes the
@@ -197,8 +200,8 @@ programs. This is what cleanly separated the tournaments from the clinics.
    of 6 curated events still reports healthy — the count check's threshold is
    "fewer than half," so losing 1-3 events doesn't cross it, and unless the
    lost events also happen to be charset-rejected (the one case the secondary
-   marker check catches independently) nothing else in `scanLooksHealthy`
-   flags it either. This was measured and accepted deliberately rather than
+   check catches independently) nothing else in `scanLooksHealthy` flags it
+   either. This was measured and accepted deliberately rather than
    closed, because the failure mode it allows is small and self-healing: a
    curated slug can only be *deleted* by `classify()` if it is BOTH unparsed
    AND `quiet` (no future instance) - an unparsed slug with a future date
