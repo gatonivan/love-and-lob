@@ -138,6 +138,11 @@ All main pages (Schedule, Community, Shop, Manifesto) are **persistent overlays*
 
 New pages MUST follow this pattern — never render a page as a route element that covers the canvas.
 
+**Exception — internal tools.** `/studio` is a back-office debug page, not a
+brand page: it renders as a plain route that covers the canvas. It should not
+wait on a camera transition or pull the Three.js bundle. Any future internal
+tool may follow it; brand pages may not.
+
 ### Camera Modes
 | Mode | Direction | Route |
 |------|-----------|-------|

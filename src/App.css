@@ -48,7 +48,8 @@ html[data-page='swapmeet'] #root {
 .community-sub-page,
 .manifesto-page,
 .inv-page,
-.sm-page {
+.sm-page,
+.studio-page {
   overflow-y: auto;
   height: 100vh;
   height: 100dvh;
@@ -81,7 +82,8 @@ a, button, [role="button"], input[type="submit"],
 .community-sub-page,
 .manifesto-page,
 .inv-page,
-.sm-page {
+.sm-page,
+.studio-page {
   position: relative;
   z-index: 1;
 }

@@ -18,6 +18,7 @@ import { MonthlyClassicPage } from './components/ui/community/MonthlyClassicPage
 import { InvitationalPage } from './components/ui/invitational/InvitationalPage'
 import { SwapMeetPage } from './components/ui/swapmeet/SwapMeetPage'
 import { ManifestoPage } from './components/ui/ManifestoPage'
+import { StudioPage } from './components/ui/StudioPage'
 import { EmailSubscribe } from './components/ui/EmailSubscribe'
 import { Footer } from './components/ui/Footer'
 import { useReducedMotion } from './hooks/useReducedMotion'
@@ -73,6 +74,7 @@ function App() {
         <Route path="/invitational" element={<InvitationalPage />} />
         <Route path="/swapmeet" element={<SwapMeetPage />} />
         <Route path="/manifesto" element={null} />
+        <Route path="/studio" element={<StudioPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
