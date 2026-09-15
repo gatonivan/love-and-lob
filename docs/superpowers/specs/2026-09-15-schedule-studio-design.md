@@ -108,8 +108,9 @@ not commit directly — it fires `workflow_dispatch` on the same Action. Reasons
 
 - **DRY.** One place that writes the file, one place to test, one place to
   secure. A second browser-side commit path would duplicate the riskiest code.
-- **Fewer secrets.** No repo-write PAT sitting in Vercel env; the Action uses
-  GitHub's built-in `GITHUB_TOKEN`.
+- **Weaker secrets.** No `contents: write` PAT in Vercel env — the commit uses
+  the Action's built-in `GITHUB_TOKEN`, and Vercel holds only a dispatch-scoped
+  token (see §7).
 - **Safer.** The job re-scans at run time rather than trusting a diff the
   browser computed, so a stale tab can't apply stale conclusions.
 
@@ -238,8 +239,15 @@ plainly: **worst case someone guesses it and reorders your clinic list, and you
 
 - `STUDIO_PASSPHRASE` in Vercel env — never in the client bundle
 - Timing-safe comparison; generic failure message
-- Commits use the Action's built-in `GITHUB_TOKEN` (`contents: write`), scoped
-  to this repo by GitHub, expiring per-run. **No long-lived PAT anywhere.**
+- **Commits** use the Action's built-in `GITHUB_TOKEN` (`contents: write`),
+  scoped to this repo by GitHub and expiring per-run.
+- The **only** long-lived credential is `GH_DISPATCH_TOKEN`, a fine-grained PAT
+  scoped to this repo with **`actions: write` and nothing else**. It cannot
+  write repo contents — it can only *start* a workflow whose behaviour is fixed
+  in committed, guarded, test-covered code. Stealing it buys an attacker the
+  ability to make the schedule reconcile itself, which is what the button does
+  anyway. Correcting an earlier draft of this spec that claimed no PAT was
+  needed at all: one is, just a much weaker one than a `contents: write` PAT.
 - `/studio` is `noindex` and unlinked from site navigation
 
 ---
