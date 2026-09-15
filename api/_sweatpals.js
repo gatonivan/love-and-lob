@@ -17,43 +17,10 @@
  * (`sweatpals.com/<type>/<slug>`), and add it below.
  */
 
-// Featured special event(s) — rendered as the big card at the top of the page.
-// The soonest active one is featured.
-//
-// Empty as of 2026-09-15: the 3v3 Team Singles (Aug 30) and the Mixed Doubles
-// US Open Edition (Sep 12) have both run, and Sweatpals lists no upcoming
-// tournament. An empty list is the correct resting state — the featured section
-// simply doesn't render until the next special event is published. Add the new
-// slug here when it is.
-export const SPECIAL_EVENT_SLUGS = []
-
-// Recurring programming — rendered as the "Upcoming" list. Keep disjoint from
-// SPECIAL_EVENT_SLUGS so nothing shows twice.
-//
-// A slug is retired here once it is BOTH delisted from the host page AND out of
-// future instances (see nextStart below) — either condition alone is normal for
-// a series that is merely between publishes. The Lehman and Bronx programs, the
-// Greenpoint Kids Clinic, and the original Greenpoint/Brooklyn College Liveball
-// and Beginner series were retired on 2026-08-20 by that test.
-//
-// Refreshed 2026-09-15: Sweatpals had recreated the roster under fresh slugs
-// again, and the fall programming changed shape — only Beginner Clinic
-// (Brooklyn College) survived from the previous list. Every other curated slug
-// failed both retirement conditions (delisted from the host page AND last
-// instance in the past; `advanced-beginner-clinic-greenpoint` had gone 404),
-// while five newly listed series were live and unreferenced. Cardio Tennis and
-// the Greenpoint Advanced Beginner / Intermediate clinics are gone from the
-// host page entirely; Drill & Play, the Kids Clinic and an Intermediate clinic
-// at Brooklyn College are new. Re-run the host scan when the list looks short:
-//   curl -sL https://sweatpals.com/loveandlob | grep -o '"alias":"[^"]*"' | sort -u
-export const PROGRAM_SLUGS = [
-  'absolute-beginner-clinic-greenpoint',
-  'beginner-clinic-brooklyn-college',
-  'intermediate-clinic-brooklyn-college',
-  'drill-play-greenpoint',
-  'kids-clinic-ages-58-greenpoint',
-  'll-early-morning-sessions-5d58d2',
-]
+// The curated lists live in their own module so the reconcile job can rewrite
+// them wholesale without touching this file's logic. See schedule-slugs.js.
+export { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS, UPDATED_AT } from './schedule-slugs.js'
+import { SPECIAL_EVENT_SLUGS, PROGRAM_SLUGS } from './schedule-slugs.js'
 
 // Max programs shown in the Upcoming list (soonest-first); the rest live behind
 // the "View all on Sweatpals" link, which deep-links to the host calendar view.
