@@ -177,10 +177,22 @@ programs. This is what cleanly separated the tournaments from the clinics.
    with zero replacements is a different animal and bails for review.
    A gross-removal guard would have blocked the exact scenario this project
    exists to fix — caught in spec review, noted so it isn't "simplified" back.
-3. **A slug still has future instances.** Never removed, whatever the host page
+   This ratio only applies once the list has at least 4 curated entries —
+   below that, a shrink ratio is meaningless (losing 1 of 2 is not a signal).
+3. **An automated run may never take the list to zero, regardless of size.**
+   This is an unconditional floor, not gated by the guard-2 exemption above:
+   even a list of 3 or fewer cannot be reconciled down to 0 in one run. A
+   genuine full shutdown is real but rare and deserves one human confirmation;
+   every *cheap* route to `after === 0` — a scan that half-succeeds, probes
+   that all fail, a curated list small enough to dodge the ratio guard — is an
+   upstream failure wearing a plausible costume, not a real cancellation.
+   Caught in review: without this floor, two unattended runs days apart can
+   empty the schedule with guard 2 green the whole time, because a list once
+   shrunk below the ratio-guard's size floor has no lower bound left at all.
+4. **A slug still has future instances.** Never removed, whatever the host page
    says.
-4. **A candidate has no future instance.** Never added.
-5. **Nothing changed.** Exit clean: no commit, no email, no deploy.
+5. **A candidate has no future instance.** Never added.
+6. **Nothing changed.** Exit clean: no commit, no email, no deploy.
 
 ### 6.4 `scripts/reconcile-slugs.mjs` *(new — cron entry)*
 

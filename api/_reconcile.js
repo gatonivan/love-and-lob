@@ -30,7 +30,7 @@ export function classify({ curated, discovered, probes, now }) {
   // GUARD 1: a scan that found nothing means Sweatpals is down or changed its
   // markup — NOT that every program was cancelled. Without this, one outage
   // empties the schedule.
-  if (!discovered || discovered.length === 0) {
+  if (!Array.isArray(discovered) || discovered.length === 0) {
     return {
       verdicts: [],
       added: [],
@@ -92,6 +92,23 @@ export function classify({ curated, discovered, probes, now }) {
   // healthy churn and must auto-apply; a collapse (5 die, 0 born) must not.
   const before = curatedAll.length
   const after = next.special.length + next.programs.length
+
+  // An automated run may never empty the list. A genuine total shutdown is
+  // real but rare, and deserves one human confirmation; every other route to
+  // after === 0 is an upstream failure wearing a plausible costume.
+  if (before > 0 && after === 0) {
+    return {
+      verdicts,
+      added,
+      removed,
+      next: null,
+      blocked: {
+        guard: 'net-shrink',
+        reason: `List would shrink from ${before} to 0; refusing to empty the schedule automatically.`,
+      },
+    }
+  }
+
   if (before >= MIN_LIST_FOR_RATIO_GUARD && after * 2 < before) {
     return {
       verdicts,

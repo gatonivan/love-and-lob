@@ -245,6 +245,7 @@ describe('classify — guards', () => {
     }
     const res = classify({ curated, discovered: ['keep'], probes, now: NOW })
     expect(res.blocked?.guard).toBe('net-shrink')
+    expect(res.next).toBeNull()
   })
 
   it('allows shrinking from a small list without tripping the ratio', () => {
@@ -269,5 +270,79 @@ describe('classify — guards', () => {
       now: NOW,
     })
     expect(res.blocked).toBeNull()
+  })
+
+  it('blocks a total wipe even when the list is below the ratio-guard floor (before=3, after=0)', () => {
+    const res = classify({
+      curated: { special: [], programs: ['a', 'b', 'c'] },
+      discovered: ['x'],
+      probes: {
+        a: { ...past, name: 'A', eventType: 'CLASS' },
+        b: { ...past, name: 'B', eventType: 'CLASS' },
+        c: { ...past, name: 'C', eventType: 'CLASS' },
+        x: { ...past, name: 'X', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(res.blocked?.guard).toBe('net-shrink')
+    expect(res.next).toBeNull()
+  })
+
+  it('allows a small list to shrink to 1 without tripping the ratio guard (before=3, after=1)', () => {
+    const res = classify({
+      curated: { special: [], programs: ['a', 'b', 'c'] },
+      discovered: ['a'],
+      probes: {
+        a: { ...future, name: 'A', eventType: 'CLASS' },
+        b: { ...past, name: 'B', eventType: 'CLASS' },
+        c: { ...past, name: 'C', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(res.blocked).toBeNull()
+  })
+
+  it('allows shrinking to exactly half (before=6, after=3)', () => {
+    const res = classify({
+      curated: { special: [], programs: ['a', 'b', 'c', 'd', 'e', 'f'] },
+      discovered: ['a', 'b', 'c'],
+      probes: {
+        a: { ...future, name: 'A', eventType: 'CLASS' },
+        b: { ...future, name: 'B', eventType: 'CLASS' },
+        c: { ...future, name: 'C', eventType: 'CLASS' },
+        d: { ...past, name: 'D', eventType: 'CLASS' },
+        e: { ...past, name: 'E', eventType: 'CLASS' },
+        f: { ...past, name: 'F', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(res.blocked).toBeNull()
+  })
+
+  it('blocks shrinking past half (before=5, after=2)', () => {
+    const res = classify({
+      curated: { special: [], programs: ['a', 'b', 'c', 'd', 'e'] },
+      discovered: ['a', 'b'],
+      probes: {
+        a: { ...future, name: 'A', eventType: 'CLASS' },
+        b: { ...future, name: 'B', eventType: 'CLASS' },
+        c: { ...past, name: 'C', eventType: 'CLASS' },
+        d: { ...past, name: 'D', eventType: 'CLASS' },
+        e: { ...past, name: 'E', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(res.blocked?.guard).toBe('net-shrink')
+  })
+
+  it('treats a non-array discovered value as an invalid scan, not as an empty page', () => {
+    const res = classify({
+      curated: { special: [], programs: ['alpha'] },
+      discovered: 'abc',
+      probes: { alpha: { ...future, name: 'Alpha', eventType: 'CLASS' } },
+      now: NOW,
+    })
+    expect(res.blocked?.guard).toBe('empty-scan')
+    expect(res.next).toBeNull()
   })
 })
