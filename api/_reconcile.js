@@ -13,6 +13,9 @@
 
 const SPECIAL_TYPES = new Set(['EVENT', 'RETREAT'])
 
+// Below this the shrink ratio is meaningless — losing 1 of 2 is not a signal.
+const MIN_LIST_FOR_RATIO_GUARD = 4
+
 function hasFuture(probe, now) {
   if (!probe || !probe.ok || !probe.nextEnd) return false
   const end = Date.parse(probe.nextEnd)
@@ -24,6 +27,22 @@ function bucketFor(probe) {
 }
 
 export function classify({ curated, discovered, probes, now }) {
+  // GUARD 1: a scan that found nothing means Sweatpals is down or changed its
+  // markup — NOT that every program was cancelled. Without this, one outage
+  // empties the schedule.
+  if (!discovered || discovered.length === 0) {
+    return {
+      verdicts: [],
+      added: [],
+      removed: [],
+      next: null,
+      blocked: {
+        guard: 'empty-scan',
+        reason: 'Host page scan returned no aliases; treating as a scan failure.',
+      },
+    }
+  }
+
   const listed = new Set(discovered)
   const curatedAll = [...curated.special, ...curated.programs]
   const verdicts = []
@@ -67,6 +86,23 @@ export function classify({ curated, discovered, probes, now }) {
     verdicts.push({ slug, name, bucket, verdict: 'new' })
     added.push({ slug, name, bucket })
     place(slug, bucket)
+  }
+
+  // GUARD 2: net size, not gross removals. A rotation (5 die, 5 born) is
+  // healthy churn and must auto-apply; a collapse (5 die, 0 born) must not.
+  const before = curatedAll.length
+  const after = next.special.length + next.programs.length
+  if (before >= MIN_LIST_FOR_RATIO_GUARD && after * 2 < before) {
+    return {
+      verdicts,
+      added,
+      removed,
+      next: null,
+      blocked: {
+        guard: 'net-shrink',
+        reason: `List would shrink from ${before} to ${after}; refusing to apply without review.`,
+      },
+    }
   }
 
   return { verdicts, added, removed, next, blocked: null }

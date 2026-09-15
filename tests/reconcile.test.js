@@ -183,3 +183,91 @@ describe('classify — verdicts', () => {
     expect(res.removed).toEqual([])
   })
 })
+
+describe('classify — guards', () => {
+  it('treats an empty scan as failure, NEVER as remove-everything', () => {
+    const res = classify({
+      curated: { special: [], programs: ['alpha', 'beta', 'gamma'] },
+      discovered: [],
+      probes: {
+        alpha: { ...past, name: 'Alpha', eventType: 'CLASS' },
+        beta: { ...past, name: 'Beta', eventType: 'CLASS' },
+        gamma: { ...past, name: 'Gamma', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(res.blocked).not.toBeNull()
+    expect(res.blocked.guard).toBe('empty-scan')
+    expect(res.next).toBeNull()
+  })
+
+  it('blocks when the list would shrink by more than half', () => {
+    const res = classify({
+      curated: { special: [], programs: ['a', 'b', 'c', 'd', 'e', 'f'] },
+      discovered: ['a', 'b'],
+      probes: {
+        a: { ...future, name: 'A', eventType: 'CLASS' },
+        b: { ...future, name: 'B', eventType: 'CLASS' },
+        c: { ...past, name: 'C', eventType: 'CLASS' },
+        d: { ...past, name: 'D', eventType: 'CLASS' },
+        e: { ...past, name: 'E', eventType: 'CLASS' },
+        f: { ...past, name: 'F', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(res.blocked?.guard).toBe('net-shrink')
+    expect(res.next).toBeNull()
+  })
+
+  it('ALLOWS a full rotation — the real 2026-09-15 event', () => {
+    // 5 of 6 died and 5 new ones appeared. Net size holds at 6: heal it.
+    const curated = { special: [], programs: ['old1', 'old2', 'old3', 'old4', 'old5', 'keep'] }
+    const discovered = ['keep', 'new1', 'new2', 'new3', 'new4', 'new5']
+    const probes = { keep: { ...future, name: 'Keep', eventType: 'CLASS' } }
+    for (const s of ['old1', 'old2', 'old3', 'old4', 'old5']) {
+      probes[s] = { ...past, name: s, eventType: 'CLASS' }
+    }
+    for (const s of ['new1', 'new2', 'new3', 'new4', 'new5']) {
+      probes[s] = { ...future, name: s, eventType: 'CLASS' }
+    }
+    const res = classify({ curated, discovered, probes, now: NOW })
+    expect(res.blocked).toBeNull()
+    expect(res.next.programs).toHaveLength(6)
+    expect(res.removed).toHaveLength(5)
+    expect(res.added).toHaveLength(5)
+  })
+
+  it('blocks the same rotation when the replacements are withheld', () => {
+    const curated = { special: [], programs: ['old1', 'old2', 'old3', 'old4', 'old5', 'keep'] }
+    const probes = { keep: { ...future, name: 'Keep', eventType: 'CLASS' } }
+    for (const s of ['old1', 'old2', 'old3', 'old4', 'old5']) {
+      probes[s] = { ...past, name: s, eventType: 'CLASS' }
+    }
+    const res = classify({ curated, discovered: ['keep'], probes, now: NOW })
+    expect(res.blocked?.guard).toBe('net-shrink')
+  })
+
+  it('allows shrinking from a small list without tripping the ratio', () => {
+    const res = classify({
+      curated: { special: [], programs: ['a', 'b'] },
+      discovered: ['a'],
+      probes: {
+        a: { ...future, name: 'A', eventType: 'CLASS' },
+        b: { ...past, name: 'B', eventType: 'CLASS' },
+      },
+      now: NOW,
+    })
+    expect(res.blocked).toBeNull()
+    expect(res.next.programs).toEqual(['a'])
+  })
+
+  it('does not trip either guard when nothing changes', () => {
+    const res = classify({
+      curated: { special: [], programs: ['a'] },
+      discovered: ['a'],
+      probes: { a: { ...future, name: 'A', eventType: 'CLASS' } },
+      now: NOW,
+    })
+    expect(res.blocked).toBeNull()
+  })
+})
