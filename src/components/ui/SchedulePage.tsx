@@ -15,8 +15,13 @@ interface ScheduleEvent {
   location: string
 }
 
-// Sweatpals host page — recurring weekly clinics live here.
+// Sweatpals host page — recurring weekly clinics live here. Used by the season
+// links, which point at the host landing page as an overview.
 const SWEATPALS_HOST_URL = 'https://sweatpals.com/host/loveandlob'
+
+// The Upcoming list's "View all" deep-links straight into the host calendar
+// view: someone scanning dates wants the calendar, not the landing page.
+const SWEATPALS_CALENDAR_URL = 'https://sweatpals.com/host/loveandlob/schedule?view=calendar'
 
 /**
  * A featured event we host ourselves, so there is no Sweatpals slug to curate.
@@ -309,7 +314,7 @@ export function SchedulePage() {
             )}
 
             <a
-              href={SWEATPALS_HOST_URL}
+              href={SWEATPALS_CALENDAR_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="schedule-sweatpals-link"

@@ -56,8 +56,10 @@ export const PROGRAM_SLUGS = [
 ]
 
 // Max programs shown in the Upcoming list (soonest-first); the rest live behind
-// the "View all on Sweatpals" link.
-const UPCOMING_LIMIT = 8
+// the "View all on Sweatpals" link, which deep-links to the host calendar view.
+// Held at 6 deliberately: the list is a preview of the next few days, not a
+// full calendar, and past 6 it outgrows the column beside the skill levels.
+const UPCOMING_LIMIT = 6
 
 const EVENT_API = 'https://ilove.sweatpals.com/api/events/public/nearest/instance'
 const FILE_API = 'https://ilove.sweatpals.com/api/files'
