@@ -5,8 +5,12 @@
  *
  * Run by .github/workflows/reconcile-schedule.yml every 3 days, and on demand
  * when /studio fires a workflow_dispatch. Safe to run locally with --dry-run.
+ *
+ * A non-dry-run refuses to write unless the current branch is `main` (pass
+ * --allow-any-branch to override) — this only ever writes/commits/pushes on
+ * the branch CI actually runs on.
  */
-import { writeFileSync, readFileSync } from 'node:fs'
+import { writeFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
@@ -20,14 +24,18 @@ import { formatReport, sendReport } from '../api/_notify.js'
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const TARGET = join(ROOT, 'api', 'schedule-slugs.js')
 const DRY = process.argv.includes('--dry-run')
+const ALLOW_ANY_BRANCH = process.argv.includes('--allow-any-branch')
 
 const recipients = (process.env.RECONCILE_NOTIFY_TO || '')
   .split(',').map((s) => s.trim()).filter(Boolean)
 
-async function notify(payload) {
-  const report = formatReport(payload)
+async function sendNotification(report) {
   console.log(`\n--- ${report.subject} ---\n${report.text}\n`)
   if (!DRY) await sendReport(report, { apiKey: process.env.BREVO_API_KEY, to: recipients })
+}
+
+async function notify(payload) {
+  await sendNotification(formatReport(payload))
 }
 
 async function main() {
@@ -40,7 +48,8 @@ async function main() {
   if (!healthy) {
     console.error('[reconcile] scan unhealthy; skipping classification')
     await notify({ added: [], removed: [], blocked: null, scanOk: false })
-    process.exit(1)
+    process.exitCode = 1
+    return
   }
 
   const all = [...new Set([...curated.special, ...curated.programs, ...discovered])]
@@ -58,7 +67,8 @@ async function main() {
       blocked: result.blocked,
       scanOk: result.blocked.guard !== 'empty-scan',
     })
-    process.exit(1)
+    process.exitCode = 1
+    return
   }
 
   if (!result.added.length && !result.removed.length) {
@@ -81,10 +91,21 @@ async function main() {
     return
   }
 
-  if (readFileSync(TARGET, 'utf8') === text) {
-    console.log('[reconcile] file already current')
+  // Refuse to write/commit/push from anywhere but the branch CI runs on —
+  // otherwise a stray local `pnpm reconcile` pushes to a feature branch.
+  const branch = execFileSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+  }).trim()
+  if (branch !== 'main' && !ALLOW_ANY_BRANCH) {
+    console.error(
+      `[reconcile] refusing to write on branch '${branch}' (use --dry-run, or ` +
+        '--allow-any-branch to override)',
+    )
+    process.exitCode = 1
     return
   }
+
   writeFileSync(TARGET, text)
 
   const summary = [
@@ -92,22 +113,54 @@ async function main() {
     result.removed.length ? `-${result.removed.length}` : null,
   ].filter(Boolean).join(' ')
 
+  const subject = `chore(schedule): sync Sweatpals programs (${summary})`
   const body = [
     ...result.added.map((a) => `Added: ${a.name}`),
     ...result.removed.map((r) => `Removed: ${r.name}`),
   ].join('\n')
 
   const git = (...args) => execFileSync('git', args, { cwd: ROOT, stdio: 'inherit' })
-  git('config', 'user.name', 'love-and-lob-bot')
-  git('config', 'user.email', 'info@loveandlob.co')
-  git('add', 'api/schedule-slugs.js')
-  git('commit', '-m', `chore(schedule): sync Sweatpals programs (${summary})`, '-m', body)
-  git('push')
+
+  // -c scopes the identity to this one invocation instead of rewriting the
+  // clone's permanent git config. --only commits exactly this path
+  // regardless of anything else sitting in the index.
+  git(
+    '-c', 'user.name=love-and-lob-bot',
+    '-c', 'user.email=info@loveandlob.co',
+    'commit', '--only', 'api/schedule-slugs.js', '-m', subject, '-m', body,
+  )
+
+  try {
+    git('push')
+  } catch (err) {
+    console.error('[reconcile] push failed, retrying after pull --rebase:', String(err))
+    try {
+      git('pull', '--rebase')
+      git('push')
+    } catch (retryErr) {
+      console.error('[reconcile] push retry failed:', String(retryErr))
+      await sendNotification({
+        subject: 'Schedule: commit succeeded but push failed',
+        text: [
+          'The reconcile job committed a schedule update locally but could not',
+          'push it to the repository, even after retrying once with a rebase.',
+          '',
+          String(retryErr),
+          '',
+          'The commit is sitting in the CI checkout and the site is still',
+          'serving the last known-good program list, but this needs a human',
+          'to resolve the push manually.',
+        ].join('\n'),
+      })
+      process.exitCode = 1
+      return
+    }
+  }
 
   await notify({ added: result.added, removed: result.removed, blocked: null, scanOk: true })
 }
 
 main().catch((err) => {
   console.error('[reconcile] fatal:', err)
-  process.exit(1)
+  process.exitCode = 1
 })
