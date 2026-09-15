@@ -19,10 +19,13 @@
 
 // Featured special event(s) — rendered as the big card at the top of the page.
 // The soonest active one is featured.
-export const SPECIAL_EVENT_SLUGS = [
-  'll-3v3-team-singles-tournament',
-  'll-mixed-doubles-tournament-us-open-edition',
-]
+//
+// Empty as of 2026-09-15: the 3v3 Team Singles (Aug 30) and the Mixed Doubles
+// US Open Edition (Sep 12) have both run, and Sweatpals lists no upcoming
+// tournament. An empty list is the correct resting state — the featured section
+// simply doesn't render until the next special event is published. Add the new
+// slug here when it is.
+export const SPECIAL_EVENT_SLUGS = []
 
 // Recurring programming — rendered as the "Upcoming" list. Keep disjoint from
 // SPECIAL_EVENT_SLUGS so nothing shows twice.
@@ -33,20 +36,23 @@ export const SPECIAL_EVENT_SLUGS = [
 // Greenpoint Kids Clinic, and the original Greenpoint/Brooklyn College Liveball
 // and Beginner series were retired on 2026-08-20 by that test.
 //
-// Refreshed 2026-08-31: Sweatpals had recreated four series under fresh slugs,
-// so Early Morning Sessions, Advanced Beginner (Greenpoint), Cardio Tennis
-// (Greenpoint) and Liveball Intermediate/Advanced were all silently aging out —
-// the list was rendering 2 programs instead of 6. Each failed both retirement
-// conditions (delisted from the host page, last instance in the past) and was
-// replaced by its current slug. Re-run the host scan when the list looks short:
+// Refreshed 2026-09-15: Sweatpals had recreated the roster under fresh slugs
+// again, and the fall programming changed shape — only Beginner Clinic
+// (Brooklyn College) survived from the previous list. Every other curated slug
+// failed both retirement conditions (delisted from the host page AND last
+// instance in the past; `advanced-beginner-clinic-greenpoint` had gone 404),
+// while five newly listed series were live and unreferenced. Cardio Tennis and
+// the Greenpoint Advanced Beginner / Intermediate clinics are gone from the
+// host page entirely; Drill & Play, the Kids Clinic and an Intermediate clinic
+// at Brooklyn College are new. Re-run the host scan when the list looks short:
 //   curl -sL https://sweatpals.com/loveandlob | grep -o '"alias":"[^"]*"' | sort -u
 export const PROGRAM_SLUGS = [
-  'absolute-beginner-clinic-b8cc',
-  'advanced-beginner-clinic-6f38',
-  'advanced-beginner-clinic-greenpoint',
+  'absolute-beginner-clinic-greenpoint',
   'beginner-clinic-brooklyn-college',
-  'cardio-tennis-brooklyn-college',
-  'intermediate-clinic-greenpoint',
+  'intermediate-clinic-brooklyn-college',
+  'drill-play-greenpoint',
+  'kids-clinic-ages-58-greenpoint',
+  'll-early-morning-sessions-5d58d2',
 ]
 
 // Max programs shown in the Upcoming list (soonest-first); the rest live behind
@@ -103,16 +109,22 @@ export function isActive(ev, now = new Date()) {
   return new Date(nextEnd(ev)) >= now
 }
 
-/** Map a raw Sweatpals event to the events.json schema the client consumes. */
+/**
+ * Map a raw Sweatpals event to the events.json schema the client consumes.
+ *
+ * Names are trimmed: organizers sometimes save a title with leading/trailing
+ * spaces (e.g. `" Intermediate Clinic (Brooklyn College) "`), which renders as
+ * visible gaps in the Upcoming list.
+ */
 export function normalizeEvent(ev) {
   return {
     id: ev.id,
-    name: ev.name,
+    name: (ev.name || '').trim(),
     start_at: nextStart(ev),
     end_at: nextEnd(ev),
     cover_url: coverUrl(ev),
     url: eventUrl(ev),
-    location: ev.city?.name || ev.addressName || '',
+    location: (ev.city?.name || ev.addressName || '').trim(),
   }
 }
 
