@@ -1,0 +1,56 @@
+.product-buy {
+  margin-bottom: 2rem;
+}
+
+.product-buy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 15rem;
+  padding: 1rem 2rem;
+  background: #004225;
+  border: 1px solid #004225;
+  border-radius: 4px;
+  color: #F1F0E2;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.product-buy-button:hover,
+.product-buy-button:focus-visible {
+  background: #d8e84d;
+  color: #004225;
+}
+
+.product-buy-button:focus-visible {
+  outline: 2px solid #004225;
+  outline-offset: 3px;
+}
+
+.product-buy-button:disabled {
+  background: transparent;
+  border-color: rgba(0, 66, 37, 0.15);
+  color: rgba(0, 66, 37, 0.4);
+  cursor: default;
+}
+
+.product-buy-note {
+  margin-top: 0.75rem;
+  font-family: monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0, 66, 37, 0.45);
+}
+
+@media (max-width: 480px) {
+  .product-buy-button {
+    width: 100%;
+    min-width: 0;
+  }
+}

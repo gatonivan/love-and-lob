@@ -4,6 +4,7 @@ import { useSceneStore } from '../../stores/sceneStore'
 import { useDeferredUnmount } from '../../hooks/useDeferredUnmount'
 import type { Product } from '../../types'
 import productsData from '../../assets/data/products.json'
+import { ProductBuyButton } from './ProductBuyButton'
 import './ProductDetail.css'
 
 const products = productsData as unknown as Product[]
@@ -79,6 +80,7 @@ export function ProductDetail() {
               ) : (
                 <div className="product-detail-price">${product.price}</div>
               )}
+              <ProductBuyButton product={product} />
               <p className="product-detail-description">{product.description}</p>
 
               <div className="product-detail-specs">

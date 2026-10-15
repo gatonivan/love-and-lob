@@ -9,4 +9,6 @@ export interface Product {
   description: string
   soldOut?: boolean
   comingSoon?: boolean
+  /** Live Stripe Payment Link (https://buy.stripe.com/…). Absent = not for sale online. */
+  checkoutUrl?: string
 }

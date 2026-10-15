@@ -1,5 +1,20 @@
 [
   {
+    "id": "wild-rozanna",
+    "name": "Wild Rozanna",
+    "price": 50,
+    "category": "accessories",
+    "images": [],
+    "checkoutUrl": "https://buy.stripe.com/bJe8wPd5D9MKbUV7lH5sA01",
+    "specs": {
+      "Fit": "One size, adjustable snapback",
+      "Shipping": "Free in the US",
+      "Ships in": "5 business days",
+      "Returns": "Final sale"
+    },
+    "description": "The Wild Rozanna snapback. A limited Love & Lob drop: one size, adjustable strap, made to be worn courtside and everywhere after."
+  },
+  {
     "id": "romance-language-tee",
     "name": "Romance Language T-Shirt",
     "price": 45,
