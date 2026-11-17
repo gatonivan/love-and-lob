@@ -46,13 +46,15 @@ export const SPECIAL_EVENT_SLUGS = []
 // host page entirely; Drill & Play, the Kids Clinic and an Intermediate clinic
 // at Brooklyn College are new. Re-run the host scan when the list looks short:
 //   curl -sL https://sweatpals.com/loveandlob | grep -o '"alias":"[^"]*"' | sort -u
+//
+// Refreshed 2026-11-17: the fall outdoor season is over. All six slugs above
+// met both retirement conditions (delisted, last instance between Sep 17 and
+// Oct 30). The host page now lists exactly two classes: Early Morning Sessions,
+// recreated under a fresh slug again, and a new Tennis Workout Class in Queens.
+// A two-item list is the real winter roster, not a scrape failure.
 export const PROGRAM_SLUGS = [
-  'absolute-beginner-clinic-greenpoint',
-  'beginner-clinic-brooklyn-college',
-  'intermediate-clinic-brooklyn-college',
-  'drill-play-greenpoint',
-  'kids-clinic-ages-58-greenpoint',
-  'll-early-morning-sessions-5d58d2',
+  'll-tennis-bootcamp-seminar',
+  'll-early-morning-sessions-18',
 ]
 
 // Max programs shown in the Upcoming list (soonest-first); the rest live behind

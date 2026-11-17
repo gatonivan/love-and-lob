@@ -2,58 +2,22 @@
   "featured": null,
   "upcoming": [
     {
-      "id": "23f9d2f0-7d91-4cbe-b2ed-63350c9c1132",
-      "name": "Absolute Beginner Clinic (Greenpoint)",
-      "start_at": "2026-09-17T22:00:00.000Z",
-      "end_at": "2026-09-17T23:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/absolute-beginner-clinic-greenpoint",
-      "location": "Brooklyn"
+      "id": "0dc149ad-eb0d-4c2c-9a66-748eba0908aa",
+      "name": "L&L Tennis Workout Class",
+      "start_at": "2026-11-19T00:30:00.000Z",
+      "end_at": "2026-11-19T01:45:00.000Z",
+      "cover_url": "https://ilove.sweatpals.com/api/files/ac028246-c38e-40c4-ae6a-910bf8b70aa8?variant=l",
+      "url": "https://sweatpals.com/event/ll-tennis-bootcamp-seminar",
+      "location": "Queens"
     },
     {
-      "id": "86ad0dc2-ba0c-4797-a87f-6941fc39baa6",
+      "id": "74165f38-cd61-49e2-bc64-6d2933ffc505",
       "name": "L&L Early Morning Sessions",
-      "start_at": "2026-09-18T10:30:00.000Z",
-      "end_at": "2026-09-18T12:00:00.000Z",
+      "start_at": "2026-11-20T11:30:00.000Z",
+      "end_at": "2026-11-20T13:00:00.000Z",
       "cover_url": "https://ilove.sweatpals.com/api/files/8eaf0254-5f5f-4c54-bf07-598640590d35?variant=l",
-      "url": "https://sweatpals.com/event/ll-early-morning-sessions-5d58d2",
+      "url": "https://sweatpals.com/event/ll-early-morning-sessions-18",
       "location": "New York"
-    },
-    {
-      "id": "6ef2cab9-8db7-4a2f-9868-5f3e02dd1ba3",
-      "name": "Kids Clinic: Ages 5-8 (Greenpoint)",
-      "start_at": "2026-09-19T13:00:00.000Z",
-      "end_at": "2026-09-19T14:00:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/kids-clinic-ages-58-greenpoint",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "30005ab5-ee7e-49f4-bb26-eb8af9437409",
-      "name": "Drill & Play (Greenpoint)",
-      "start_at": "2026-09-19T14:00:00.000Z",
-      "end_at": "2026-09-19T15:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/0bb057c6-0acd-49f0-a4a2-565de3375246?variant=l",
-      "url": "https://sweatpals.com/event/drill-play-greenpoint",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "177afb45-def7-4d12-abfb-72db1340f485",
-      "name": "Beginner Clinic (Brooklyn College)",
-      "start_at": "2026-09-20T15:00:00.000Z",
-      "end_at": "2026-09-20T16:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/beginner-clinic-brooklyn-college",
-      "location": "Brooklyn"
-    },
-    {
-      "id": "8b8450c4-9955-4cb6-9fb8-f33a94ceb526",
-      "name": "Intermediate Clinic (Brooklyn College)",
-      "start_at": "2026-09-20T15:00:00.000Z",
-      "end_at": "2026-09-20T16:30:00.000Z",
-      "cover_url": "https://ilove.sweatpals.com/api/files/afb5454b-026d-4d0b-b30e-1c1e16213ff7?variant=l",
-      "url": "https://sweatpals.com/event/intermediate-clinic-brooklyn-college",
-      "location": "Brooklyn"
     }
   ]
 }
